@@ -1,0 +1,117 @@
+\hypertarget{game__loop_8c}{}\doxysection{game\+\_\+loop.\+c File Reference}
+\label{game__loop_8c}\index{game\_loop.c@{game\_loop.c}}
+
+
+It defines the game loop.  
+
+
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}graphic\+\_\+engine.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}game.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}command.\+h\char`\"{}}\newline
+Include dependency graph for game\+\_\+loop.\+c\+:
+% FIG 0
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{game__loop_8c_a31e8784ceb06b2f65b70e074e3e1a722}{game\+\_\+loop\+\_\+init}} (\mbox{\hyperlink{game_8h_a57156d39c530aec3fba3a9dad8c2dc6a}{Game}} $\ast$game, \mbox{\hyperlink{struct__Graphic__engine}{Graphic\+\_\+engine}} $\ast$$\ast$gengine, char $\ast$file\+\_\+name)
+\begin{DoxyCompactList}\small\item\em It start the game and the graphics engine. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{game__loop_8c_a907352b9ac1bfc9dc3eff7a3a5a5f63b}{game\+\_\+loop\+\_\+run}} (\mbox{\hyperlink{game_8h_a57156d39c530aec3fba3a9dad8c2dc6a}{Game}} $\ast$game, \mbox{\hyperlink{struct__Graphic__engine}{Graphic\+\_\+engine}} $\ast$gengine)
+\begin{DoxyCompactList}\small\item\em makes the game continue, the graphical interface and all the necessary processes until otherwise indicated \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{game__loop_8c_a395965726eadd591bc6c02fed4709a4e}{game\+\_\+loop\+\_\+cleanup}} (\mbox{\hyperlink{game_8h_a57156d39c530aec3fba3a9dad8c2dc6a}{Game}} $\ast$game, \mbox{\hyperlink{struct__Graphic__engine}{Graphic\+\_\+engine}} $\ast$gengine)
+\begin{DoxyCompactList}\small\item\em frees up G\+UI and game memory \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{game__loop_8c_a0ddf1224851353fc92bfbff6f499fa97}\label{game__loop_8c_a0ddf1224851353fc92bfbff6f499fa97}} 
+int {\bfseries main} (int argc, char $\ast$argv\mbox{[}$\,$\mbox{]})
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+It defines the game loop. 
+
+\begin{DoxyAuthor}{Author}
+Profesores P\+P\+R\+OG 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+2.\+0 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+30-\/11-\/2020 
+\end{DoxyDate}
+\begin{DoxyCopyright}{Copyright}
+G\+NU Public License 
+\end{DoxyCopyright}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{game__loop_8c_a395965726eadd591bc6c02fed4709a4e}\label{game__loop_8c_a395965726eadd591bc6c02fed4709a4e}} 
+\index{game\_loop.c@{game\_loop.c}!game\_loop\_cleanup@{game\_loop\_cleanup}}
+\index{game\_loop\_cleanup@{game\_loop\_cleanup}!game\_loop.c@{game\_loop.c}}
+\doxysubsubsection{\texorpdfstring{game\_loop\_cleanup()}{game\_loop\_cleanup()}}
+{\footnotesize\ttfamily void game\+\_\+loop\+\_\+cleanup (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{game_8h_a57156d39c530aec3fba3a9dad8c2dc6a}{Game}} $\ast$}]{game,  }\item[{\mbox{\hyperlink{struct__Graphic__engine}{Graphic\+\_\+engine}} $\ast$}]{gengine }\end{DoxyParamCaption})}
+
+
+
+frees up G\+UI and game memory 
+
+\begin{DoxyAuthor}{Author}
+Profesores P\+P\+R\+OG 
+\end{DoxyAuthor}
+
+\begin{DoxyParams}{Parameters}
+{\em game} & variable type game \\
+\hline
+{\em gengine} & a pointer to the graphics engine \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+nothing 
+\end{DoxyReturn}
+\mbox{\Hypertarget{game__loop_8c_a31e8784ceb06b2f65b70e074e3e1a722}\label{game__loop_8c_a31e8784ceb06b2f65b70e074e3e1a722}} 
+\index{game\_loop.c@{game\_loop.c}!game\_loop\_init@{game\_loop\_init}}
+\index{game\_loop\_init@{game\_loop\_init}!game\_loop.c@{game\_loop.c}}
+\doxysubsubsection{\texorpdfstring{game\_loop\_init()}{game\_loop\_init()}}
+{\footnotesize\ttfamily int game\+\_\+loop\+\_\+init (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{game_8h_a57156d39c530aec3fba3a9dad8c2dc6a}{Game}} $\ast$}]{game,  }\item[{\mbox{\hyperlink{struct__Graphic__engine}{Graphic\+\_\+engine}} $\ast$$\ast$}]{gengine,  }\item[{char $\ast$}]{file\+\_\+name }\end{DoxyParamCaption})}
+
+
+
+It start the game and the graphics engine. 
+
+\begin{DoxyAuthor}{Author}
+Profesores P\+P\+R\+OG 
+\end{DoxyAuthor}
+
+\begin{DoxyParams}{Parameters}
+{\em game} & a pointer to the new game \\
+\hline
+{\em gengine} & a double pointer to the graphics engine \\
+\hline
+{\em file\+\_\+name} & a pointer to a character with the name of the .txt file \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+returns 0 if there were no errors, otherwise 1 
+\end{DoxyReturn}
+\mbox{\Hypertarget{game__loop_8c_a907352b9ac1bfc9dc3eff7a3a5a5f63b}\label{game__loop_8c_a907352b9ac1bfc9dc3eff7a3a5a5f63b}} 
+\index{game\_loop.c@{game\_loop.c}!game\_loop\_run@{game\_loop\_run}}
+\index{game\_loop\_run@{game\_loop\_run}!game\_loop.c@{game\_loop.c}}
+\doxysubsubsection{\texorpdfstring{game\_loop\_run()}{game\_loop\_run()}}
+{\footnotesize\ttfamily void game\+\_\+loop\+\_\+run (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{game_8h_a57156d39c530aec3fba3a9dad8c2dc6a}{Game}} $\ast$}]{game,  }\item[{\mbox{\hyperlink{struct__Graphic__engine}{Graphic\+\_\+engine}} $\ast$}]{gengine }\end{DoxyParamCaption})}
+
+
+
+makes the game continue, the graphical interface and all the necessary processes until otherwise indicated 
+
+\begin{DoxyAuthor}{Author}
+Profesores P\+P\+R\+OG 
+\end{DoxyAuthor}
+
+\begin{DoxyParams}{Parameters}
+{\em game} & variable type game \\
+\hline
+{\em gengine} & a pointer to the graphics engine \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+nothing frees up G\+UI and game memory 
+\end{DoxyReturn}

@@ -1,0 +1,92 @@
+\hypertarget{game__reader_8h}{}\doxysection{game\+\_\+reader.\+h File Reference}
+\label{game__reader_8h}\index{game\_reader.h@{game\_reader.h}}
+
+
+It defines the game\+\_\+reader interface.  
+
+
+{\ttfamily \#include \char`\"{}game.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}space.\+h\char`\"{}}\newline
+Include dependency graph for game\+\_\+reader.\+h\+:
+% FIG 0
+This graph shows which files directly or indirectly include this file\+:
+% FIG 1
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+S\+T\+A\+T\+US \mbox{\hyperlink{game__reader_8h_a1e0e4f4ede7bb399d6f33f66b7c38392}{game\+\_\+reader\+\_\+load\+\_\+spaces}} (\mbox{\hyperlink{game_8h_a57156d39c530aec3fba3a9dad8c2dc6a}{Game}} $\ast$game, char $\ast$filename)
+\begin{DoxyCompactList}\small\item\em It loads the spaces. \end{DoxyCompactList}\item 
+S\+T\+A\+T\+US \mbox{\hyperlink{game__reader_8h_a07d0cc9ec5cae35a9ad5dd7882357234}{game\+\_\+reader\+\_\+load\+\_\+objects}} (\mbox{\hyperlink{game_8h_a57156d39c530aec3fba3a9dad8c2dc6a}{Game}} $\ast$game, char $\ast$filename)
+\begin{DoxyCompactList}\small\item\em It loads the objects. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{game__reader_8h_a38c90d2eaaa4f9daed93df003d0f92f9}\label{game__reader_8h_a38c90d2eaaa4f9daed93df003d0f92f9}} 
+S\+T\+A\+T\+US {\bfseries game\+\_\+reader\+\_\+load\+\_\+player} (\mbox{\hyperlink{game_8h_a57156d39c530aec3fba3a9dad8c2dc6a}{Game}} $\ast$game, char $\ast$filename)
+\item 
+\mbox{\Hypertarget{game__reader_8h_ab0f0619a15a2b239422f017b606863f9}\label{game__reader_8h_ab0f0619a15a2b239422f017b606863f9}} 
+S\+T\+A\+T\+US {\bfseries game\+\_\+reader\+\_\+load\+\_\+enemy} (\mbox{\hyperlink{game_8h_a57156d39c530aec3fba3a9dad8c2dc6a}{Game}} $\ast$game, char $\ast$filename)
+\item 
+\mbox{\Hypertarget{game__reader_8h_aa47ab8dc1e29821281766ab359e8ac8b}\label{game__reader_8h_aa47ab8dc1e29821281766ab359e8ac8b}} 
+S\+T\+A\+T\+US {\bfseries game\+\_\+reader\+\_\+load\+\_\+links} (\mbox{\hyperlink{game_8h_a57156d39c530aec3fba3a9dad8c2dc6a}{Game}} $\ast$game, char $\ast$filename)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+It defines the game\+\_\+reader interface. 
+
+\begin{DoxyAuthor}{Author}
+Grupo A 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+2.\+0 
+\end{DoxyVersion}
+\begin{DoxyCopyright}{Copyright}
+G\+NU Public License 
+\end{DoxyCopyright}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{game__reader_8h_a07d0cc9ec5cae35a9ad5dd7882357234}\label{game__reader_8h_a07d0cc9ec5cae35a9ad5dd7882357234}} 
+\index{game\_reader.h@{game\_reader.h}!game\_reader\_load\_objects@{game\_reader\_load\_objects}}
+\index{game\_reader\_load\_objects@{game\_reader\_load\_objects}!game\_reader.h@{game\_reader.h}}
+\doxysubsubsection{\texorpdfstring{game\_reader\_load\_objects()}{game\_reader\_load\_objects()}}
+{\footnotesize\ttfamily S\+T\+A\+T\+US game\+\_\+reader\+\_\+load\+\_\+objects (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{game_8h_a57156d39c530aec3fba3a9dad8c2dc6a}{Game}} $\ast$}]{game,  }\item[{char $\ast$}]{filename }\end{DoxyParamCaption})}
+
+
+
+It loads the objects. 
+
+\begin{DoxyAuthor}{Author}
+Alfonso Crespo 
+\end{DoxyAuthor}
+
+\begin{DoxyParams}{Parameters}
+{\em game} & a pointer to the game \\
+\hline
+{\em filename} & the name of the file \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+OK, if everything goes well or E\+R\+R\+OR if there was some mistake 
+\end{DoxyReturn}
+\mbox{\Hypertarget{game__reader_8h_a1e0e4f4ede7bb399d6f33f66b7c38392}\label{game__reader_8h_a1e0e4f4ede7bb399d6f33f66b7c38392}} 
+\index{game\_reader.h@{game\_reader.h}!game\_reader\_load\_spaces@{game\_reader\_load\_spaces}}
+\index{game\_reader\_load\_spaces@{game\_reader\_load\_spaces}!game\_reader.h@{game\_reader.h}}
+\doxysubsubsection{\texorpdfstring{game\_reader\_load\_spaces()}{game\_reader\_load\_spaces()}}
+{\footnotesize\ttfamily S\+T\+A\+T\+US game\+\_\+reader\+\_\+load\+\_\+spaces (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{game_8h_a57156d39c530aec3fba3a9dad8c2dc6a}{Game}} $\ast$}]{game,  }\item[{char $\ast$}]{filename }\end{DoxyParamCaption})}
+
+
+
+It loads the spaces. 
+
+\begin{DoxyAuthor}{Author}
+Profesores P\+P\+R\+OG 
+\end{DoxyAuthor}
+
+\begin{DoxyParams}{Parameters}
+{\em game} & a pointer to the game \\
+\hline
+{\em filename} & the name of the file \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+OK, if everything goes well or E\+R\+R\+OR if there was some mistake 
+\end{DoxyReturn}

@@ -1,0 +1,41 @@
+#s:11|Entrada|Entrada de id 11|     _   |\   \___ |\   mo'\_|\ @  _   | \__/ \__|
+#s:121|Pasillo|Pasillo de id 121|  ___   _|_/   \_/ |     o 0 |mo'_ 0o8o|__/ \___/|
+#s:122|Pasillo|Pasillo de id 122|  ___   _|_/   \_/ |     o 0 |mo'_ 0o8o|__/ \___/|
+#s:123|Pasillo|Pasillo de id 123|  ___   _|_/   \_/ |     o 0 |mo'_ 0o8o|__/ \___/|
+#s:124|Pasillo|Pasillo de id 124|  ___   _|_/   \_/ |     o 0 |mo'_ 0o8o|__/ \___/|
+#s:125|Pasillo|Pasillo de id 125|  ___   _|_/   \_/ |     o 0 |mo'_ 0o8o|__/ \___/|
+#s:126|Pasillo|Pasillo de id 126|     _   |\   \___ |\   mo'\_|\ @  _   | \__/ \__|
+#s:127|Pasillo|Pasillo de id 127|  ___   _|_/   \_/ |     o 0 |mo'_ 0o8o|__/ \___/|
+#s:13|Despensa|Despensa de id 13|  ___   _|_/   \_/ |     o 0 |mo'_ 0o8o|__/ \___/|
+#s:14|Agujero|Agujero de id 14|  /  /   | /   \__ |     mo'\| _ @  _ \|  \__// /|
+
+
+#o:21|Espada|124|Espada|
+#o:22|Escudo|124|Escudo|
+#o:23|Arco|124|Arco|
+#o:24|Flecha|124|Flecha|
+
+#p:1|ant|11|5|3
+
+#e:2|spider|123|5
+
+#l:30|Entrada|11|121|1|0
+#l:301|Pasillo 1|121|122|1|0
+#l:302|Pasillo 1|121|11|0|0
+#l:303|Pasillo 2|122|123|1|0
+#l:304|Pasillo 2|122|121|0|0
+#l:305|Pasillo 2|122|125|2|0
+#l:306|Pasillo 3|123|124|1|1
+#l:307|Pasillo 3|123|122|0|0
+#l:308|Pasillo 4|124|13|1|0
+#l:309|Pasillo 4|124|123|0|0
+#l:310|Pasillo 5|125|126|2|0
+#l:311|Pasillo 5|125|122|3|0
+#l:312|Pasillo 6|126|127|2|0
+#l:313|Pasillo 6|126|125|3|0
+#l:314|Pasillo 7|127|126|3|0
+#l:315|Pasillo 7|127|14|2|0
+#l:32|Despensa|13|124|0|0
+#l:330|Agujero|14|13|1|0
+#l:331|Agujero|14|127|3|0
+

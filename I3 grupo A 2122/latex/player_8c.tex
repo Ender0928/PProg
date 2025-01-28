@@ -1,0 +1,420 @@
+\hypertarget{player_8c}{}\doxysection{player.\+c File Reference}
+\label{player_8c}\index{player.c@{player.c}}
+
+
+It implements the player module.  
+
+
+{\ttfamily \#include \char`\"{}player.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}inventory.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+Include dependency graph for player.\+c\+:
+% FIG 0
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{struct__Player}{\+\_\+\+Player}}
+\begin{DoxyCompactList}\small\item\em Player. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{struct__Player}{Player}} $\ast$ \mbox{\hyperlink{player_8c_a97ea1d0deda3c51ef6ce63a13dab7a38}{player\+\_\+create}} (Id id)
+\begin{DoxyCompactList}\small\item\em It creates a new player. \end{DoxyCompactList}\item 
+S\+T\+A\+T\+US \mbox{\hyperlink{player_8c_a68e324aa5064e27d0a2f38aafb6809ad}{player\+\_\+destroy}} (\mbox{\hyperlink{struct__Player}{Player}} $\ast$player)
+\begin{DoxyCompactList}\small\item\em It destroys a new player. \end{DoxyCompactList}\item 
+Id \mbox{\hyperlink{player_8c_af5a101ec91427951c5875569a8709956}{player\+\_\+get\+\_\+id}} (\mbox{\hyperlink{struct__Player}{Player}} $\ast$player)
+\begin{DoxyCompactList}\small\item\em It gets the id of a player. \end{DoxyCompactList}\item 
+const char $\ast$ \mbox{\hyperlink{player_8c_a6622c02be2fe230a5c0df66385a13ece}{player\+\_\+get\+\_\+name}} (\mbox{\hyperlink{struct__Player}{Player}} $\ast$player)
+\begin{DoxyCompactList}\small\item\em It gets the name of a player. \end{DoxyCompactList}\item 
+S\+T\+A\+T\+US \mbox{\hyperlink{player_8c_a6a30809f7775f5c2d3bef47d92769e59}{player\+\_\+set\+\_\+name}} (\mbox{\hyperlink{struct__Player}{Player}} $\ast$player, char $\ast$name)
+\begin{DoxyCompactList}\small\item\em It sets the name of a player. \end{DoxyCompactList}\item 
+Id \mbox{\hyperlink{player_8c_aa50ce77ab79af7166d749619fd60acfe}{player\+\_\+get\+\_\+location}} (\mbox{\hyperlink{struct__Player}{Player}} $\ast$player)
+\begin{DoxyCompactList}\small\item\em It gets the position of a player. \end{DoxyCompactList}\item 
+S\+T\+A\+T\+US \mbox{\hyperlink{player_8c_a054e92b126f556153279b569f8987674}{player\+\_\+set\+\_\+location}} (\mbox{\hyperlink{struct__Player}{Player}} $\ast$player, Id location)
+\begin{DoxyCompactList}\small\item\em It sets the location of a player. \end{DoxyCompactList}\item 
+B\+O\+OL \mbox{\hyperlink{player_8c_a5467c260fe987d91959f4a9910ef3338}{player\+\_\+find\+\_\+object}} (\mbox{\hyperlink{struct__Player}{Player}} $\ast$player, Id object)
+\begin{DoxyCompactList}\small\item\em it finds if the given id is in the inventory of the player \end{DoxyCompactList}\item 
+S\+T\+A\+T\+US \mbox{\hyperlink{player_8c_a27cd25bcf567a610cf20c02636ddfc17}{player\+\_\+inv\+\_\+add\+\_\+object}} (\mbox{\hyperlink{struct__Player}{Player}} $\ast$player, Id object)
+\begin{DoxyCompactList}\small\item\em It adds a new id to the inventory of the player. \end{DoxyCompactList}\item 
+S\+T\+A\+T\+US \mbox{\hyperlink{player_8c_af1c2b48dbeb4c84d20e6ca4b7192f6d7}{player\+\_\+inv\+\_\+del\+\_\+object}} (\mbox{\hyperlink{struct__Player}{Player}} $\ast$player, Id object)
+\begin{DoxyCompactList}\small\item\em It delates an id from the inventory of the player. \end{DoxyCompactList}\item 
+B\+O\+OL \mbox{\hyperlink{player_8c_a61247534c255692d8136c7b4aee6a2f6}{player\+\_\+inv\+\_\+is\+Full}} (\mbox{\hyperlink{struct__Player}{Player}} $\ast$player)
+\begin{DoxyCompactList}\small\item\em it verifies if the inventory of the player is full or not \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{player_8c_adc37044dd10f828fd54b27c8e088f4e7}{player\+\_\+get\+\_\+health}} (\mbox{\hyperlink{struct__Player}{Player}} $\ast$player)
+\begin{DoxyCompactList}\small\item\em It gets the id of the object of the player. \end{DoxyCompactList}\item 
+S\+T\+A\+T\+US \mbox{\hyperlink{player_8c_a3afca875ad2b038e0d57d34bde6270fe}{player\+\_\+set\+\_\+health}} (\mbox{\hyperlink{struct__Player}{Player}} $\ast$player, int health)
+\begin{DoxyCompactList}\small\item\em It sets the health of the player. \end{DoxyCompactList}\item 
+S\+T\+A\+T\+US \mbox{\hyperlink{player_8c_a00a23387503906f3b8b95f69bdf23615}{player\+\_\+set\+\_\+\+Max\+Inv}} (\mbox{\hyperlink{struct__Player}{Player}} $\ast$player, int Max\+Inv)
+\begin{DoxyCompactList}\small\item\em player\+\_\+set\+\_\+\+Max\+Inv set the max num of objects a player can carry \end{DoxyCompactList}\item 
+S\+T\+A\+T\+US \mbox{\hyperlink{player_8c_aa0f2f8b4d1b63a60ef927d47aa45dbd1}{player\+\_\+print}} (\mbox{\hyperlink{struct__Player}{Player}} $\ast$player)
+\begin{DoxyCompactList}\small\item\em It prints the player information. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+It implements the player module. 
+
+It implements the set module.
+
+\begin{DoxyAuthor}{Author}
+Daniel Tirado 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+2.\+0 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+12-\/02-\/2022
+\end{DoxyDate}
+\begin{DoxyAuthor}{Author}
+Daniel Tirado and Alfonso Crespo 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+2.\+0 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+12-\/02-\/2022
+\end{DoxyDate}
+\begin{DoxyAuthor}{Author}
+Alfonso Crespo 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+2.\+0 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+26-\/02-\/2022 
+\end{DoxyDate}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{player_8c_a97ea1d0deda3c51ef6ce63a13dab7a38}\label{player_8c_a97ea1d0deda3c51ef6ce63a13dab7a38}} 
+\index{player.c@{player.c}!player\_create@{player\_create}}
+\index{player\_create@{player\_create}!player.c@{player.c}}
+\doxysubsubsection{\texorpdfstring{player\_create()}{player\_create()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{struct__Player}{Player}}$\ast$ player\+\_\+create (\begin{DoxyParamCaption}\item[{Id}]{id }\end{DoxyParamCaption})}
+
+
+
+It creates a new player. 
+
+\begin{DoxyAuthor}{Author}
+Daniel Tirado and Alfonso Crespo
+\end{DoxyAuthor}
+player\+\_\+create allocates memory for a new player and initializes its members 
+\begin{DoxyParams}{Parameters}
+{\em id} & the identification number for the new object \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a new Player, initialized 
+\end{DoxyReturn}
+\mbox{\Hypertarget{player_8c_a68e324aa5064e27d0a2f38aafb6809ad}\label{player_8c_a68e324aa5064e27d0a2f38aafb6809ad}} 
+\index{player.c@{player.c}!player\_destroy@{player\_destroy}}
+\index{player\_destroy@{player\_destroy}!player.c@{player.c}}
+\doxysubsubsection{\texorpdfstring{player\_destroy()}{player\_destroy()}}
+{\footnotesize\ttfamily S\+T\+A\+T\+US player\+\_\+destroy (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct__Player}{Player}} $\ast$}]{player }\end{DoxyParamCaption})}
+
+
+
+It destroys a new player. 
+
+\begin{DoxyAuthor}{Author}
+Daniel Tirado and Alfonso Crespo player\+\_\+destroy frees the previous memory allocation for a player 
+\end{DoxyAuthor}
+
+\begin{DoxyParams}{Parameters}
+{\em player} & pointer to the player that must be destroyed \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+OK, if everything goes well or E\+R\+R\+OR if there was some mistake 
+\end{DoxyReturn}
+\mbox{\Hypertarget{player_8c_a5467c260fe987d91959f4a9910ef3338}\label{player_8c_a5467c260fe987d91959f4a9910ef3338}} 
+\index{player.c@{player.c}!player\_find\_object@{player\_find\_object}}
+\index{player\_find\_object@{player\_find\_object}!player.c@{player.c}}
+\doxysubsubsection{\texorpdfstring{player\_find\_object()}{player\_find\_object()}}
+{\footnotesize\ttfamily B\+O\+OL player\+\_\+find\+\_\+object (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct__Player}{Player}} $\ast$}]{player,  }\item[{Id}]{object }\end{DoxyParamCaption})}
+
+
+
+it finds if the given id is in the inventory of the player 
+
+\begin{DoxyAuthor}{Author}
+Alfonso Crespo 
+\end{DoxyAuthor}
+
+\begin{DoxyParams}{Parameters}
+{\em player} & pointer to the player \\
+\hline
+{\em object} & the id that must be searched \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+T\+R\+UE, if the id is in the inventory or F\+A\+L\+SE if it is not 
+\end{DoxyReturn}
+\mbox{\Hypertarget{player_8c_adc37044dd10f828fd54b27c8e088f4e7}\label{player_8c_adc37044dd10f828fd54b27c8e088f4e7}} 
+\index{player.c@{player.c}!player\_get\_health@{player\_get\_health}}
+\index{player\_get\_health@{player\_get\_health}!player.c@{player.c}}
+\doxysubsubsection{\texorpdfstring{player\_get\_health()}{player\_get\_health()}}
+{\footnotesize\ttfamily int player\+\_\+get\+\_\+health (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct__Player}{Player}} $\ast$}]{player }\end{DoxyParamCaption})}
+
+
+
+It gets the id of the object of the player. 
+
+\begin{DoxyAuthor}{Author}
+Daniel Tirado and Alfonso Crespo 
+\end{DoxyAuthor}
+
+\begin{DoxyParams}{Parameters}
+{\em player} & a pointer to the player ~\newline
+ \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the id of the object of the player 
+\end{DoxyReturn}
+\mbox{\Hypertarget{player_8c_af5a101ec91427951c5875569a8709956}\label{player_8c_af5a101ec91427951c5875569a8709956}} 
+\index{player.c@{player.c}!player\_get\_id@{player\_get\_id}}
+\index{player\_get\_id@{player\_get\_id}!player.c@{player.c}}
+\doxysubsubsection{\texorpdfstring{player\_get\_id()}{player\_get\_id()}}
+{\footnotesize\ttfamily Id player\+\_\+get\+\_\+id (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct__Player}{Player}} $\ast$}]{player }\end{DoxyParamCaption})}
+
+
+
+It gets the id of a player. 
+
+\begin{DoxyAuthor}{Author}
+Daniel Tirado and Alfonso Crespo 
+\end{DoxyAuthor}
+
+\begin{DoxyParams}{Parameters}
+{\em player} & a pointer to the player ~\newline
+ \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the id of the player 
+\end{DoxyReturn}
+\mbox{\Hypertarget{player_8c_aa50ce77ab79af7166d749619fd60acfe}\label{player_8c_aa50ce77ab79af7166d749619fd60acfe}} 
+\index{player.c@{player.c}!player\_get\_location@{player\_get\_location}}
+\index{player\_get\_location@{player\_get\_location}!player.c@{player.c}}
+\doxysubsubsection{\texorpdfstring{player\_get\_location()}{player\_get\_location()}}
+{\footnotesize\ttfamily Id player\+\_\+get\+\_\+location (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct__Player}{Player}} $\ast$}]{player }\end{DoxyParamCaption})}
+
+
+
+It gets the position of a player. 
+
+\begin{DoxyAuthor}{Author}
+Daniel Tirado and Alfonso Crespo 
+\end{DoxyAuthor}
+
+\begin{DoxyParams}{Parameters}
+{\em player} & a pointer to the player ~\newline
+ \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the id of the location of the player 
+\end{DoxyReturn}
+\mbox{\Hypertarget{player_8c_a6622c02be2fe230a5c0df66385a13ece}\label{player_8c_a6622c02be2fe230a5c0df66385a13ece}} 
+\index{player.c@{player.c}!player\_get\_name@{player\_get\_name}}
+\index{player\_get\_name@{player\_get\_name}!player.c@{player.c}}
+\doxysubsubsection{\texorpdfstring{player\_get\_name()}{player\_get\_name()}}
+{\footnotesize\ttfamily const char$\ast$ player\+\_\+get\+\_\+name (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct__Player}{Player}} $\ast$}]{player }\end{DoxyParamCaption})}
+
+
+
+It gets the name of a player. 
+
+\begin{DoxyAuthor}{Author}
+Daniel Tirado and Alfonso Crespo 
+\end{DoxyAuthor}
+
+\begin{DoxyParams}{Parameters}
+{\em player} & a pointer to the player ~\newline
+ \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the name of the player 
+\end{DoxyReturn}
+\mbox{\Hypertarget{player_8c_a27cd25bcf567a610cf20c02636ddfc17}\label{player_8c_a27cd25bcf567a610cf20c02636ddfc17}} 
+\index{player.c@{player.c}!player\_inv\_add\_object@{player\_inv\_add\_object}}
+\index{player\_inv\_add\_object@{player\_inv\_add\_object}!player.c@{player.c}}
+\doxysubsubsection{\texorpdfstring{player\_inv\_add\_object()}{player\_inv\_add\_object()}}
+{\footnotesize\ttfamily S\+T\+A\+T\+US player\+\_\+inv\+\_\+add\+\_\+object (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct__Player}{Player}} $\ast$}]{player,  }\item[{Id}]{object }\end{DoxyParamCaption})}
+
+
+
+It adds a new id to the inventory of the player. 
+
+\begin{DoxyAuthor}{Author}
+Alfonso Crespo 
+\end{DoxyAuthor}
+
+\begin{DoxyParams}{Parameters}
+{\em player} & pointer to the set \\
+\hline
+{\em object} & the id that must be added \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+OK, if everything goes well or E\+R\+R\+OR if there was some mistake 
+\end{DoxyReturn}
+\mbox{\Hypertarget{player_8c_af1c2b48dbeb4c84d20e6ca4b7192f6d7}\label{player_8c_af1c2b48dbeb4c84d20e6ca4b7192f6d7}} 
+\index{player.c@{player.c}!player\_inv\_del\_object@{player\_inv\_del\_object}}
+\index{player\_inv\_del\_object@{player\_inv\_del\_object}!player.c@{player.c}}
+\doxysubsubsection{\texorpdfstring{player\_inv\_del\_object()}{player\_inv\_del\_object()}}
+{\footnotesize\ttfamily S\+T\+A\+T\+US player\+\_\+inv\+\_\+del\+\_\+object (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct__Player}{Player}} $\ast$}]{player,  }\item[{Id}]{object }\end{DoxyParamCaption})}
+
+
+
+It delates an id from the inventory of the player. 
+
+\begin{DoxyAuthor}{Author}
+Alfonso Crespo 
+\end{DoxyAuthor}
+
+\begin{DoxyParams}{Parameters}
+{\em player} & pointer to the set \\
+\hline
+{\em object} & the id that must be delated \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+OK, if everything goes well or E\+R\+R\+OR if there was some mistake 
+\end{DoxyReturn}
+\mbox{\Hypertarget{player_8c_a61247534c255692d8136c7b4aee6a2f6}\label{player_8c_a61247534c255692d8136c7b4aee6a2f6}} 
+\index{player.c@{player.c}!player\_inv\_isFull@{player\_inv\_isFull}}
+\index{player\_inv\_isFull@{player\_inv\_isFull}!player.c@{player.c}}
+\doxysubsubsection{\texorpdfstring{player\_inv\_isFull()}{player\_inv\_isFull()}}
+{\footnotesize\ttfamily B\+O\+OL player\+\_\+inv\+\_\+is\+Full (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct__Player}{Player}} $\ast$}]{player }\end{DoxyParamCaption})}
+
+
+
+it verifies if the inventory of the player is full or not 
+
+\begin{DoxyAuthor}{Author}
+Alfonso Crespo 
+\end{DoxyAuthor}
+
+\begin{DoxyParams}{Parameters}
+{\em player} & pointer to the player \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+T\+R\+UE, if the inventory is full or F\+A\+L\+SE if it is not 
+\end{DoxyReturn}
+\mbox{\Hypertarget{player_8c_aa0f2f8b4d1b63a60ef927d47aa45dbd1}\label{player_8c_aa0f2f8b4d1b63a60ef927d47aa45dbd1}} 
+\index{player.c@{player.c}!player\_print@{player\_print}}
+\index{player\_print@{player\_print}!player.c@{player.c}}
+\doxysubsubsection{\texorpdfstring{player\_print()}{player\_print()}}
+{\footnotesize\ttfamily S\+T\+A\+T\+US player\+\_\+print (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct__Player}{Player}} $\ast$}]{player }\end{DoxyParamCaption})}
+
+
+
+It prints the player information. 
+
+\begin{DoxyAuthor}{Author}
+Alfonso Crespo This fucntion shows the id of the player, his name, his location and his inventory 
+\end{DoxyAuthor}
+
+\begin{DoxyParams}{Parameters}
+{\em player} & a pointer to the player \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+OK, if everything goes well or E\+R\+R\+OR if there was some mistake 
+\end{DoxyReturn}
+\mbox{\Hypertarget{player_8c_a3afca875ad2b038e0d57d34bde6270fe}\label{player_8c_a3afca875ad2b038e0d57d34bde6270fe}} 
+\index{player.c@{player.c}!player\_set\_health@{player\_set\_health}}
+\index{player\_set\_health@{player\_set\_health}!player.c@{player.c}}
+\doxysubsubsection{\texorpdfstring{player\_set\_health()}{player\_set\_health()}}
+{\footnotesize\ttfamily S\+T\+A\+T\+US player\+\_\+set\+\_\+health (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct__Player}{Player}} $\ast$}]{player,  }\item[{int}]{health }\end{DoxyParamCaption})}
+
+
+
+It sets the health of the player. 
+
+\begin{DoxyAuthor}{Author}
+Alfonso Crespo 
+\end{DoxyAuthor}
+
+\begin{DoxyParams}{Parameters}
+{\em player} & a pointer to the player \\
+\hline
+{\em health} & the new health of the player \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+OK, if everything goes well or E\+R\+R\+OR if there was some mistake 
+\end{DoxyReturn}
+\mbox{\Hypertarget{player_8c_a054e92b126f556153279b569f8987674}\label{player_8c_a054e92b126f556153279b569f8987674}} 
+\index{player.c@{player.c}!player\_set\_location@{player\_set\_location}}
+\index{player\_set\_location@{player\_set\_location}!player.c@{player.c}}
+\doxysubsubsection{\texorpdfstring{player\_set\_location()}{player\_set\_location()}}
+{\footnotesize\ttfamily S\+T\+A\+T\+US player\+\_\+set\+\_\+location (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct__Player}{Player}} $\ast$}]{player,  }\item[{Id}]{location }\end{DoxyParamCaption})}
+
+
+
+It sets the location of a player. 
+
+\begin{DoxyAuthor}{Author}
+Daniel Tirado and Alfonso Crespo 
+\end{DoxyAuthor}
+
+\begin{DoxyParams}{Parameters}
+{\em player} & a pointer to the player \\
+\hline
+{\em location} & the id of the location \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+OK, if everything goes well or E\+R\+R\+OR if there was some mistake 
+\end{DoxyReturn}
+\mbox{\Hypertarget{player_8c_a00a23387503906f3b8b95f69bdf23615}\label{player_8c_a00a23387503906f3b8b95f69bdf23615}} 
+\index{player.c@{player.c}!player\_set\_MaxInv@{player\_set\_MaxInv}}
+\index{player\_set\_MaxInv@{player\_set\_MaxInv}!player.c@{player.c}}
+\doxysubsubsection{\texorpdfstring{player\_set\_MaxInv()}{player\_set\_MaxInv()}}
+{\footnotesize\ttfamily S\+T\+A\+T\+US player\+\_\+set\+\_\+\+Max\+Inv (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct__Player}{Player}} $\ast$}]{player,  }\item[{int}]{Max\+Inv }\end{DoxyParamCaption})}
+
+
+
+player\+\_\+set\+\_\+\+Max\+Inv set the max num of objects a player can carry 
+
+
+\begin{DoxyParams}{Parameters}
+{\em player} & \\
+\hline
+{\em Max\+Inv} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+OK, if everything goes well or E\+R\+R\+OR if there was some mistake 
+\end{DoxyReturn}
+\mbox{\Hypertarget{player_8c_a6a30809f7775f5c2d3bef47d92769e59}\label{player_8c_a6a30809f7775f5c2d3bef47d92769e59}} 
+\index{player.c@{player.c}!player\_set\_name@{player\_set\_name}}
+\index{player\_set\_name@{player\_set\_name}!player.c@{player.c}}
+\doxysubsubsection{\texorpdfstring{player\_set\_name()}{player\_set\_name()}}
+{\footnotesize\ttfamily S\+T\+A\+T\+US player\+\_\+set\+\_\+name (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct__Player}{Player}} $\ast$}]{player,  }\item[{char $\ast$}]{name }\end{DoxyParamCaption})}
+
+
+
+It sets the name of a player. 
+
+\begin{DoxyAuthor}{Author}
+Daniel Tirado and Alfonso Crespo 
+\end{DoxyAuthor}
+
+\begin{DoxyParams}{Parameters}
+{\em player} & a pointer to the player \\
+\hline
+{\em name} & a pointer to the name ~\newline
+ \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+OK, if everything goes well or E\+R\+R\+OR if there was some mistake 
+\end{DoxyReturn}
