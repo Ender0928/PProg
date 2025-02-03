@@ -20,6 +20,8 @@
 typedef struct _Game {
   Id player_location;
   Id object_location;
+  //Player *player;
+  //Object *object;
   Space *spaces[MAX_SPACES];
   int n_spaces;
   Command *last_cmd;
@@ -33,6 +35,8 @@ Status game_create_from_file(Game *game, char *filename);
 Status game_destroy(Game *game);
 
 Space *game_get_space(Game *game, Id id);
+
+Status game_add_space(Game *game, Space *space);
 
 Id game_get_player_location(Game *game);
 

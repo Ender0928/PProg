@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "*.page-template": "vue",
+        "*.layout-template": "vue",
+        "*.vue": "vue",
+        "thread": "c",
+        "__locale": "c",
+        "locale": "c"
+    }
+}
