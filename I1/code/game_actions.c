@@ -26,6 +26,10 @@ void game_actions_next(Game *game);
 
 void game_actions_back(Game *game);
 
+void game_actions_take(Game *game);
+
+void game_actions_drop(Game *game);
+
 /**
    Game actions implementation
 */
@@ -54,10 +58,11 @@ Status game_actions_update(Game *game, Command *command) {
       game_actions_back(game);
       break;
 
-    /*case TAKE:
+    case TAKE:
       game_actions_take(game);
       break;
 
+    /*
     case DROP:
       game_actions_drop(game);
       break;*/
@@ -108,6 +113,27 @@ void game_actions_back(Game *game) {
   if (current_id != NO_ID) {
     game_set_player_location(game, current_id);
   }
+}
 
+void game_actions_take(Game *game) {
+  Id player_id = NO_ID;
+  Id object_id = NO_ID;
+
+  player_id = game_get_player_location(game);
+  if (player_id == NO_ID) 
+      return;
+
+  object_id = game_get_object_location(game);
+  if (object_id == NO_ID)
+    return;
+
+  printf("Player location: %ld\n", player_id);
+  printf("Object location: %ld\n", object_id);
+
+  if (object_id == player_id){
+    game_set_object_location(game, NO_ID);
+    player_set_object(game->player, object_id);
+  }
   return;
+  
 }

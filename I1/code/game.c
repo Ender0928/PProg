@@ -123,6 +123,7 @@ Status game_set_object_location(Game *game, Id id) {
     return ERROR;
   }
 
+  //TODO mirar
   object_set_id(game->object, id);
   space_set_object(game_get_space(game, id), TRUE);
 
