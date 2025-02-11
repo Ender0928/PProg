@@ -124,7 +124,7 @@ return player->object;
 
 /*It set the object of the player*/
 Status player_set_object (Player *player, Id object){
-    if (!player || object==NO_ID) {
+    if (!player) {
         return ERROR;
     }
 

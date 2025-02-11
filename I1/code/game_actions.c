@@ -155,13 +155,10 @@ void game_actions_drop(Game *game){
   if (player_location == NO_ID) 
       return;
 
-  if (player_get_object(game->player) == NO_ID)
-    return;
-
   printf("Player location: %ld\n", player_location);
 
   game_set_object_location(game, player_location);
-  player_set_object(game->player, player_location);
+  player_set_object(game->player, NO_ID);
   printf("Object droped\n");
   printf("Player object: %ld\n", player_get_object(game->player));
 

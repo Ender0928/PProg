@@ -54,6 +54,8 @@ Bool game_get_finished(Game *game);
 
 Status game_set_finished(Game *game, Bool finished);
 
+Id game_get_object_id(Game *game);
+
 void game_print(Game *game);
 
 #endif
