@@ -36,7 +36,7 @@ Status game_create(Game *game) {
 
   game->n_spaces = 0;
   game->player = player_create(10);
-  game->object = object_create(NO_ID);
+  game->object = object_create(4);
   game->last_cmd = command_create();
   game->finished = FALSE;
 
@@ -119,12 +119,11 @@ Id game_get_object_location(Game *game) {
   
 Status game_set_object_location(Game *game, Id id) {
 
-  if (id == NO_ID) {
+  /*if (id == NO_ID) {
     return ERROR;
   }
 
-  //TODO mirar
-  object_set_id(game->object, id);
+  object_set_id(game->object, id);*/
   space_set_object(game_get_space(game, id), TRUE);
 
   return OK;
@@ -177,4 +176,12 @@ Id game_get_space_id_at(Game *game, int position) {
   }
 
   return space_get_id(game->spaces[position]);
+}
+
+Id game_get_object_id(Game *game) {
+  if (!game) {
+    return NO_ID;
+  }
+
+  return object_get_id(game->object);
 }
