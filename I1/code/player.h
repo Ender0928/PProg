@@ -3,8 +3,7 @@
  *
  * @file space.h
  * @author Javier and Rubén
- * @version 2.0
- * @date 12-02-2022
+ * @version 1.0
  */
 
 

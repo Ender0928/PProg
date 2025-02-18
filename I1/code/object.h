@@ -4,7 +4,6 @@
  * @file object.h
  * @author Javier and Rubén
  * @version 1.0
- * @date 28-01-2025
  */
 
 #ifndef OBJECT_H

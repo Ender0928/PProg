@@ -21,6 +21,13 @@
 
 /*Status game_add_space(Game *game, Space *space);*/
 
+/**
+  * @brief It returns the id of a space in a game
+  * @author Profesores
+  * @param game a pointer to the game
+  * @param position an integer with the position of the space
+  * @return the id of the space located at the position given
+  */
 Id game_get_space_id_at(Game *game, int position);
 
 /**

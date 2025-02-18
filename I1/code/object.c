@@ -14,8 +14,8 @@
 #include "object.h"
 
 struct _Object{
-  Id id;
-  char name[TAM];
+  Id id;            /*!< Id number of the object, it must be unique */
+  char name[TAM];   /*!< Name of the space */
 };
 
 /** object_create allocates memory for a new object
@@ -36,6 +36,7 @@ Object* object_create (Id id) {
     newObject->id = id;
     newObject->name[0] = '\0';
 
+    printf("Object create id %ld\n", id);
     return newObject;
 }
 
@@ -64,9 +65,8 @@ Id object_get_id(Object* object) {
 Status object_set_id(Object* object, Id id) {
     if (!object || id == NO_ID)
         return ERROR;
-    
+        
     object->id = id;
-    
     return OK;
 }
 

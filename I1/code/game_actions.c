@@ -18,17 +18,67 @@
    Private functions
 */
 
+/**
+ * @brief Handles an unknown command
+ * @author Profesores PPROG
+ *
+ * This function is called when the user enters an unknown command.
+ * It does nothing but ensures the game continues running.
+ *
+ * @param game Pointer to the game instance
+ */
 void game_actions_unknown(Game *game);
 
+/**
+ * @brief Handles the exit command
+ * @author Profesores PPROG
+ *
+ * This function processes the exit command, allowing the game to terminate properly.
+ *
+ * @param game Pointer to the game instance
+ */
 void game_actions_exit(Game *game);
 
+/**
+ * @brief Moves the player to the next space (south)
+ * @author Profesores PPROG
+ *
+ * If there is a valid space to the south, the player is moved to it.
+ *
+ * @param game Pointer to the game instance
+ */
 void game_actions_next(Game *game);
 
+/**
+ * @brief Moves the player to the previous space (north)
+ * @author Profesores PPROG
+ *
+ * If there is a valid space to the north, the player is moved to it.
+ *
+ * @param game Pointer to the game instance
+ */
 void game_actions_back(Game *game);
 
+/**
+ * @brief Allows the player to take an object
+ * @author Profesores PPROG
+ *
+ * If the player is at the same location as an object, they pick it up.
+ *
+ * @param game Pointer to the game instance
+ */
 void game_actions_take(Game *game);
 
+/**
+ * @brief Allows the player to drop an object
+ * @author Profesores PPROG
+ *
+ * If the player is carrying an object, they drop it at their current location.
+ *
+ * @param game Pointer to the game instance
+ */
 void game_actions_drop(Game *game);
+
 
 /**
    Game actions implementation
@@ -155,12 +205,8 @@ void game_actions_drop(Game *game){
   if (player_location == NO_ID) 
       return;
 
-  printf("Player location: %ld\n", player_location);
-
   game_set_object_location(game, player_location);
   player_set_object(game->player, NO_ID);
-  printf("Object droped\n");
-  printf("Player object: %ld\n", player_get_object(game->player));
 
   return;
 }
