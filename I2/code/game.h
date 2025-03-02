@@ -19,14 +19,7 @@
 
 #define MAX_SPACES 100
 
-typedef struct _Game {
-  Player *player;             /*!< Player of the game */
-  Object *object;             /*!< Object of the game */
-  Space *spaces[MAX_SPACES];  /*!< Spaces of the game */
-  int n_spaces;               /*!< Number of spaces in the game */
-  Command *last_cmd;          /*!< Last command written */
-  Bool finished;              /*!< Finished status of the game */
-} Game; 
+typedef struct _Game Game; 
 
 /**  
    * @brief It creates a new game
@@ -35,7 +28,7 @@ typedef struct _Game {
    * @param game a pointer to the game
    * @return a new Game, initialized
    */
-Status game_create(Game *game);
+Status game_create(Game **game);
 
 /**  
    * @brief It creates a new game from a file
@@ -45,7 +38,7 @@ Status game_create(Game *game);
    * @param filename a pointer to the name of the file
    * @return a new Game, initialized
    */
-Status game_create_from_file(Game *game, char *filename);
+Status game_create_from_file(Game **game, char *filename);
 
 /**  
    * @brief It destroys a game and frees its memory allocation
@@ -54,7 +47,7 @@ Status game_create_from_file(Game *game, char *filename);
    * @param game a pointer to the game that must be destroyed
    * @return OK, if everything goes well or ERROR if there was some mistake
    */
-Status game_destroy(Game *game);
+Status game_destroy(Game **game);
 
 /**  
    * @brief It returns the id of a space in a game
@@ -165,6 +158,10 @@ Status game_set_finished(Game *game, Bool finished);
    * @return the id of the space located at the position given
    */
 Id game_get_object_id(Game *game);
+
+Player *game_get_player(Game *game);
+
+Object *game_get_object(Game *game);
 
 /**  
    * @brief It returns the id of a space in a game

@@ -16,10 +16,10 @@
 
 
 struct _Player{
-    Id id; /* Id number of the space, it must be unique */ 
-    char name[WORD_SIZE]; /*name of the player*/
-    Id location; /*Id number of the location, it must be unique*/
-    Id object; /*Id number of the object, it must be unique*/    
+    Id id;                  /* Id number of the space, it must be unique */ 
+    char name[WORD_SIZE];   /*name of the player*/
+    Id location;            /*Id number of the location, it must be unique*/
+    Id object;              /*Id number of the object, it must be unique*/    
 };
 
 

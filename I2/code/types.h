@@ -27,6 +27,11 @@
 #define MAX_ID 200
 
 /**
+ * @brief Defines the maximum number of characters allowed in the project
+ */
+#define TAM_C 256
+
+/**
  * @brief Type definition for object IDs
  */
 typedef long Id;

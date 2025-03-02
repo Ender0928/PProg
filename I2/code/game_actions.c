@@ -170,7 +170,7 @@ void game_actions_take(Game *game) {
   Id player_location = NO_ID;
   Id object_location = NO_ID;
 
-  if (player_get_object(game->player) != NO_ID) {
+  if (player_get_object(game_get_player(game)) != NO_ID) {
     return;
   }
 
@@ -186,7 +186,7 @@ void game_actions_take(Game *game) {
   printf("Object location: %ld\n", object_location);
 
   if (object_location == player_location){
-    player_set_object(game->player, game_get_object_id(game));
+    player_set_object(game_get_player(game), game_get_object_id(game));
     space_remove_object(game_get_space(game, player_location), game_get_object_id(game));
   }
   return;
@@ -196,7 +196,7 @@ void game_actions_take(Game *game) {
 void game_actions_drop(Game *game){
   Id player_location = NO_ID;
 
-  if (player_get_object(game->player) == NO_ID) {
+  if (player_get_object(game_get_player(game)) == NO_ID) {
     return;
   }
 
@@ -205,7 +205,7 @@ void game_actions_drop(Game *game){
       return;
 
   game_set_object_location(game, player_location);
-  player_set_object(game->player, NO_ID);
+  player_set_object(game_get_player(game), NO_ID);
 
   return;
 }
