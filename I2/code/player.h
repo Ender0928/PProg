@@ -96,6 +96,27 @@ Id player_get_object(Player *player);
   */
 Status player_set_object (Player *player, Id object); /*It set the object of the player*/
 
+/**
+  * @brief It gets the health of the player
+  * @param player a pointer to the player  
+  * @return the health of the player
+  */
+int player_get_health(Player *player);
+
+/**
+  * @brief It sets the health of the player
+  * @param player a pointer to the player
+  * @param health the health of the player
+  * @return OK, if everything goes well or ERROR if there was some mistake
+  */
+Status player_set_health(Player *player, int health);
+
+/**
+  * @brief It prints the player
+  * @param player a pointer to the player
+  * @return OK, if everything goes well or ERROR if there was some mistake
+  */
+Status player_print(Player *player);
 
 #endif
 

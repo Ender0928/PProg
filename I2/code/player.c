@@ -19,7 +19,8 @@ struct _Player{
     Id id;                  /* Id number of the space, it must be unique */ 
     char name[WORD_SIZE];   /*name of the player*/
     Id location;            /*Id number of the location, it must be unique*/
-    Id object;              /*Id number of the object, it must be unique*/    
+    Id object;              /*Id number of the object, it must be unique*/
+    int health;             /*Health points of the player*/
 };
 
 
@@ -44,6 +45,7 @@ Player * player_create (Id id){
     new_player->location=NO_ID;
     new_player->object=NO_ID;
     new_player->name[0]='\0';
+    new_player->health=3;
 
 
     return new_player;
@@ -132,11 +134,30 @@ Status player_set_object (Player *player, Id object){
 return OK;
 }
 
+/*It get the health of the player*/
+int player_get_health(Player *player){
+    if (!player){
+        return ERROR;
+    }
+
+return player->health;
+}
+
+/*It set the health of the player*/
+Status player_set_health(Player *player, int health){
+    if (!player || health<0) {
+        return ERROR;
+    }
+
+    player->health = health;
+return OK;
+}
+
 Status player_print(Player* player){
   if (!player)
     return ERROR;
 
-  fprintf(stdout, "-->player (id: %ld; name: %s; location: %ld; object: %ld)\n", player->id, player->name,player->location,player->object);
+  fprintf(stdout, "-->player (id: %ld; name: %s; location: %ld; object: %ld; health:%d)\n", player->id, player->name,player->location,player->object,player->health);
   return OK;
 }
 

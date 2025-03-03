@@ -32,6 +32,15 @@
 #define TAM_C 256
 
 /**
+ * @brief Defines the maximum number of characters allowed in the project
+ */
+#define MAX_CHARACTERS 3
+
+/**
+ * @brief Defines the maximum number of objects allowed in the project
+ */
+#define MAX_OBJECTS 3
+/**
  * @brief Type definition for object IDs
  */
 typedef long Id;
