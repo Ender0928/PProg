@@ -15,6 +15,8 @@
 #include "game.h"
 #include "types.h"
 #include "space.h"
+#include "player.h"
+#include "object.h"
 
 /**
  * @brief Updates the game state based on user input
@@ -37,5 +39,7 @@
  * @return OK if the command was processed successfully, ERROR otherwise
  */
 Status game_actions_update(Game *game, Command *cmd);
+
+Id select_object_in_current_location(Game *game);
 
 #endif

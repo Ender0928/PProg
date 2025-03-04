@@ -36,7 +36,6 @@ Object* object_create (Id id) {
     newObject->id = id;
     newObject->name[0] = '\0';
 
-    printf("Object create id %ld\n", id);
     return newObject;
 }
 

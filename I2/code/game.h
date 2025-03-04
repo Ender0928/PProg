@@ -16,6 +16,7 @@
 #include "types.h"
 #include "object.h"
 #include "player.h"
+#include "character.h"
 
 #define MAX_SPACES 100
 
@@ -97,7 +98,7 @@ Status game_set_player_location(Game *game, Id id);
    * @param position an integer with the position of the space
    * @return the id of the space located at the position given
    */
-Id game_get_object_location(Game *game);
+Id game_get_object_location(Game *game, Id object_id);
 
 /**  
    * @brief It returns the id of a space in a game
@@ -107,7 +108,7 @@ Id game_get_object_location(Game *game);
    * @param position an integer with the position of the space
    * @return the id of the space located at the position given
    */
-Status game_set_object_location(Game *game, Id id);
+Status game_set_object_location(Game *game, Id id, Id space_id);
 
 /**  
    * @brief It returns the id of a space in a game
@@ -157,11 +158,32 @@ Status game_set_finished(Game *game, Bool finished);
    * @param position an integer with the position of the space
    * @return the id of the space located at the position given
    */
-Id game_get_object_id(Game *game);
 
 Player *game_get_player(Game *game);
 
-Object *game_get_object(Game *game);
+Status game_add_object(Game *game, Object *object);
+
+Object *game_get_object(Game *game, Id id);
+
+Bool game_has_object(Game *game, Id id);
+
+Status game_add_character(Game *game, Character *character);
+
+Status game_remove_character(Game *game, Id id);
+
+Bool game_has_character(Game *game, Id id);
+
+Object **game_get_objects(Game *game);
+
+Character *game_get_character_at_location(Game *game, Id location);
+
+int game_get_player_health(Game *game);
+
+int game_get_character_health(Game *game, Character *character);
+
+Status game_set_player_health(Game *game, int health);
+
+Status game_set_character_health(Game *game, Character *character, int health);
 
 /**  
    * @brief It returns the id of a space in a game
@@ -172,5 +194,6 @@ Object *game_get_object(Game *game);
    * @return the id of the space located at the position given
    */
 void game_print(Game *game);
+
 
 #endif

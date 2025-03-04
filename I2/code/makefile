@@ -6,7 +6,7 @@ CLIB = -lscreen -L.
 
 all: anthill
 
-anthill: command.o game.o game_actions.o game_loop.o graphic_engine.o space.o game_reader.o player.o object.o set.o
+anthill: command.o game.o game_actions.o game_loop.o graphic_engine.o space.o game_reader.o player.o object.o set.o character.o
 	$(CC) -o $@ $^ $(CLIB)
 
 command.o: command.c command.h
@@ -31,5 +31,9 @@ object.o: object.c object.h
 
 set.o: set.c set.h
 	gcc -c set.c -Wall
+
+character.o: character.c character.h
+	gcc -c character.c -Wall
+
 clean:
 	rm -f anthill *.o

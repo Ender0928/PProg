@@ -87,7 +87,7 @@ Status character_set_gdesc(Character *character, char *gdesc) {
     if (!character || !gdesc)
         return ERROR;
 
-    if (strlen(gdesc) != 6)  // Must be exactly 6 characters
+    if (strlen(gdesc) >= 6)
         return ERROR;
 
     strcpy(character->gdesc, gdesc);
