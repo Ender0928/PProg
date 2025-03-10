@@ -148,7 +148,7 @@ Status player_set_health(Player *player, int health){
     if (!player || health<0) {
         return ERROR;
     }
-
+    printf("Player health: %d\n", health);
     player->health = health;
 return OK;
 }

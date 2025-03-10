@@ -155,7 +155,11 @@ Status game_actions_update(Game *game, Command *command) {
     case ATTACK:
       game_actions_attack(game);
       break;
-      
+    
+    case CHAT:
+      game_actions_chat(game);
+      break;
+
     default:
       break;
   }
@@ -357,4 +361,15 @@ Id select_object_in_current_location(Game *game) {
   }
 
   return NO_ID;
+}
+
+void game_actions_chat(Game *game, char *dialogo) {
+  if (!game || !dialogo) { return; }
+
+  Character *character = NULL;
+
+  character = game_get_character_at_location(game, game_get_player_location(game));
+  if (!character ||character_is_friendly(character) == FALSE) { return; }
+  
+  //if ();
 }

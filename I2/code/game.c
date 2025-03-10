@@ -80,16 +80,18 @@ Status game_create(Game **game) {
 }
 
 Status game_create_from_file(Game **game, char *filename) {
-  if (game_create(game) == ERROR) {
+  if (game_create(game) == ERROR || !filename) {
     return ERROR;
   }
 
   /*Modificado*/
   if (game_reader_load_spaces(*game, filename) == ERROR) {
+    game_destroy(game);
     return ERROR;
   }
 
   if (game_reader_load_objects(*game, filename) == ERROR) {
+    game_destroy(game);
     return ERROR;
   }
   game_set_player_location(*game, game_get_space_id_at(*game, 0));
@@ -110,9 +112,7 @@ Status game_destroy(Game **game) {
   }
 
   for (i = 0; i < (*game)->n_characters; i++) {
-    if ((*game)->characters[i]) {
       character_destroy((*game)->characters[i]);
-    }
   }
   
   command_destroy((*game)->last_cmd);
@@ -300,9 +300,10 @@ Status game_add_character(Game *game, Character *character) {
     return ERROR;
   }
 
-  for (i = 0; i < MAX_CHARACTERS; i++) {
+  for (i = 0; i < MAX_OBJECTS; i++) {
     if (!game->characters[i]) {
       game->characters[i] = character;
+      game->n_characters++;
       return OK;
     }
   }

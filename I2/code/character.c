@@ -105,6 +105,7 @@ Status character_set_health(Character *character, int health) {
     if (!character || health < 0)
         return ERROR;
 
+    printf("Character health: %d\n", health);
     character->health = health;
     return OK;
 }
