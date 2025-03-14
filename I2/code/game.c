@@ -76,6 +76,7 @@ Status game_create(Game **game) {
   game_add_character(*game, character);
   character_set_location(character, 11);
   character_set_friendly(character, TRUE);
+  character_set_name(character, "Amigo");
   character_set_message(character, "Hola soy yo");
   (*game)->finished = FALSE;
   (*game)->description = "";
@@ -423,6 +424,9 @@ Status game_set_description(Game *game, char *description) {
   }
 
   game->description = description;
-
   return OK;
+}
+
+Character **game_get_characters(Game *game) {
+  return game->characters;
 }
