@@ -185,6 +185,10 @@ Status game_set_player_health(Game *game, int health);
 
 Status game_set_character_health(Game *game, Character *character, int health);
 
+char *game_get_description(Game *game);
+
+Status game_set_description(Game *game, char *description);
+
 /**  
    * @brief It returns the id of a space in a game
    * @author Profesores PPROG

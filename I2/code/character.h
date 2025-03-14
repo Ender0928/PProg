@@ -103,7 +103,7 @@ Status character_set_friendly(Character *character, Bool friendly);
  * @param character pointer to the character
  * @return the message or NULL if error
  */
-const char *character_get_message(Character *character);
+char *character_get_message(Character *character);
 
 /**
  * @brief Sets the message of a character

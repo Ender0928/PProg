@@ -125,7 +125,7 @@ Status character_set_friendly(Character *character, Bool friendly) {
     return OK;
 }
 
-const char *character_get_message(Character *character) {
+char *character_get_message(Character *character) {
     if (!character)
         return NULL;
 

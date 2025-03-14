@@ -17,6 +17,7 @@
 #include "space.h"
 #include "player.h"
 #include "object.h"
+#include "character.h"
 
 /**
  * @brief Updates the game state based on user input

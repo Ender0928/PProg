@@ -74,6 +74,9 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
   CommandCode last_cmd = UNKNOWN;
   extern char *cmd_to_str[N_CMD][N_CMDT];
 
+  if (!ge || !game) {
+    return;
+  }
   /* Paint the in the map area */
   screen_area_clear(ge->map);
   if ((id_act = game_get_player_location(game)) != NO_ID) {
@@ -137,7 +140,11 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
     sprintf(str, "  Object location:%d", (int)obj_loc);
     screen_area_puts(ge->descript, str);
   }
-
+  if (command_get_code(game_get_last_command(game)) == CHAT) {
+    sprintf(str, " %s", game_get_description(game));
+    screen_area_puts(ge->descript, str);
+  }
+  
   /* Paint in the banner area */
   screen_area_puts(ge->banner, "    The anthill game ");
 
@@ -145,8 +152,11 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
   screen_area_clear(ge->help);
   sprintf(str, " The commands you can use are:");
   screen_area_puts(ge->help, str);
-  sprintf(str, "     next or n, back or b, exit or e, take or t, drop or d");
+  sprintf(str, "     next or n, back or b, exit or e, take or t, drop or d, attack or a, chat or c");
   screen_area_puts(ge->help, str);
+  sprintf(str, " %s", game_get_description(game));
+    screen_area_puts(ge->help, game_get_description(game));
+  
 
   /* Paint in the feedback area */
   last_cmd = command_get_code(game_get_last_command(game));
@@ -156,4 +166,5 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
   /* Dump to the terminal */
   screen_paint();
   printf("prompt:> ");
+  game_set_description(game, "");
 }

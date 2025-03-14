@@ -29,6 +29,7 @@ struct _Game {
   int n_spaces;                           /*!< Number of spaces in the game */
   Command *last_cmd;                      /*!< Last command written */
   Bool finished;                          /*!< Finished status of the game */
+  char *description;                      /*!< Auxiliar */
 }; 
 
 /*Status game_add_space(Game *game, Space *space);*/
@@ -74,7 +75,10 @@ Status game_create(Game **game) {
   character = character_create(7);
   game_add_character(*game, character);
   character_set_location(character, 11);
+  character_set_friendly(character, TRUE);
+  character_set_message(character, "Hola soy yo");
   (*game)->finished = FALSE;
+  (*game)->description = "";
 
   return OK;
 }
@@ -402,5 +406,23 @@ Status game_set_character_health(Game *game, Character *character, int health) {
   }
 
   character_set_health(character, health);
+  return OK;
+}
+
+char *game_get_description(Game *game) {
+  if (!game) {
+    return NULL;
+  }
+
+  return game->description;
+}
+
+Status game_set_description(Game *game, char *description) {
+  if (!game || !description) {
+    return ERROR;
+  }
+
+  game->description = description;
+
   return OK;
 }

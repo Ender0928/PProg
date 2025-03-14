@@ -108,6 +108,8 @@ void game_actions_drop(Game *game);
  */
 void game_actions_attack(Game *game);
 
+void game_actions_chat(Game *game);
+
 /**
    Game actions implementation
 */
@@ -322,6 +324,8 @@ Id select_object_in_current_location(Game *game) {
   int i = 0;
   int choice = 0;
   Object **objects = NULL;
+  char description[WORD_SIZE] = "";
+  char str[WORD_SIZE];
   
   player_location = game_get_player_location(game);
   objects = game_get_objects(game);
@@ -333,11 +337,12 @@ Id select_object_in_current_location(Game *game) {
   for(i = 0; i < MAX_OBJECTS; i++) {
       Object *obj = objects[i];
       if (obj != NULL && game_get_object_location(game, object_get_id(obj)) == player_location) {
-          printf("[%d] %s (ID: %ld)\n", count + 1, object_get_name(obj), object_get_id(obj));
-          count++;
+        sprintf(str, "[%d] %s (ID: %ld)\n", count + 1, object_get_name(obj), object_get_id(obj));
+        count++;
+        strcat(description, str);
       }
-  }
-
+    }
+  game_set_description(game, description);
   if (count == 0) {
       printf("No hay objetos en esta ubicación.\n");
       return NO_ID;
@@ -363,13 +368,15 @@ Id select_object_in_current_location(Game *game) {
   return NO_ID;
 }
 
-void game_actions_chat(Game *game, char *dialogo) {
-  if (!game || !dialogo) { return; }
-
+void game_actions_chat(Game *game) {
   Character *character = NULL;
+
+  if (!game) { return; }
 
   character = game_get_character_at_location(game, game_get_player_location(game));
   if (!character ||character_is_friendly(character) == FALSE) { return; }
-  
-  //if ();
+
+  game_set_description(game, character_get_message(character));
+
+  return;
 }
