@@ -11,14 +11,25 @@ Status game_reader_load_spaces(Game *game, char *filename) {
   char* toks = NULL;
   Id id = NO_ID, north = NO_ID, east = NO_ID, south = NO_ID, west = NO_ID;
   Space* space = NULL;
-  Status Status = OK;
+  Status st = OK;
+  int i;
+  char (*gdesc)[GDESC_COLS];
 
-  if (!filename) {
+  if (!filename || !game) {
     return ERROR;
   }
+  
+  gdesc = malloc(GDESC_ROWS * sizeof(char[GDESC_COLS]));
+  if (!gdesc) {
+      printf("ERROR: No se pudo asignar memoria para gdesc\n");
+      return ERROR;
+  }
+
+
 
   file = fopen(filename, "r");
   if (file == NULL) {
+    free(gdesc);
     return ERROR;
   }
 
@@ -36,26 +47,52 @@ Status game_reader_load_spaces(Game *game, char *filename) {
       south = atol(toks);
       toks = strtok(NULL, "|");
       west = atol(toks);
+
+      for (i = 0; i < GDESC_ROWS; i++) {
+        toks = strtok(NULL, "|");
+        if (toks) {
+            strncpy(gdesc[i], toks, GDESC_COLS - 1);
+            gdesc[i][GDESC_COLS - 1] = '\0';
+        } else {
+            strcpy(gdesc[i], "         ");
+            gdesc[i][GDESC_COLS - 1] = '\0';
+        }
+      }
 #ifdef DEBUG
       printf("Leido: %ld|%s|%ld|%ld|%ld|%ld\n", id, name, north, east, south, west);
 #endif
       space = space_create(id);
       if (space != NULL) {
-	       space_set_name(space, name);
-	       space_set_north(space, north);
-	       space_set_east(space, east);
-	       space_set_south(space, south);
-	       space_set_west(space, west);
-	       game_add_space(game, space);
+        if (space_set_name(space, name) == ERROR ||
+            space_set_north(space, north) == ERROR ||
+            space_set_east(space, east) == ERROR ||
+            space_set_south(space, south) == ERROR ||
+            space_set_west(space, west) == ERROR ||
+            space_set_gdesc(space, gdesc) == ERROR ||
+            game_add_space(game, space) == ERROR) {
+            
+            printf("Error al inicializar el espacio con ID: %ld\n", id);
+            space_destroy(space);
+            st = ERROR;
+        } else {
+            space_print(space);
+        }
+      } else {
+          printf("Error: No se pudo crear el espacio con ID: %ld\n", id);
+          st = ERROR;
+      }
+      for (i=0; i < GDESC_ROWS; i++) {
+        gdesc[i][0] = '\0';
       }
     }
   }
 
   if (ferror(file))
-    Status = ERROR;
+    st = ERROR;
 
+  free(gdesc);
   fclose(file);
-  return Status;
+  return st;
 }
 
 Status game_reader_load_objects(Game *game, char *filename) {

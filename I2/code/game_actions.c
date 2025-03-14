@@ -247,6 +247,10 @@ void game_actions_right(Game *game){
 void game_actions_take(Game *game) {
   Id player_location = NO_ID;
   Id selected_object = NO_ID;
+  char *object_name = "";
+  
+  object_name = command_get_argument(game_get_last_command(game));
+  printf("Nombre del objeto: %s\n", object_name);
   
   if (player_get_object(game_get_player(game)) != NO_ID) {
       printf("Ya llevas un objeto.\n");
@@ -256,10 +260,14 @@ void game_actions_take(Game *game) {
   player_location = game_get_player_location(game);
   if (player_location == NO_ID)
     return;
+  
+  objects_in_current_location(game);
 
-  selected_object = select_object_in_current_location(game);
-  if (selected_object == NO_ID)
+  selected_object = select_object_in_current_location_by_name(game, object_name, player_location, game_get_objects(game));
+  if (selected_object == NO_ID) {
+    printf("No se ha encontrado el objeto.\n");
     return;
+  }
 
   player_set_object(game_get_player(game), selected_object);
   space_remove_object(game_get_space(game, player_location), selected_object);
@@ -318,20 +326,19 @@ void game_actions_attack(Game *game){
   return;
 }
 
-Id select_object_in_current_location(Game *game) {
+void objects_in_current_location(Game *game) {
   Id player_location = NO_ID;
   int count = 0;
   int i = 0;
-  int choice = 0;
   Object **objects = NULL;
   char description[WORD_SIZE] = "";
   char str[WORD_SIZE];
   
   player_location = game_get_player_location(game);
+  if (player_location == NO_ID) 
+    return;
   objects = game_get_objects(game);
 
-  if (player_location == NO_ID) 
-    return NO_ID;
 
   printf("Objetos disponibles en esta ubicación:\n");
   for(i = 0; i < MAX_OBJECTS; i++) {
@@ -345,26 +352,26 @@ Id select_object_in_current_location(Game *game) {
   game_set_description(game, description);
   if (count == 0) {
       printf("No hay objetos en esta ubicación.\n");
-      return NO_ID;
+      return;
   }
+  return;
+}
 
-  printf("Selecciona un objeto (número): ");
-  if (scanf("%d", &choice) != 1 || choice < 1 || choice > count) {
-      printf("Selección inválida.\n");
-      return NO_ID;
+Id select_object_in_current_location_by_name(Game *game, char *name, Id location, Object **objects) {
+  int i = 0;
+  Object *obj = NULL;
+
+  if (!game || !name) {
+    return NO_ID;
   }
-
-  count = 0;
-  for (i = 0; i < MAX_OBJECTS; i++) {
-      Object *obj = objects[i];
-      if (obj != NULL && game_get_object_location(game, object_get_id(obj)) == player_location) {
-          count++;
-          if (count == choice) {
-              return object_get_id(obj);
-          }
+  for (i=0; i<MAX_OBJECTS; i++) {
+    obj = objects[i];
+    if (obj != NULL && game_get_object_location(game, object_get_id(obj)) == location) {
+      if (strcasecmp(object_get_name(obj), name) == 0) {
+        return object_get_id(obj);
       }
+    }
   }
-
   return NO_ID;
 }
 

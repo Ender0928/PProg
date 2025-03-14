@@ -88,4 +88,6 @@ CommandCode command_get_code(Command* command);
  */
 Status command_get_user_input(Command* command);
 
+char *command_get_argument(Command *command);
+
 #endif

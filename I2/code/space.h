@@ -13,6 +13,9 @@
 
 #include "types.h"
 
+#define GDESC_ROWS 5
+#define GDESC_COLS 10
+
 typedef struct _Space Space;
 
 /**
@@ -158,6 +161,10 @@ Status space_add_object(Space* space, Id id);
 Status space_remove_object(Space* space, Id id);
 
 Bool space_has_object(Space* space, Id id);
+
+char (*space_get_gdesc(Space *space))[GDESC_COLS];
+
+Status space_set_gdesc(Space* space, char gdesc[GDESC_ROWS][GDESC_COLS]);
 
 /**
  * @brief It prints the space information

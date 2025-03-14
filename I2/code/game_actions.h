@@ -41,6 +41,7 @@
  */
 Status game_actions_update(Game *game, Command *cmd);
 
-Id select_object_in_current_location(Game *game);
+Id select_object_in_current_location_by_name(Game *game, char *name, Id location, Object **objects);
+void objects_in_current_location(Game *game);
 
 #endif
