@@ -189,6 +189,10 @@ char *game_get_description(Game *game);
 
 Character **game_get_characters(Game *game);
 
+Status game_set_command_status(Game *game, Status status);
+
+Status game_get_command_status(Game *game);
+
 Status game_set_description(Game *game, char *description);
 
 /**  
@@ -200,6 +204,5 @@ Status game_set_description(Game *game, char *description);
    * @return the id of the space located at the position given
    */
 void game_print(Game *game);
-
 
 #endif

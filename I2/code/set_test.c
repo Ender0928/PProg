@@ -85,7 +85,7 @@ void test1_set_del_object(){
     Set* s;
     s = set_create();
     set_add_object(s,TRUE);
-    PRINT_TEST_RESULT(set_del_object(s,TRUE)==OK);
+    PRINT_TEST_RESULT(set_remove_object(s,TRUE)==OK);
     set_destroy(s);
 
 }
@@ -93,7 +93,7 @@ void test1_set_del_object(){
 void test2_set_del_object(){
     Set* s;
     s = set_create();
-    PRINT_TEST_RESULT(set_del_object(s,TRUE)==ERROR);
+    PRINT_TEST_RESULT(set_remove_object(s,TRUE)==ERROR);
     set_destroy(s);
 
 }

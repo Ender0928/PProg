@@ -23,10 +23,11 @@ struct _Character {
 
 
 Character *character_create(Id id) {
+    Character *character = NULL;
+    
     if (id == NO_ID)
         return NULL;
 
-    Character *character = NULL;
 
     character = (Character *)malloc(sizeof(Character));
     if (!character)

@@ -187,10 +187,12 @@ char (*space_get_gdesc(Space *space))[GDESC_COLS] {
 }
 
 Status space_set_gdesc(Space* space, char gdesc[GDESC_ROWS][GDESC_COLS]) {
+  int i;
+
   if (!space || !gdesc) {
     return ERROR;
   }
-  for (int i = 0; i < GDESC_ROWS; i++) {
+  for (i = 0; i < GDESC_ROWS; i++) {
     strncpy(space->gdesc[i], gdesc[i], GDESC_COLS);
     space->gdesc[i][GDESC_COLS - 1] = '\0';
   }

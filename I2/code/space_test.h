@@ -1,90 +1,85 @@
-/** 
- * @brief It declares the tests for the space module
- * 
- * @file space_test.h
- * @author Profesores Pprog
- * @version 2.0 
- * @date 09-03-2021
- * @copyright GNU Public License
- */
-
 #ifndef SPACE_TEST_H
 #define SPACE_TEST_H
 
-/**
- * @test Test space creation
- * @pre Space ID 
- * @post Non NULL pointer to space 
+#include "space.h"
+#include "test.h"
+
+/** 
+ * @brief Test the space creation function
  */
 void test1_space_create();
-
-/**
- * @test Test space creation
- * @pre Space ID 
- * @post Space_ID == Supplied Space Id
- */
 void test2_space_create();
 
-/**
- * @test Test function for space_name setting
- * @pre String with space name
- * @post Ouput==OK 
+/** 
+ * @brief Test the function for setting the name of a space
  */
 void test1_space_set_name();
-
-/**
- * @test Test function for space_name setting
- * @pre pointer to space = NULL 
- * @post Output==ERROR
- */
 void test2_space_set_name();
 
-/**
- * @test Test function for space_name setting
- * @pre pointer to space_name = NULL (point to space = NON NULL) 
- * @post Output==ERROR
+/** 
+ * @brief Test the function for setting the north link of a space
  */
-void test3_space_set_name();
 void test1_space_set_north();
 void test2_space_set_north();
-void test3_space_set_north();
-void test4_space_set_north();
+
+/** 
+ * @brief Test the function for setting the south link of a space
+ */
 void test1_space_set_south();
 void test2_space_set_south();
-void test3_space_set_south();
-void test4_space_set_south();
+
+/** 
+ * @brief Test the function for setting the east link of a space
+ */
 void test1_space_set_east();
 void test2_space_set_east();
-void test3_space_set_east();
-void test4_space_set_east();
+
+/** 
+ * @brief Test the function for setting the west link of a space
+ */
 void test1_space_set_west();
 void test2_space_set_west();
-void test3_space_set_west();
-void test4_space_set_west();
-void test1_space_get_id();
-void test2_space_get_id();
-void test1_space_set_object();
-void test2_space_set_object();
-void test1_space_get_name();
-void test2_space_get_name();
-void test1_space_get_north();
-void test2_space_get_north();
-void test1_space_get_south();
-void test2_space_get_south();
-void test1_space_get_east();
-void test2_space_get_east();
-void test1_space_get_west();
-void test2_space_get_west();
-void test1_space_get_object();
-void test2_space_get_object();
-void test3_space_get_object();
-void test1_space_find_object();
-void test2_space_find_object();
-void test3_space_find_object();
+
+/** 
+ * @brief Test the function for adding an object to a space
+ */
 void test1_space_add_object();
 void test2_space_add_object();
-void test1_space_del_object();
-void test2_space_del_object();
 
+/** 
+ * @brief Test the function for removing an object from a space
+ */
+void test1_space_remove_object();
+void test2_space_remove_object();
 
-#endif
+/** 
+ * @brief Test the function for checking if a space has an object
+ */
+void test1_space_has_object();
+void test2_space_has_object();
+
+/** 
+ * @brief Test the function for retrieving objects from a space
+ */
+void test1_space_get_objects();
+void test2_space_get_objects();
+
+/** 
+ * @brief Test the function for getting the graphic description of a space
+ */
+void test1_space_get_gdesc();
+void test2_space_get_gdesc();
+
+/** 
+ * @brief Test the function for setting the graphic description of a space
+ */
+void test1_space_set_gdesc();
+void test2_space_set_gdesc();
+
+/** 
+ * @brief Test the function for printing a space
+ */
+void test1_space_print();
+void test2_space_print();
+
+#endif /* SPACE_TEST_H */

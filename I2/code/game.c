@@ -30,6 +30,7 @@ struct _Game {
   Command *last_cmd;                      /*!< Last command written */
   Bool finished;                          /*!< Finished status of the game */
   char *description;                      /*!< Auxiliar */
+  Status command;                           /*!< Status for the last command */  
 }; 
 
 /*Status game_add_space(Game *game, Space *space);*/
@@ -80,6 +81,7 @@ Status game_create(Game **game) {
   character_set_message(character, "Hola soy yo");
   (*game)->finished = FALSE;
   (*game)->description = "";
+  (*game)->command = OK;
 
   return OK;
 }
@@ -429,4 +431,21 @@ Status game_set_description(Game *game, char *description) {
 
 Character **game_get_characters(Game *game) {
   return game->characters;
+}
+
+Status game_set_command_status(Game *game, Status status) {
+  if (!game) {
+    return ERROR;
+  }
+
+  game->command = status;
+  return OK;
+}
+
+Status game_get_command_status(Game *game) {
+  if (!game) {
+    return ERROR;
+  }
+
+  return game->command;
 }
