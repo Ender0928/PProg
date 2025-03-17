@@ -4,9 +4,11 @@ CLIB = -lscreen -L.
 
 .PHONY: clean all
 
-all: anthill
+all: anthill 
 
-test: space_test set_test
+test: space_test set_test character_test
+
+test_all: ;./space_test; ./set_test; ./character_test;
 
 anthill: command.o game.o game_actions.o game_loop.o graphic_engine.o space.o game_reader.o player.o object.o set.o character.o
 	$(CC) -o $@ $^ $(CLIB)
@@ -15,6 +17,9 @@ space_test: space_test.o space.o set.o
 	$(CC) -o $@ $^ $(CLIB)
 
 set_test: set_test.o set.o
+	$(CC) -o $@ $^ $(CLIB)
+
+character_test: character_test.o character.o
 	$(CC) -o $@ $^ $(CLIB)
 
 command.o: command.c command.h
@@ -49,6 +54,11 @@ space_test.o: space_test.c space_test.h test.h
 set_test.o: set_test.c set_test.h test.h
 	$(CC) -c set_test.c $(CFLAGS)
 
+character_test.o: character_test.c character_test.h test.h
+	$(CC) -c character_test.c $(CFLAGS)
+
 clean:
 	rm -f anthill *.o
 	rm -f space_test *.o
+	rm -f set_test *.o
+	rm -f character_test *.o

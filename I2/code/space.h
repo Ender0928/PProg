@@ -162,6 +162,10 @@ Status space_remove_object(Space* space, Id id);
 
 Bool space_has_object(Space* space, Id id);
 
+Id* space_get_objects(Space* space);
+
+int space_get_num_objects(Space* space);
+
 char (*space_get_gdesc(Space *space))[GDESC_COLS];
 
 Status space_set_gdesc(Space* space, char gdesc[GDESC_ROWS][GDESC_COLS]);

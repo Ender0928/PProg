@@ -79,6 +79,12 @@ Status game_create(Game **game) {
   character_set_friendly(character, TRUE);
   character_set_name(character, "Amigo");
   character_set_message(character, "Hola soy yo");
+  character = character_create(8);
+  game_add_character(*game, character);
+  character_set_location(character, 122);
+  character_set_friendly(character, FALSE);
+  character_set_name(character, "Enemigo");
+  character_set_message(character, "Hola soy tu enemigo");
   (*game)->finished = FALSE;
   (*game)->description = "";
   (*game)->command = OK;

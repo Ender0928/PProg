@@ -5,6 +5,8 @@
         "*.vue": "vue",
         "random": "cpp",
         "*.tcc": "cpp",
-        "unordered_map": "cpp"
+        "unordered_map": "cpp",
+        "string.h": "c",
+        "test.h": "c"
     }
 }

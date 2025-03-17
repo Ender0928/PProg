@@ -45,6 +45,8 @@ Status set_destroy(Set* set);
   */
 Status set_add_object(Set* set,Id id);
 
+int set_size(Set *set);
+
 /**
   * @brief It delates an id from the set
   * @author Javier Pérez

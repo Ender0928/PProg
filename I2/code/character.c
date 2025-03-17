@@ -28,7 +28,6 @@ Character *character_create(Id id) {
     if (id == NO_ID)
         return NULL;
 
-
     character = (Character *)malloc(sizeof(Character));
     if (!character)
         return NULL;

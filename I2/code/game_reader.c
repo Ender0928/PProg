@@ -21,7 +21,6 @@ Status game_reader_load_spaces(Game *game, char *filename) {
   
   gdesc = malloc(GDESC_ROWS * sizeof(char[GDESC_COLS]));
   if (!gdesc) {
-      printf("ERROR: No se pudo asignar memoria para gdesc\n");
       return ERROR;
   }
 
@@ -71,14 +70,11 @@ Status game_reader_load_spaces(Game *game, char *filename) {
             space_set_gdesc(space, gdesc) == ERROR ||
             game_add_space(game, space) == ERROR) {
             
-            printf("Error al inicializar el espacio con ID: %ld\n", id);
             space_destroy(space);
             st = ERROR;
-        } else {
-            space_print(space);
         }
+        /*space_print(space);*/
       } else {
-          printf("Error: No se pudo crear el espacio con ID: %ld\n", id);
           st = ERROR;
       }
       for (i=0; i < GDESC_ROWS; i++) {

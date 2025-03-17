@@ -171,6 +171,7 @@ Bool space_has_object(Space* space, Id id) {
   return set_find_object(space->objects, id);
 }
 
+
 Id* space_get_objects(Space* space) {
   if (!space) {
     return NULL;
@@ -178,6 +179,13 @@ Id* space_get_objects(Space* space) {
   return set_get_ids(space->objects);
 }
 
+int space_get_num_objects(Space* space) {
+  if (!space) {
+    return -1;
+  }
+
+  return set_size(space->objects);
+}
 char (*space_get_gdesc(Space *space))[GDESC_COLS] {
   if (!space) {
     return NULL;
@@ -188,7 +196,6 @@ char (*space_get_gdesc(Space *space))[GDESC_COLS] {
 
 Status space_set_gdesc(Space* space, char gdesc[GDESC_ROWS][GDESC_COLS]) {
   int i;
-
   if (!space || !gdesc) {
     return ERROR;
   }

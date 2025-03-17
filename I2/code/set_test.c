@@ -1,3 +1,10 @@
+/**
+ * @brief It tests the character module
+ *
+ * @file character_test.c
+ * @author Javier Pérez
+ * @version 2.0
+ */
 
 #include <stdio.h> 
 #include <stdlib.h> 

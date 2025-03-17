@@ -51,6 +51,12 @@ Status set_add_object(Set* set,Id id){
     return OK;
 }
 
+int set_size(Set *set) {
+    if (!set) {
+        return -1;
+    }
+    return set->n_ids;
+}
 
 Status set_remove_object(Set* set, Id id) {
     int i, j;
