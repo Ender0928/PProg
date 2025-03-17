@@ -77,6 +77,11 @@ Status object_set_name(Object* object, char* name);
 const char * object_get_name(Object* object);
 
 
+/**
+  * @brief It prints the information of an object
+  * @param object a pointer to the object
+  * @return OK, if everything goes well or ERROR if there was some mistake
+  */
 Status object_print(Object* object);
 
 #endif

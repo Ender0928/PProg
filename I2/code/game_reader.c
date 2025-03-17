@@ -1,3 +1,12 @@
+/**
+ * @brief It defines the game reader
+ * 
+ * @file game_reader.c
+ * @author Javier and Rubén
+ * @version 1.0
+ * @copyright GNU Public License
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

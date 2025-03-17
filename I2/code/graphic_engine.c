@@ -43,6 +43,7 @@ void print_spaces(Graphic_engine *ge, Game *game, Space *space, int act) {
   Id *ids_objects;
   Id id;
   Id id_right;
+  int cont = 0;
 
   if (!ge || !space) return;
 
@@ -55,16 +56,19 @@ void print_spaces(Graphic_engine *ge, Game *game, Space *space, int act) {
 
     aux_right = game_get_space(game, id_right);
     sprintf(str, "  +-----------+");
-    while(1) {
+    while(cont < 4) {
       if (space_get_id(aux_right) != NO_ID) {
         strcat(str, "  +-----------+");
         aux_right = game_get_space(game, space_get_east(aux_right));
       } else  {
         break;
       }
+      cont ++;
     }
     screen_area_puts(ge->map, str);
 
+    cont = 0;
+    /*Imprime id y character*/
     aux_right = game_get_space(game, id_right);
     if (act == 0) {
       if (id > 99) {
@@ -80,7 +84,7 @@ void print_spaces(Graphic_engine *ge, Game *game, Space *space, int act) {
       }
       act = 0;
     }
-    while(1) {
+    while(cont < 4) {
       if (space_get_id(aux_right) != NO_ID) {
         if (act == 0) {
           if ((int)space_get_id(aux_right) > 99) {
@@ -100,14 +104,17 @@ void print_spaces(Graphic_engine *ge, Game *game, Space *space, int act) {
       } else  {
         break;
       }
+      cont++;
     }
     screen_area_puts(ge->map, str);
 
+    cont = 0;
+    /*Imprime descripcion espacio*/
     for(i=0; i < GDESC_ROWS; i++) {
       aux_right = game_get_space(game, id_right);
       gdesc = space_get_gdesc(space);
       sprintf(str, "  |%s  |", gdesc[i]);
-      while(1) {
+      while(cont < 4) {
         if (space_get_id(aux_right) != NO_ID) {
           gdesc_right = space_get_gdesc(aux_right);
           sprintf(str_aux, "  |%s  |", gdesc_right[i]);
@@ -116,19 +123,61 @@ void print_spaces(Graphic_engine *ge, Game *game, Space *space, int act) {
         } else  {
           break;
         }
+        cont ++;
       }
+      cont = 0;
       screen_area_puts(ge->map, str);
     }
+    
+    cont = 0;
+    /*Imprime objects*/
+    aux_right = game_get_space(game, id_right);
+    if (space_get_num_objects(space) > 0) {
+      ids_objects = space_get_objects(space);
 
+      for (i = 0; i < space_get_num_objects(space); i++) {
+        sprintf(str_aux, "%s ", object_get_name(game_get_object(game, ids_objects[i])));
+        strcat(str_objects, str_aux);
+      }
+      sprintf(str, "  |%-11.11s|", str_objects);
+    } else {
+      sprintf(str, "  |           |");
+    } 
+    while(cont < 4) {
+      if (space_get_id(aux_right) != NO_ID) {
+        if (space_get_num_objects(aux_right) > 0) {
+          ids_objects = space_get_objects(space);
+
+          /*devuelve un array con el nombre de los objetos de espacio*/
+          for (i = 0; i < space_get_num_objects(space); i++) {
+            sprintf(str_aux, "%s ", object_get_name(game_get_object(game, ids_objects[i])));
+            strcat(str_objects, str_aux);
+          }
+          sprintf(str_aux, "  |%-11.11s|", str_objects);
+          strcat(str, str_aux);
+        } else {
+          sprintf(str_aux, "  |           |");
+          strcat(str, str_aux);
+        }
+        aux_right = game_get_space(game, space_get_east(aux_right));
+      } else  {
+        break;
+      }
+      cont ++;
+    }
+    screen_area_puts(ge->map, str);
+
+    cont = 0;
     aux_right = game_get_space(game, id_right);
     sprintf(str, "  +-----------+");
-    while(1) {
+    while(cont < 4) {
       if (space_get_id(aux_right) != NO_ID) {
         strcat(str, "  +-----------+");
         aux_right = game_get_space(game, space_get_east(aux_right));
       } else  {
         break;
       }
+      cont ++;
     }
     screen_area_puts(ge->map, str);
 
@@ -166,7 +215,7 @@ void print_spaces(Graphic_engine *ge, Game *game, Space *space, int act) {
           sprintf(str, "  |%-11.11s|", str_objects);
           screen_area_puts(ge->map, str);
       } else {
-        snprintf(str , sizeof(str), "  |           |");
+        sprintf(str, "  |           |");
         screen_area_puts(ge->map, str);
       }
 

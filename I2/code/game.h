@@ -150,49 +150,161 @@ Bool game_get_finished(Game *game);
    */
 Status game_set_finished(Game *game, Bool finished);
 
-/**  
-   * @brief It returns the id of a space in a game
-   * @author Javier and Rubén
-   * 
-   * @param game a pointer to the game
-   * @param position an integer with the position of the space
-   * @return the id of the space located at the position given
-   */
-
+/**
+ * @brief Retrieves the player from the game.
+ * 
+ * @param game Pointer to the game structure.
+ * @return Pointer to the player.
+ */
 Player *game_get_player(Game *game);
 
+/**
+ * @brief Adds an object to the game.
+ * 
+ * @param game Pointer to the game structure.
+ * @param object Pointer to the object to be added.
+ * @return Status indicating success or failure.
+ */
 Status game_add_object(Game *game, Object *object);
 
+/**
+ * @brief Retrieves an object from the game by its ID.
+ * 
+ * @param game Pointer to the game structure.
+ * @param id ID of the object to retrieve.
+ * @return Pointer to the object, or NULL if not found.
+ */
 Object *game_get_object(Game *game, Id id);
 
+/**
+ * @brief Checks if the game contains an object with the given ID.
+ * 
+ * @param game Pointer to the game structure.
+ * @param id ID of the object to check.
+ * @return TRUE if the object exists, FALSE otherwise.
+ */
 Bool game_has_object(Game *game, Id id);
 
+/**
+ * @brief Adds a character to the game.
+ * 
+ * @param game Pointer to the game structure.
+ * @param character Pointer to the character to be added.
+ * @return Status indicating success or failure.
+ */
 Status game_add_character(Game *game, Character *character);
 
+/**
+ * @brief Removes a character from the game by its ID.
+ * 
+ * @param game Pointer to the game structure.
+ * @param id ID of the character to remove.
+ * @return Status indicating success or failure.
+ */
 Status game_remove_character(Game *game, Id id);
 
+/**
+ * @brief Checks if the game contains a character with the given ID.
+ * 
+ * @param game Pointer to the game structure.
+ * @param id ID of the character to check.
+ * @return TRUE if the character exists, FALSE otherwise.
+ */
 Bool game_has_character(Game *game, Id id);
 
+/**
+ * @brief Retrieves all objects in the game.
+ * 
+ * @param game Pointer to the game structure.
+ * @return Array of pointers to objects, or NULL if no objects exist.
+ */
 Object **game_get_objects(Game *game);
 
+/**
+ * @brief Retrieves the character located at a specific location.
+ * 
+ * @param game Pointer to the game structure.
+ * @param location ID of the location to check.
+ * @return Pointer to the character at the location, or NULL if none exists.
+ */
 Character *game_get_character_at_location(Game *game, Id location);
 
+/**
+ * @brief Retrieves the player's health.
+ * 
+ * @param game Pointer to the game structure.
+ * @return The player's health as an integer.
+ */
 int game_get_player_health(Game *game);
 
+/**
+ * @brief Retrieves the health of a specific character.
+ * 
+ * @param game Pointer to the game structure.
+ * @param character Pointer to the character.
+ * @return The character's health as an integer.
+ */
 int game_get_character_health(Game *game, Character *character);
 
+/**
+ * @brief Sets the player's health.
+ * 
+ * @param game Pointer to the game structure.
+ * @param health New health value for the player.
+ * @return Status indicating success or failure.
+ */
 Status game_set_player_health(Game *game, int health);
 
+/**
+ * @brief Sets the health of a specific character.
+ * 
+ * @param game Pointer to the game structure.
+ * @param character Pointer to the character.
+ * @param health New health value for the character.
+ * @return Status indicating success or failure.
+ */
 Status game_set_character_health(Game *game, Character *character, int health);
 
+/**
+ * @brief Retrieves the game's description.
+ * 
+ * @param game Pointer to the game structure.
+ * @return Pointer to the game's description string.
+ */
 char *game_get_description(Game *game);
 
+/**
+ * @brief Retrieves all characters in the game.
+ * 
+ * @param game Pointer to the game structure.
+ * @return Array of pointers to characters, or NULL if no characters exist.
+ */
 Character **game_get_characters(Game *game);
 
+/**
+ * @brief Sets the status of the last executed command in the game.
+ * 
+ * @param game Pointer to the game structure.
+ * @param status Status to set for the last command.
+ * @return Status indicating success or failure.
+ */
 Status game_set_command_status(Game *game, Status status);
 
+/**
+ * @brief Retrieves the status of the last executed command in the game.
+ * 
+ * @param game Pointer to the game structure.
+ * @return Status of the last executed command.
+ */
 Status game_get_command_status(Game *game);
 
+/**
+ * @brief Sets the game's description.
+ * 
+ * @param game Pointer to the game structure.
+ * @param description New description string for the game.
+ * @return Status indicating success or failure.
+ */
 Status game_set_description(Game *game, char *description);
 
 /**  

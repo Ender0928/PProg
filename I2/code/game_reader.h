@@ -1,3 +1,12 @@
+/**
+ * @brief It implements the game_reader module
+ * 
+ * @file game_reader.h
+ * @author Javier and Rubén
+ * @version 1.0
+ * @copyright GNU Public License
+ */
+
 #ifndef GAME_READER_H
 #define GAME_READER_H
 

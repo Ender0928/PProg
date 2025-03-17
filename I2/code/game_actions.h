@@ -41,7 +41,20 @@
  */
 Status game_actions_update(Game *game, Command *cmd);
 
+/**
+ * @brief Pick up an object from the current location
+ * 
+ * This function allows the player to pick up an object from the current location
+ * if the object is present and the player is not already holding an object.
+ * 
+ * @param game A pointer to the game instance
+ * @param name The name of the object to pick up
+ * @param location The ID of the current location
+ * @param objects A pointer to the array of objects in the current location
+ * @return OK if the object was picked up successfully, ERROR otherwise
+ */
+
 Id select_object_in_current_location_by_name(Game *game, char *name, Id location, Object **objects);
-void objects_in_current_location(Game *game);
+
 
 #endif
