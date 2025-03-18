@@ -1,0 +1,459 @@
+void print_limits_no_west_east(Graphic_engine *ge) {
+  char str[WORD_SIZE] = "";
+  char str_aux[WORD_SIZE] = "";
+
+  sprintf(str, "|                 |");
+  sprintf(str_aux, "  +---------------+");
+  strcat(str, str_aux);
+  sprintf(str_aux, "  |                 |");
+  strcat(str, str_aux);
+  
+  screen_area_puts(ge->map, str);
+}
+
+void print_id_no_west_east(Graphic_engine *ge, Id id) {
+  char str[WORD_SIZE] = "";
+  char str_aux[WORD_SIZE] = "";
+
+  sprintf(str, "|                 |");
+  if (id > 99) {
+      sprintf(str_aux, "  | m0^        %2d|", (int)id);
+  } else {
+      sprintf(str_aux, "  | m0^         %2d|", (int)id);
+  }
+  strcat(str, str_aux);
+  sprintf(str_aux, "  |                 |");
+  strcat(str, str_aux);
+
+  screen_area_puts(ge->map, str);
+}
+
+void print_spaces(Graphic_engine *ge, Game *game, Space *space) {
+  
+  Space *space_north = NULL;
+  Space *space_west = NULL;
+  Space *space_east = NULL;
+  Space *space_south = NULL;
+  int i;
+  char str[WORD_SIZE] = "";
+  char str_aux[WORD_SIZE] = "";
+  char str_objects[WORD_SIZE] = "";
+  char str_objects1[WORD_SIZE] = "";
+  char str_objects2[WORD_SIZE] = "";
+  char str_objects3[WORD_SIZE] = "";
+  char (*gdesc)[GDESC_COLS];
+  char (*gdesc_north)[GDESC_COLS];
+  char (*gdesc_west)[GDESC_COLS];
+  char (*gdesc_east)[GDESC_COLS];
+  char (*gdesc_south)[GDESC_COLS];
+  Id *ids_objects;
+  Id id = NO_ID;
+  Id id_north = NO_ID;
+  Id id_west = NO_ID;
+  Id id_east = NO_ID;
+  Id id_south = NO_ID;
+
+  if (!ge || !space) return;
+
+  
+  id = space_get_id(space);
+  id_north = space_get_north(space);
+  id_west = space_get_west(space);
+  id_east = space_get_east(space);
+  id_east = space_get_south(space);
+  
+  space_north = game_get_space(game, id_north);
+  space_west = game_get_space(game, id_west);
+  space_east = game_get_space(game, id_east);
+  space_south = game_get_space(game, id_east);
+  
+  gdesc = space_get_gdesc(space);
+  gdesc_north = space_get_gdesc(space_north);
+  gdesc_west = space_get_gdesc(space_west);
+  gdesc_east = space_get_gdesc(space_east);
+  gdesc_south = space_get_gdesc(space_south);
+
+  
+  
+  if (id != NO_ID) {
+
+    if (id_north != NO_ID) {
+      /*Techo del espacio norte*/
+      print_limits_no_west_east(ge);
+    
+      /*Id y personaje espacio*/
+      print_id_no_west_east(ge, id_north);
+      
+
+      /*Descripcion del espacio*/
+      for (i = 0; i < GDESC_ROWS; i++) {
+        sprintf(str, "|                 |");
+        sprintf(str_aux, "  |%s      |", gdesc_north[i]);
+        strcat(str, str_aux);
+        sprintf(str_aux, "  |                 |");
+        strcat(str, str_aux);
+        screen_area_puts(ge->map, str);
+      }
+
+      sprintf(str, "|                 |");
+      if (space_get_num_objects(space_north) > 0) {
+        ids_objects = space_get_objects(space_north);
+
+        for (i = 0; i < space_get_num_objects(space_north); i++) {
+          sprintf(str_aux, "%s ", object_get_name(game_get_object(game, ids_objects[i])));
+          strcat(str_objects, str_aux);
+        }
+        sprintf(str_aux, "  |%-15.15s|", str_objects);
+        strcat(str, str_aux);
+        sprintf(str_aux, "  |                 |");
+        strcat(str, str_aux);
+        screen_area_puts(ge->map, str);
+      } else {
+        sprintf(str, "|                 |");
+        sprintf(str_aux, "  |               |");
+        strcat(str, str_aux);
+        sprintf(str_aux, "  |                 |");
+        strcat(str, str_aux);
+        screen_area_puts(ge->map, str);
+      }
+
+      /*Suelo del espacio norte*/
+      print_limits_no_west_east(ge);
+    } else {
+      for (i=0; i < 10; i++) {
+        sprintf(str, "|                                                         |");
+        screen_area_puts(ge->map, str);
+      }
+    }
+
+    /*Separacion entre espacio norte y el actual*/
+    sprintf(str, "|                            ^                            |");
+    screen_area_puts(ge->map, str);
+
+    if (id_west != NO_ID && id_east != NO_ID) {
+      /*limite superior*/
+      sprintf(str, "  +---------------+");
+      sprintf(str_aux, "  +---------------+");
+      strcat(str, str_aux);
+      sprintf(str_aux, "  +---------------+");
+      strcat(str, str_aux);
+      screen_area_puts(ge->map, str);
+
+      /*Id y personaje espacio*/
+      if (id > 99) {
+        sprintf(str, "  | m0^        %2d|", (int)id_west);
+      } else {
+        sprintf(str, "  | m0^         %2d|", (int)id_west);
+      }
+      if (id > 99) {
+        sprintf(str_aux, "  | m0^        %2d|", (int)id);
+      } else {
+        sprintf(str_aux, "  | m0^         %2d|", (int)id);
+      }
+      strcat(str, str_aux);
+      if (id > 99) {
+        sprintf(str_aux, "  | m0^        %2d|", (int)id_east);
+      } else {
+        sprintf(str_aux, "  | m0^           %2d|", (int)id_east);
+      }
+      strcat(str, str_aux);
+      screen_area_puts(ge->map, str);
+
+      /*Descripcion*/
+      for (i = 0; i < GDESC_ROWS; i++) {
+        sprintf(str, "  |%s      |", gdesc_west[i]);
+        sprintf(str_aux, "  |%s      |", gdesc[i]);
+        strcat(str, str_aux);
+        sprintf(str_aux, "  |%s      |", gdesc_east[i]);
+        strcat(str, str_aux);
+        screen_area_puts(ge->map, str);
+      }
+
+      /*objects*/
+      if (space_get_num_objects(space_west) > 0) {
+        ids_objects = space_get_objects(space_west);
+
+        for (i = 0; i < space_get_num_objects(space_west); i++) {
+          sprintf(str_aux, "%s ", object_get_name(game_get_object(game, ids_objects[i])));
+          strcat(str_objects1, str_aux);
+        }
+        sprintf(str, "  |%-15.15s|", str_objects1);
+      } else {
+        sprintf(str, "  |               |");
+      } 
+      if (space_get_num_objects(space) > 0) {
+        ids_objects = space_get_objects(space);
+
+        for (i = 0; i < space_get_num_objects(space); i++) {
+          sprintf(str_aux, "%s ", object_get_name(game_get_object(game, ids_objects[i])));
+          strcat(str_objects2, str_aux);
+        }
+        sprintf(str_aux, "  |%-15.15s|", str_objects2);
+        strcat(str, str_aux);
+      } else {
+        sprintf(str_aux, "  |               |");
+        strcat(str, str_aux);
+      } 
+      if (space_get_num_objects(space_east) > 0) {
+        ids_objects = space_get_objects(space_east);
+
+        for (i = 0; i < space_get_num_objects(space_east); i++) {
+          sprintf(str_aux, "%s ", object_get_name(game_get_object(game, ids_objects[i])));
+          strcat(str_objects3, str_aux);
+        }
+        sprintf(str_aux, "  |%-15.15s|", str_objects3);
+        strcat(str, str_aux);
+        screen_area_puts(ge->map, str);
+      } else {
+        sprintf(str_aux, "  |               |");
+        strcat(str, str_aux);
+        printf("%s\n", str);
+        screen_area_puts(ge->map, str);
+      }
+
+      sprintf(str, "  +---------------+");
+      sprintf(str_aux, "  +---------------+");
+      strcat(str, str_aux);
+      sprintf(str_aux, "  +---------------+");
+      strcat(str, str_aux);
+      
+      screen_area_puts(ge->map, str);
+
+    } else if (id_west != NO_ID && id_east == NO_ID) {
+      /*limite superior*/
+      sprintf(str, "  +---------------+");
+      sprintf(str_aux, "  +---------------+");
+      strcat(str, str_aux);
+      sprintf(str_aux, "|                 |");
+      strcat(str, str_aux);
+      screen_area_puts(ge->map, str);
+
+      /*Id y personaje espacio*/
+      if (id > 99) {
+          sprintf(str, "  | m0^       %2d|", (int)id_west);
+      } else {
+          sprintf(str, "  | m0^        %2d|", (int)id_west);
+      }
+      if (id > 99) {
+        sprintf(str_aux, "  | m0^        %2d|", (int)id);
+      } else {
+          sprintf(str_aux, "  | m0^         %2d|", (int)id);
+      }
+      strcat(str, str_aux);
+      sprintf(str_aux, "|                   |");
+      strcat(str, str_aux);
+      screen_area_puts(ge->map, str);
+
+
+      /*Descripcion*/
+      for (i = 0; i < GDESC_ROWS; i++) {
+        sprintf(str, "  |%s      |", gdesc_west[i]);
+        sprintf(str_aux, "  |%s      |", gdesc[i]);
+        strcat(str, str_aux);
+        sprintf(str_aux, "|                 |");
+        strcat(str, str_aux);
+        screen_area_puts(ge->map, str);
+      }
+
+      /*objects*/
+      if (space_get_num_objects(space_west) > 0) {
+        ids_objects = space_get_objects(space);
+        
+        for (i = 0; i < space_get_num_objects(space); i++) {
+          sprintf(str_aux, "%s ", object_get_name(game_get_object(game, ids_objects[i])));
+          strcat(str_objects1, str_aux);
+        }
+        sprintf(str, "  |%-15.15s|", str_objects1);
+      } else {
+        sprintf(str, "  |               |");
+      } 
+      if (space_get_num_objects(space_east) > 0) {
+        ids_objects = space_get_objects(space_east);
+        
+        for (i = 0; i < space_get_num_objects(space_east); i++) {
+          sprintf(str_aux, "%s ", object_get_name(game_get_object(game, ids_objects[i])));
+          strcat(str_objects2, str_aux);
+        }
+        sprintf(str_aux, "  |%-15.15s|", str_objects2);
+        strcat(str, str_aux);
+
+      } else {
+        sprintf(str_aux, "  |               |");
+        strcat(str, str_aux);
+      }
+      sprintf(str_aux, "|                 |");
+      strcat(str, str_aux);
+      screen_area_puts(ge->map, str);
+
+      sprintf(str, "  +---------------+");
+      sprintf(str_aux, "  +---------------+");
+      strcat(str, str_aux);
+      sprintf(str_aux, "|                 |");
+      strcat(str, str_aux);
+      
+      screen_area_puts(ge->map, str);
+
+    } else if (id_west == NO_ID && id_east != NO_ID) {
+      /*limite superior*/
+      sprintf(str, "|                 |");
+      sprintf(str_aux, "  +---------------+");
+      strcat(str, str_aux);
+      sprintf(str_aux, "  +---------------+");
+      strcat(str, str_aux);
+      screen_area_puts(ge->map, str);
+
+      /*Id y personaje espacio*/
+      sprintf(str, "|                 |");
+      if (id > 99) {
+          sprintf(str_aux, "  | m0^         %2d|", (int)id);
+      } else {
+          sprintf(str_aux, "  | m0^         %2d|", (int)id);
+      }
+      strcat(str, str_aux);
+      if (id > 99) {
+        sprintf(str_aux, "  | m0^        %2d|", (int)id_east);
+      } else {
+          sprintf(str_aux, "  | m0^         %2d|", (int)id_east);
+      }
+      strcat(str, str_aux);
+      screen_area_puts(ge->map, str);
+      
+      /*Descripcion*/
+      for (i = 0; i < GDESC_ROWS; i++) {
+        sprintf(str, "|                 |");
+        sprintf(str_aux, "  |%s      |", gdesc[i]);
+        strcat(str, str_aux);
+        sprintf(str_aux, "  |%s      |", gdesc_east[i]);
+        strcat(str, str_aux);
+        screen_area_puts(ge->map, str);
+      }
+
+      /*objects*/
+      sprintf(str, "|                 |");
+      if (space_get_num_objects(space) > 0) {
+        ids_objects = space_get_objects(space);
+
+        for (i = 0; i < space_get_num_objects(space); i++) {
+          sprintf(str_aux, "%s ", object_get_name(game_get_object(game, ids_objects[i])));
+          strcat(str_objects, str_aux);
+        }
+        sprintf(str_aux, "  |%-15.15s|", str_objects);
+        strcat(str, str_aux);
+      } else {
+        sprintf(str_aux, "  |               |");
+        strcat(str, str_aux);
+      } 
+      if (space_get_num_objects(space_east) > 0) {
+        ids_objects = space_get_objects(space_east);
+
+        for (i = 0; i < space_get_num_objects(space_east); i++) {
+          sprintf(str_aux, "%s ", object_get_name(game_get_object(game, ids_objects[i])));
+          strcat(str_objects, str_aux);
+        }
+        sprintf(str_aux, "  |%-15.15s|", str_objects);
+        strcat(str, str_aux);
+        screen_area_puts(ge->map, str);
+      } else {
+        sprintf(str_aux, "  |               |");
+        strcat(str, str_aux);
+        screen_area_puts(ge->map, str);
+      }
+
+      sprintf(str, "|                 |");
+      sprintf(str_aux, "  +---------------+");
+      strcat(str, str_aux);
+      sprintf(str_aux, "  +---------------+");
+      strcat(str, str_aux);
+      
+      screen_area_puts(ge->map, str);
+
+    } else {
+      /*limite superior*/
+      print_limits_no_west_east(ge);
+
+      /*Id y personaje espacio*/
+      print_id_no_west_east(ge, id);
+      
+      /*Descripcion*/
+      for (i = 0; i < GDESC_ROWS; i++) {
+        sprintf(str, "|                 |");
+        sprintf(str_aux, "  |%s      |", gdesc[i]);
+        strcat(str, str_aux);
+        sprintf(str_aux, "  |                 |");
+        strcat(str, str_aux);
+        screen_area_puts(ge->map, str);
+      }
+
+      /*objects*/
+      sprintf(str, "|                 |");
+      if (space_get_num_objects(space) > 0) {
+        ids_objects = space_get_objects(space);
+
+        for (i = 0; i < space_get_num_objects(space); i++) {
+          sprintf(str_aux, "%s ", object_get_name(game_get_object(game, ids_objects[i])));
+          strcat(str_objects, str_aux);
+        }
+        sprintf(str_aux, "  |%-15.15s|", str_objects);
+        strcat(str, str_aux);
+        sprintf(str_aux, "  |                 |");
+        strcat(str, str_aux);
+        screen_area_puts(ge->map, str);
+      } else {
+        sprintf(str, "|                 |");
+        sprintf(str_aux, "  |               |");
+        strcat(str, str_aux);
+        sprintf(str_aux, "  |                 |");
+        strcat(str, str_aux);
+        screen_area_puts(ge->map, str);
+      }
+
+      /*Suelo del espacio norte*/
+      print_limits_no_west_east(ge);
+    }
+  }
+
+  if (id_south != NO_ID) {
+    print_limits_no_west_east(ge);
+  
+    print_id_no_west_east(ge, id_south);
+    
+
+    for (i = 0; i < GDESC_ROWS; i++) {
+      sprintf(str, "|                 |");
+      sprintf(str_aux, "  |%s      |", gdesc_south[i]);
+      strcat(str, str_aux);
+      sprintf(str_aux, "  |                 |");
+      strcat(str, str_aux);
+      screen_area_puts(ge->map, str);
+    }
+
+    sprintf(str, "|                 |");
+    if (space_get_num_objects(space_south) > 0) {
+      ids_objects = space_get_objects(space_south);
+
+      for (i = 0; i < space_get_num_objects(space_south); i++) {
+        sprintf(str_aux, "%s ", object_get_name(game_get_object(game, ids_objects[i])));
+        strcat(str_objects, str_aux);
+      }
+      sprintf(str_aux, "  |%-15.15s|", str_objects);
+      strcat(str, str_aux);
+      sprintf(str_aux, "  |                 |");
+      strcat(str, str_aux);
+      screen_area_puts(ge->map, str);
+    } else {
+      sprintf(str, "|                 |");
+      sprintf(str_aux, "  |               |");
+      strcat(str, str_aux);
+      sprintf(str_aux, "  |                 |");
+      strcat(str, str_aux);
+      screen_area_puts(ge->map, str);
+    }
+
+    print_limits_no_west_east(ge);
+  } else {
+    for (i=0; i < 10; i++) {
+      sprintf(str, "|                                                         |");
+      screen_area_puts(ge->map, str);
+    }
+  }
+}

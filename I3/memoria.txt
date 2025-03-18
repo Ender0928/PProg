@@ -1,0 +1,7 @@
+No hemos logrado que el código funcione con solo game*, por lo que hemos tenido que modificar la función game_create y game_destroy para que sean **game.
+
+Para compilar el proyeto utilizar "make", para compilar los tests utilizar "make test" y para ejecutar a la vez todos los tests utilizar "make test_all".
+
+Salen algunos warnings al ejecutar el make por una función de otras librerías, no hemos conseguido solucionarlos.
+
+Al ejecutar los tests también salen warnings en test.h y en los tests, pero esto no compromete la funcionalidad de los tests
