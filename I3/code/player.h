@@ -10,6 +10,7 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 #include "types.h"
+#include "inventory.h"
 
 #define P 1
 
@@ -80,22 +81,21 @@ Id player_get_location(Player *player);
 Status player_set_location(Player *player, Id location); /*It set the player location*/
 
 /**
-  * @brief It gets the id of the object of the player
-  * @author Javier and Rubén
-  * @param player a pointer to the player  
-  * @return the id of the object of the player
-  */
-Id player_get_object(Player *player);
-
-/**
-  * @brief It sets the object of the player
+  * @brief It adds the object of the player's inventory
   * @author Javier and Rubén
   * @param player a pointer to the player
   * @param object the id of the object
   * @return OK, if everything goes well or ERROR if there was some mistake
   */
-Status player_set_object (Player *player, Id object); /*It set the object of the player*/
+Status player_add_object (Player *player, Id object); /*It set the object of the player*/
 
+/**
+  * @brief It removes the object of the player's inventory
+  * @param player a pointer to the player
+  * @param object the id of the object
+  * @return OK, if everything goes well or ERROR if there was some mistake
+  */
+Status player_remove_object(Player *player, Id object);
 /**
   * @brief It gets the health of the player
   * @param player a pointer to the player  
@@ -112,10 +112,47 @@ int player_get_health(Player *player);
 Status player_set_health(Player *player, int health);
 
 /**
+  * @brief It gets the backpack of the player
+  * @param player a pointer to the player  
+  * @return the backpack of the player
+  */
+Inventory *player_get_backpack(Player *player);
+
+/**
+  * @brief It sets the backpack of the player
+  * @param player a pointer to the player
+  * @param backpack the backpack of the player
+  * @return OK, if everything goes well or ERROR if there was some mistake
+  */
+Status player_set_backpack(Player *player, Inventory *backpack);
+/**
   * @brief It prints the player
   * @param player a pointer to the player
   * @return OK, if everything goes well or ERROR if there was some mistake
   */
+
+/**
+ * @brief It checks if the player inventory is empty
+ * @param player a pointer to the player
+ * @return TRUE if the inventory is empty, FALSE otherwise
+ */
+Bool player_inventory_is_empty(Player *player);
+
+/**
+ * @brief It checks if the player inventory is full
+ * @param player a pointer to the player
+ * @return TRUE if the inventory is full, FALSE otherwise
+ */
+Bool player_inventory_is_full(Player *player);
+
+/**
+ * @brief It checks if the player has an object
+ * @param player a pointer to the player
+ * @param object the id of the object
+ * @return TRUE if the player has the object, FALSE otherwise
+ */
+Status player_has_object(Player *player, Id object);
+
 Status player_print(Player *player);
 
 #endif

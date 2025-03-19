@@ -246,8 +246,12 @@ Status game_actions_take(Game *game) {
   
   object_name = command_get_argument(game_get_last_command(game));
   
-  if (player_get_object(game_get_player(game)) != NO_ID) {
+  if (!object_name) {
       return ERROR;
+  }
+
+  if (player_inventory_is_full(game_get_player(game))) {
+    return ERROR;
   }
 
   player_location = game_get_player_location(game);
@@ -259,7 +263,7 @@ Status game_actions_take(Game *game) {
     return ERROR;
   }
 
-  player_set_object(game_get_player(game), selected_object);
+  game_add_object_to_player(game, selected_object);
   space_remove_object(game_get_space(game, player_location), selected_object);
   return OK;
 }
@@ -267,21 +271,33 @@ Status game_actions_take(Game *game) {
 Status game_actions_drop(Game *game) {
   Id player_location = NO_ID;
   Id object_id = NO_ID;
+  char *object_name;
 
+  if(!game)
+  return ERROR;
+  
+  if(player_inventory_is_empty(game_get_player(game)))
+  return ERROR;
+  
+  object_name = command_get_argument(game_get_last_command(game));
+  if(!object_name)
+    return ERROR;
+  
   player_location = game_get_player_location(game);
-  object_id = player_get_object(game_get_player(game));
-
-  if (object_id == NO_ID) {
-      return ERROR;
-  }
-
   if (player_location == NO_ID)
     return ERROR;
+  
+  object_id = game_get_object_id_by_name(game, object_name);
+  if (object_id == NO_ID)
+    return ERROR;
 
-  game_set_object_location(game, object_id, player_location);
-  player_set_object(game_get_player(game), NO_ID);
+  if(player_has_object(game_get_player(game), object_id) == OK){
+    game_set_object_location(game, object_id, player_location);
+    game_remove_object_from_player(game, object_id);
+    return OK;
+  }
 
-  return OK;
+  return ERROR;
 }
 
 Status game_actions_attack(Game *game){

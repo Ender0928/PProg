@@ -10,7 +10,7 @@ test: space_test set_test character_test
 
 test_all: ;./space_test; ./set_test; ./character_test;
 
-anthill: command.o game.o game_actions.o game_loop.o graphic_engine.o space.o game_reader.o player.o object.o set.o character.o
+anthill: command.o game.o game_actions.o game_loop.o graphic_engine.o space.o game_reader.o player.o object.o set.o character.o inventory.o
 	$(CC) -o $@ $^ $(CLIB)
 
 space_test: space_test.o space.o set.o
@@ -36,7 +36,7 @@ game_loop.o: game_loop.c
 space.o: space.c space.h
 	$(CC) -c space.c $(CFLAGS)
 
-player.o: player.c player.h
+player.o: player.c player.h inventory.h
 	$(CC) -c player.c $(CFLAGS)
 
 object.o: object.c object.h
@@ -44,6 +44,9 @@ object.o: object.c object.h
 
 set.o: set.c set.h
 	$(CC) -c set.c $(CFLAGS)
+
+inventory.o: inventory.c inventory.h set.h
+	$(CC) -c inventory.c $(CFLAGS)
 
 character.o: character.c character.h
 	$(CC) -c character.c $(CFLAGS)

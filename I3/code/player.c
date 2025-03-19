@@ -19,8 +19,8 @@ struct _Player{
     Id id;                  /* Id number of the space, it must be unique */ 
     char name[WORD_SIZE];   /*name of the player*/
     Id location;            /*Id number of the location, it must be unique*/
-    Id object;              /*Id number of the object, it must be unique*/
     int health;             /*Health points of the player*/
+    Inventory *backpack;    /*Inventory of the player*/
 };
 
 
@@ -43,10 +43,14 @@ Player * player_create (Id id){
 
     new_player->id= id;
     new_player->location=NO_ID;
-    new_player->object=NO_ID;
     new_player->name[0]='\0';
     new_player->health=3;
-
+    new_player->backpack = inventory_create();
+    if (new_player->backpack == NULL)
+    {
+        free(new_player);
+        return NULL;
+    }
 
     return new_player;
 }
@@ -59,6 +63,10 @@ Status player_destroy (Player *player){
         return ERROR;
     }
 
+    if (inventory_destroy(player->backpack) == ERROR)
+    {
+        return ERROR;
+    }
     free (player);
         return OK;
 }
@@ -115,23 +123,22 @@ Status player_set_location(Player *player, Id location){
 return OK;
 }
 
-/*It get the id of the object*/
-Id player_get_object(Player *player){
-    if (!player){
-        return NO_ID;
-    }
-
-return player->object;
-}
-
 /*It set the object of the player*/
-Status player_set_object (Player *player, Id object){
+Status player_add_object (Player *player, Id object){
     if (!player) {
         return ERROR;
     }
 
-    player->object = object;
+    inventory_add_object(player->backpack, object);
 return OK;
+}
+
+Status player_remove_object(Player *player, Id object){
+    if (!player || object == NO_ID)
+    {
+        return ERROR;
+    }
+    return inventory_remove_object(player->backpack, object);
 }
 
 /*It get the health of the player*/
@@ -153,11 +160,52 @@ Status player_set_health(Player *player, int health){
 return OK;
 }
 
+Status player_set_backpack(Player *player, Inventory *backpack){
+    if (!player || !backpack)
+    {
+        return ERROR;
+    }
+    player->backpack = backpack;
+    return OK;
+}
+
+Inventory *player_get_backpack(Player *player){
+    if (!player)
+    {
+        return NULL;
+    }
+    return player->backpack;
+}
+
+Bool player_inventory_is_empty(Player *player){
+    if (!player)
+    {
+        return TRUE;
+    }
+    return inventory_is_empty(player->backpack);
+}
+
+Bool player_inventory_is_full(Player *player){
+    if (!player)
+    {
+        return TRUE;
+    }
+    return inventory_is_full(player->backpack);
+}
+
+Status player_has_object(Player *player, Id object){
+    if (!player || object == NO_ID)
+    {
+        return ERROR;
+    }
+    return inventory_find_object(player->backpack, object);
+}
+
 Status player_print(Player* player){
   if (!player)
     return ERROR;
 
-  fprintf(stdout, "-->player (id: %ld; name: %s; location: %ld; object: %ld; health:%d)\n", player->id, player->name,player->location,player->object,player->health);
+  fprintf(stdout, "-->player (id: %ld; name: %s; location: %ld; health:%d;)\n", player->id, player->name,player->location, player->health);
   return OK;
 }
 

@@ -104,7 +104,7 @@ Id game_get_object_location(Game *game, Id object_id);
    * @brief It returns the id of a space in a game
    * @author Profesores PPROG
    * 
-   * @param game a pointer to the game
+   * @param game a poinchar *game_get_object_name_by_id(Game *game, Id id)ter to the game
    * @param position an integer with the position of the space
    * @return the id of the space located at the position given
    */
@@ -307,6 +307,32 @@ Status game_get_command_status(Game *game);
  */
 Status game_set_description(Game *game, char *description);
 
+/**
+ * @brief Retrieves the ID of a specific object by its name.
+ * 
+ * @param game Pointer to the game structure.
+ * @param name Name of the object to search for.
+ * @return ID of the object, or NO_ID if not found.
+ */
+Id game_get_object_id_by_name(Game *game, char *name);
+
+/**
+ * @brief Adds an object to the player's inventory.
+ * 
+ * @param game Pointer to the game structure.
+ * @param object_id ID of the object to add.
+ * @return Status indicating success or failure.
+ */
+Status game_add_object_to_player(Game *game, Id object_id);
+
+/**
+ * @brief Removes an object from the player's inventory.
+ * 
+ * @param game Pointer to the game structure.
+ * @param object_id ID of the object to remove.
+ * @return Status indicating success or failure.
+ */
+Status game_remove_object_from_player(Game *game, Id object_id);
 /**  
    * @brief It returns the id of a space in a game
    * @author Profesores PPROG

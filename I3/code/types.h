@@ -40,6 +40,12 @@
  * @brief Defines the maximum number of objects allowed in the project
  */
 #define MAX_OBJECTS 3
+
+/**
+ * @brief Defines the maximum number of objects allowed in a inventory
+ */
+#define MAX_INVENTORY 10
+
 /**
  * @brief Type definition for object IDs
  */

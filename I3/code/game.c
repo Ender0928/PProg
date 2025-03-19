@@ -455,3 +455,37 @@ Status game_get_command_status(Game *game) {
 
   return game->command;
 }
+
+Status game_add_object_to_player(Game *game, Id object_id) {
+  if (!game || object_id == NO_ID) {
+    return ERROR;
+  }
+
+  player_add_object(game->player, object_id);
+  return OK;
+}
+
+Status game_remove_object_from_player(Game *game, Id object_id) {
+  if (!game || object_id == NO_ID) {
+    return ERROR;
+  }
+
+  player_remove_object(game->player, object_id);
+  return OK;
+}
+
+Id game_get_object_id_by_name(Game *game, char *name) {
+  int i;
+
+  if (!game || !name) {
+    return NO_ID;
+  }
+
+  for (i = 0; i < MAX_OBJECTS; i++) {
+    if (strcmp(object_get_name(game->objects[i]), name) == 0) {
+      return object_get_id(game->objects[i]);
+    }
+  }
+
+  return NO_ID;
+}
