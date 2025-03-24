@@ -22,10 +22,6 @@
 struct _Space {
   Id id;                    /*!< Id number of the space, it must be unique */
   char name[WORD_SIZE + 1]; /*!< Name of the space */
-  Id north;                 /*!< Id of the space at the north */
-  Id south;                 /*!< Id of the space at the south */
-  Id east;                  /*!< Id of the space at the east */
-  Id west;                  /*!< Id of the space at the west */
   Set* objects;             /*!< Objects in the space */
   char gdesc[GDESC_ROWS][GDESC_COLS]; /*!< Grafical description>*/
 };
@@ -43,10 +39,6 @@ Space* space_create(Id id) {
 
   newSpace->id = id;
   newSpace->name[0] = '\0';
-  newSpace->north = NO_ID;
-  newSpace->south = NO_ID;
-  newSpace->east = NO_ID;
-  newSpace->west = NO_ID;
   newSpace->objects = set_create();
   
   for (i=0; i < GDESC_ROWS; i++) {
@@ -88,66 +80,6 @@ const char* space_get_name(Space* space) {
     return NULL;
   }
   return space->name;
-}
-
-Status space_set_north(Space* space, Id id) {
-  if (!space) {
-    return ERROR;
-  }
-  space->north = id;
-  return OK;
-}
-
-Id space_get_north(Space* space) {
-  if (!space) {
-    return NO_ID;
-  }
-  return space->north;
-}
-
-Status space_set_south(Space* space, Id id) {
-  if (!space) {
-    return ERROR;
-  }
-  space->south = id;
-  return OK;
-}
-
-Id space_get_south(Space* space) {
-  if (!space) {
-    return NO_ID;
-  }
-  return space->south;
-}
-
-Status space_set_east(Space* space, Id id) {
-  if (!space) {
-    return ERROR;
-  }
-  space->east = id;
-  return OK;
-}
-
-Id space_get_east(Space* space) {
-  if (!space) {
-    return NO_ID;
-  }
-  return space->east;
-}
-
-Status space_set_west(Space* space, Id id) {
-  if (!space) {
-    return ERROR;
-  }
-  space->west = id;
-  return OK;
-}
-
-Id space_get_west(Space* space) {
-  if (!space) {
-    return NO_ID;
-  }
-  return space->west;
 }
 
 Status space_add_object(Space* space, Id id) {
@@ -214,10 +146,6 @@ Status space_print(Space* space) {
   }
 
   fprintf(stdout, "--> Space (Id: %ld; Name: %s)\n", space->id, space->name);
-  fprintf(stdout, "---> North: %ld\n", space->north);
-  fprintf(stdout, "---> South: %ld\n", space->south);
-  fprintf(stdout, "---> East: %ld\n", space->east);
-  fprintf(stdout, "---> West: %ld\n", space->west);
 
   fprintf(stdout, "---> Graphical description:\n");
   for (i = 0; i < GDESC_ROWS; i++) {

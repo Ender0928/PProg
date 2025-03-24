@@ -17,6 +17,7 @@
 #include "object.h"
 #include "player.h"
 #include "character.h"
+#include "link.h"
 
 #define MAX_SPACES 100
 
@@ -342,5 +343,18 @@ Status game_remove_object_from_player(Game *game, Id object_id);
    * @return the id of the space located at the position given
    */
 void game_print(Game *game);
+
+
+char*game_get_object_description(Game *game, Id id_object);
+Status game_set_object_description(Game *game, char *description, Id id_object);
+Inventory *game_get_player_backpack(Game *game);
+
+Id game_get_connection(Game *game, Id space_id, Direction dir);
+
+Bool game_connection_is_open(Game *game, Id space_id, Direction dir);
+
+Status game_add_link(Game *game, Link *link);
+
+Status game_add_player(Game *game, Player *player);
 
 #endif

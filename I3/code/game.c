@@ -27,6 +27,8 @@ struct _Game {
   int n_characters;
   Space *spaces[MAX_SPACES];              /*!< Spaces of the game */
   int n_spaces;                           /*!< Number of spaces in the game */
+  Link *links[MAX_LINKS];
+  int n_links;
   Command *last_cmd;                      /*!< Last command written */
   Bool finished;                          /*!< Finished status of the game */
   char *description;                      /*!< Auxiliar */
@@ -49,7 +51,6 @@ Id game_get_space_id_at(Game *game, int position);
 */
 Status game_create(Game **game) {
   int i;
-  Character *character = NULL;
 
   *game = (Game*)malloc(sizeof(Game));
   
@@ -67,13 +68,18 @@ Status game_create(Game **game) {
   for (i = 0; i < MAX_CHARACTERS; i++) {
     (*game)->characters[i] = NULL;
   }
+  for (i = 0; i < MAX_LINKS; i++) {
+    (*game)->links[i] = NULL;
+  }
+
 
   (*game)->n_spaces = 0;
   (*game)->n_objects = 0;
   (*game)->n_characters = 0;
+  (*game)->n_links = 0;
   (*game)->player = player_create(10);
   (*game)->last_cmd = command_create();
-  character = character_create(7);
+  /*character = character_create(7);
   game_add_character(*game, character);
   character_set_location(character, 11);
   character_set_friendly(character, TRUE);
@@ -84,7 +90,8 @@ Status game_create(Game **game) {
   character_set_location(character, 122);
   character_set_friendly(character, FALSE);
   character_set_name(character, "Enemigo");
-  character_set_message(character, "Hola soy tu enemigo");
+  character_set_message(character, "Hola soy tu enemigo");*/
+
   (*game)->finished = FALSE;
   (*game)->description = "";
   (*game)->command = OK;
@@ -107,6 +114,16 @@ Status game_create_from_file(Game **game, char *filename) {
     game_destroy(game);
     return ERROR;
   }
+
+  if (game_reader_load_links(*game, filename) == ERROR) {
+    game_destroy(game);
+    return ERROR;
+  }
+
+  if(game_reader_load_character(*game, filename) == ERROR) {
+    game_destroy(game);
+    return ERROR;
+  }
   game_set_player_location(*game, game_get_space_id_at(*game, 0));
 
   return OK;
@@ -126,6 +143,10 @@ Status game_destroy(Game **game) {
 
   for (i = 0; i < (*game)->n_characters; i++) {
       character_destroy((*game)->characters[i]);
+  }
+
+  for (i = 0; i < (*game)->n_links; i++) {
+    link_destroy((*game)->links[i]);
   }
   
   command_destroy((*game)->last_cmd);
@@ -150,7 +171,7 @@ Space *game_get_space(Game *game, Id id) {
   return NULL;
 }
 
-Id game_get_player_location(Game *game) { return player_get_location(game->player); }
+Id  game_get_player_location(Game *game) { return player_get_location(game->player); }
 
 Status game_set_player_location(Game *game, Id id) {
   if (id == NO_ID) {
@@ -488,4 +509,77 @@ Id game_get_object_id_by_name(Game *game, char *name) {
   }
 
   return NO_ID;
+}
+
+char* game_get_object_description(Game *game, Id id_object) {
+  if (!game || id_object != NO_ID) {
+    return NULL;
+  }
+  return object_get_description(game_get_object(game, id_object));
+}
+
+Status game_set_object_description(Game *game, char *description, Id id_object) {
+  if (!game || !description) {
+    return ERROR;
+  }
+  return object_set_description(game_get_object(game, id_object), description);
+}
+
+Inventory *game_get_player_backpack(Game *game) {
+  if (!game) {
+    return ERROR;
+  }
+  return player_get_backpack(game->player);
+}
+
+Id game_get_connection(Game *game, Id space_id, Direction dir) {
+  int i;
+  if (!game || space_id == NO_ID) {
+      return NO_ID;
+  }
+  
+  for (i = 0; i < game->n_links; i++) {
+      if (link_get_origin(game->links[i]) == space_id && link_get_direction(game->links[i]) == dir) {
+          return link_get_destination(game->links[i]);
+      }
+  }
+  return NO_ID;
+}
+
+Bool game_connection_is_open(Game *game, Id space_id, Direction dir) {
+  int i;
+  if (!game || space_id == NO_ID) {
+      return FALSE;
+  }
+
+  for (i = 0; i < game->n_links; i++) {
+      if (link_get_origin(game->links[i]) == space_id && link_get_direction(game->links[i]) == dir) {
+          return link_is_open(game->links[i]);
+      }
+  }
+  return FALSE;
+}
+
+Status game_add_link(Game *game, Link *link) {
+    if (!game || !link || game->n_links >= MAX_LINKS) {
+        return ERROR;
+    }
+
+    game->links[game->n_links] = link;
+    game->n_links++;
+    return OK;
+}
+
+Status game_add_player(Game *game, Player *player) {
+  if (!game || !player) {
+      return ERROR;
+  }
+
+  if (game->player != NULL) {
+      return ERROR;
+  }
+
+  game->player = player;
+
+  return OK;
 }

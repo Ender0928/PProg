@@ -16,6 +16,7 @@
 struct _Object{
   Id id;            /*!< Id number of the object, it must be unique */
   char name[TAM];   /*!< Name of the space */
+  char description[TAM];
 };
 
 /** object_create allocates memory for a new object
@@ -35,6 +36,7 @@ Object* object_create (Id id) {
     /* Initialization of an empty object*/
     newObject->id = id;
     newObject->name[0] = '\0';
+    newObject->description[0] = '\0';
 
     return newObject;
 }
@@ -90,6 +92,26 @@ const char * object_get_name(Object* object) {
     return object->name;
 }
 
+/** It sets the description of an object
+  */
+Status object_set_description(Object* object, char *description) {
+    if (!object ||!description) {
+        return ERROR;
+    }
+    if (!strcpy(object->description, description)){
+        return ERROR;
+    }
+    return OK;
+}
+
+/** It gets the description of an object
+  */
+char *object_get_description(Object* object) {
+    if (!object) 
+        return NULL;
+    
+    return object->description;
+}
 
 /** It prints the object information
   */

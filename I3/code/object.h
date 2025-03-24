@@ -84,4 +84,19 @@ const char * object_get_name(Object* object);
   */
 Status object_print(Object* object);
 
+/**
+  * @brief It sets the description of an object
+  * @param object a pointer to the object
+  * @param name a string to the object's description to store
+  * @return OK, if everything goes well or ERROR if there was some mistake
+  */
+Status object_set_description(Object* object, char *name);
+
+/**
+  * @brief It gets the description of an object
+  * @param object a pointer to the object
+  * @return a string with the description of the object
+  */
+char * object_get_description(Object* object);
+
 #endif

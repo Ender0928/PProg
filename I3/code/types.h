@@ -39,7 +39,9 @@
 /**
  * @brief Defines the maximum number of objects allowed in the project
  */
-#define MAX_OBJECTS 3
+#define MAX_OBJECTS 5
+
+#define MAX_LINKS 100
 
 /**
  * @brief Defines the maximum number of objects allowed in a inventory
@@ -70,6 +72,6 @@ typedef enum { ERROR, OK } Status;
  *
  * This enumeration defines the four possible movement directions.
  */
-typedef enum { N, S, E, W } Direction;
+typedef enum { N, S, E, W, U } Direction;
 
 #endif /* TYPES_H */

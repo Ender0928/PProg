@@ -108,7 +108,25 @@ Status game_actions_drop(Game *game);
  */
 Status game_actions_attack(Game *game);
 
+/**
+ * @brief Allows the player to get the message from a Character
+ * @author Profesores PPROG
+ * 
+ * If the player is at the same location as a Character, they'll be able to chat with it.
+ * 
+ * @param game Pointer to the game instance
+ */
 Status game_actions_chat(Game *game);
+
+/**
+ * @brief Allows the player to inspect an Object
+ * @author Profesores PPROG
+ * 
+ * If the player is at the same location as a the object or have it in the inventory, they can inspect it.
+ * 
+ * @param game Pointer to the game instance
+ */
+Status game_actions_inspect(Game *game);
 
 /**
    Game actions implementation
@@ -152,6 +170,9 @@ Status game_actions_update(Game *game, Command *command) {
     case CHAT:
       return game_actions_chat(game);
 
+    case INSPECT:
+      return game_actions_inspect(game);
+
     default:
       return ERROR;
   }
@@ -180,7 +201,7 @@ Status game_actions_next(Game *game) {
     return ERROR;
   }
 
-  current_id = space_get_south(game_get_space(game, space_id));
+  current_id = game_get_connection(game, space_id, S);
   if (current_id != NO_ID) {
     game_set_player_location(game, current_id);
   }
@@ -198,7 +219,7 @@ Status game_actions_back(Game *game) {
     return ERROR;
   }
 
-  current_id = space_get_north(game_get_space(game, space_id));
+  current_id = game_get_connection(game, space_id, N);
   if (current_id != NO_ID) {
     game_set_player_location(game, current_id);
   }
@@ -214,7 +235,7 @@ Status game_actions_left(Game *game){
     return ERROR;
   }
 
-  current_id = space_get_west(game_get_space(game, space_id));
+  current_id = game_get_connection(game, space_id, W);
   if (current_id != NO_ID) {
     game_set_player_location(game, current_id);
   }
@@ -231,7 +252,7 @@ Status game_actions_right(Game *game){
     return ERROR;
   }
 
-  current_id = space_get_east(game_get_space(game, space_id));
+  current_id = game_get_connection(game, space_id, E);
   if (current_id != NO_ID) {
     game_set_player_location(game, current_id);
   }
@@ -358,4 +379,34 @@ Status game_actions_chat(Game *game) {
   game_set_description(game, character_get_message(character));
 
   return OK;
+}
+
+Status game_actions_inspect(Game *game) {
+  char *object_name = "";
+  Id player_location = NO_ID;
+  Id selected_object = NO_ID;
+
+  if (!game) {
+    return ERROR;
+  }
+
+  object_name = command_get_argument(game_get_last_command(game));
+  if (!object_name) {
+    return ERROR;
+  }
+  player_location = game_get_player_location(game);
+  if (player_location == NO_ID) {
+    return ERROR;
+  }
+  
+  selected_object = game_get_object_id_by_name(game, object_name);
+  if (selected_object == NO_ID) {
+    game_set_description(game, "El objeto seleccionado no existe");
+    return ERROR;
+  }
+  if ((inventory_find_object(game_get_player_backpack(game), selected_object)==TRUE) || (player_location == game_get_object_location(game, selected_object))){
+    game_set_description(game,object_get_description(game_get_object(game, selected_object)));
+    
+  }
+  return ERROR;
 }

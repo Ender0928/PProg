@@ -49,7 +49,7 @@ void print_spaces(Graphic_engine *ge, Game *game, Space *space, int act) {
 
   gdesc = space_get_gdesc(space);
   id = space_get_id(space);
-  id_right = space_get_east(space);
+  id_right = game_get_connection(game, space_get_id(space), E);
   
   
   if (id_right != NO_ID) {
@@ -59,7 +59,7 @@ void print_spaces(Graphic_engine *ge, Game *game, Space *space, int act) {
     while(cont < 4) {
       if (space_get_id(aux_right) != NO_ID) {
         strcat(str, "  +-----------+");
-        aux_right = game_get_space(game, space_get_east(aux_right));
+        aux_right = game_get_space(game, game_get_connection(game, space_get_id(aux_right), E));
       } else  {
         break;
       }
@@ -100,7 +100,7 @@ void print_spaces(Graphic_engine *ge, Game *game, Space *space, int act) {
           }
         }
         strcat(str, str_aux);
-        aux_right = game_get_space(game, space_get_east(aux_right));
+        aux_right = game_get_space(game, game_get_connection(game, space_get_id(aux_right), E));
       } else  {
         break;
       }
@@ -119,7 +119,7 @@ void print_spaces(Graphic_engine *ge, Game *game, Space *space, int act) {
           gdesc_right = space_get_gdesc(aux_right);
           sprintf(str_aux, "  |%s  |", gdesc_right[i]);
           strcat(str, str_aux);
-          aux_right = game_get_space(game, space_get_east(aux_right));
+          aux_right = game_get_space(game, game_get_connection(game, space_get_id(aux_right), E));
         } else  {
           break;
         }
@@ -159,7 +159,7 @@ void print_spaces(Graphic_engine *ge, Game *game, Space *space, int act) {
           sprintf(str_aux, "  |           |");
           strcat(str, str_aux);
         }
-        aux_right = game_get_space(game, space_get_east(aux_right));
+        aux_right = game_get_space(game, game_get_connection(game, space_get_id(aux_right), E));
       } else  {
         break;
       }
@@ -173,7 +173,7 @@ void print_spaces(Graphic_engine *ge, Game *game, Space *space, int act) {
     while(cont < 4) {
       if (space_get_id(aux_right) != NO_ID) {
         strcat(str, "  +-----------+");
-        aux_right = game_get_space(game, space_get_east(aux_right));
+        aux_right = game_get_space(game, game_get_connection(game, space_get_id(aux_right), E));
       } else  {
         break;
       }
@@ -280,8 +280,8 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
   screen_area_clear(ge->map);
   if ((id_act = game_get_player_location(game)) != NO_ID) {
     space_act = game_get_space(game, id_act);
-    id_back = space_get_north(space_act);
-    id_next = space_get_south(space_act);
+    id_back = game_get_connection(game, id_act, N);
+    id_next = game_get_connection(game, id_act, S);
     space_back = game_get_space(game, id_back);
     space_next = game_get_space(game, id_next);
     objects = game_get_objects(game);
@@ -349,6 +349,11 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
     sprintf(str, " %s", game_get_description(game));
     screen_area_puts(ge->descript, str);
   }
+
+  if (command_get_code(game_get_last_command(game)) == INSPECT) {
+    sprintf(str, " %s", game_get_description(game));
+    screen_area_puts(ge->descript, str);
+  }
   
   /* Paint in the banner area */
   screen_area_puts(ge->banner, "    The anthill game ");
@@ -357,7 +362,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
   screen_area_clear(ge->help);
   sprintf(str, " The commands you can use are:");
   screen_area_puts(ge->help, str);
-  sprintf(str, "     next or n, back or b, left or l, right or r, exit or e, take or t, drop or d, attack or a, chat or c");
+  sprintf(str, "     next or n, back or b, exit or e, take or t, drop or d, attack or a, chat or c");
   screen_area_puts(ge->help, str);
   
 
