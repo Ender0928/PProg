@@ -357,4 +357,5 @@ Status game_add_link(Game *game, Link *link);
 
 Status game_add_player(Game *game, Player *player);
 
+Status game_next_turn(Game *game);
 #endif

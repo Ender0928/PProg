@@ -70,6 +70,7 @@ void game_loop_run(Game *game, Graphic_engine *gengine) {
     command_get_user_input(last_cmd);
     status = game_actions_update(game, last_cmd);
     game_set_command_status(game, status);
+    game_next_turn(game);
   }
 
 }

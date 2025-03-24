@@ -15,12 +15,21 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define MAX_PLAYERS 5
 /**
    Private functions
 */
 
+typedef struct _PlayerNode {
+  Player *player;
+  struct _PlayerNode *next;
+} PlayerNode;
+
 struct _Game {
   Player *player;                         /*!< Player of the game */
+  PlayerNode *all_players;                /*!< All players of the game */        
+  int turn;
+  int n_players;
   Object *objects[MAX_OBJECTS];           /*!< Objects of the game */
   int n_objects;
   Character *characters[MAX_CHARACTERS];  /*!< Characters of the game */
@@ -72,12 +81,15 @@ Status game_create(Game **game) {
     (*game)->links[i] = NULL;
   }
 
-
+  
+  (*game)->all_players = NULL;
+  (*game)->player = NULL;
   (*game)->n_spaces = 0;
   (*game)->n_objects = 0;
   (*game)->n_characters = 0;
   (*game)->n_links = 0;
-  (*game)->player = NULL;
+  (*game)->n_players = 0;
+  (*game)->turn = 0;
   (*game)->last_cmd = command_create();
   (*game)->finished = FALSE;
   (*game)->description = "";
@@ -121,6 +133,8 @@ Status game_create_from_file(Game **game, char *filename) {
 
 Status game_destroy(Game **game) {
   int i = 0;
+  PlayerNode *current = NULL;
+  PlayerNode *temp = NULL;
 
   for (i = 0; i < (*game)->n_spaces; i++) {
     space_destroy((*game)->spaces[i]);
@@ -138,9 +152,16 @@ Status game_destroy(Game **game) {
   for (i = 0; i < (*game)->n_links; i++) {
     link_destroy((*game)->links[i]);
   }
+
+  current = (*game)->all_players;
+    while (current) {
+        temp = current;
+        current = current->next;
+        player_destroy(temp->player);
+        free(temp);
+    }
   
   command_destroy((*game)->last_cmd);
-  player_destroy((*game)->player);
   free(*game);
   return OK;
 }
@@ -161,7 +182,11 @@ Space *game_get_space(Game *game, Id id) {
   return NULL;
 }
 
-Id  game_get_player_location(Game *game) { return player_get_location(game->player); }
+Id  game_get_player_location(Game *game) { 
+  if (!game)
+    return NO_ID;
+
+  return player_get_location(game->player); }
 
 Status game_set_player_location(Game *game, Id id) {
   if (id == NO_ID) {
@@ -566,15 +591,64 @@ Status game_add_link(Game *game, Link *link) {
 }
 
 Status game_add_player(Game *game, Player *player) {
+  PlayerNode *new_node = NULL;
   if (!game || !player) {
       return ERROR;
   }
 
-  if (game->player != NULL) {
+  new_node = (PlayerNode *)malloc(sizeof(PlayerNode));
+  if (!new_node) {
+      return ERROR;
+  }
+  new_node->player = player;
+  new_node->next = NULL;
+
+  if (!game->all_players) {
+      game->all_players = new_node;
+  } else {
+      PlayerNode *current = game->all_players;
+      while (current->next) {
+          current = current->next;
+      }
+      current->next = new_node;
+  }
+
+  if (!game->player) {
+      game->player = player;
+  }
+  game->n_players++;
+  return OK;
+}
+
+Status set_actual_player(Game *game) {
+  PlayerNode *current = NULL;
+  if (!game || !game->all_players) {
       return ERROR;
   }
 
-  game->player = player;
+  current = game->all_players;
+  int i = 0;
+  while (current) {
+      if (i == game->turn) {
+          game->player = current->player;
+          return OK;
+      }
+      current = current->next;
+      i++;
+  }
 
-  return OK;
+  return ERROR;
+}
+
+Status game_next_turn(Game *game) {
+  if (!game || !game->all_players) {
+      return ERROR;
+  }
+
+  game->turn++;
+  if (game->turn >= game->n_players) {
+      game->turn = 0;
+  }
+
+  return set_actual_player(game);
 }

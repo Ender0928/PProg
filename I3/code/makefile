@@ -4,7 +4,7 @@ CLIB = -lscreen -L.
 
 .PHONY: clean all
 
-all: anthill 
+all: anthill clean_o
 
 test: space_test set_test character_test
 
@@ -68,3 +68,6 @@ clean:
 	rm -f space_test *.o
 	rm -f set_test *.o
 	rm -f character_test *.o
+
+clean_o:
+	rm -f *.o
