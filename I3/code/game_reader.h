@@ -33,4 +33,6 @@ Status game_reader_load_objects(Game *game, char *filename);
 Status game_reader_load_links(Game *game, char *filename);
 
 Status game_reader_load_character(Game *game, char *filename);
+
+Status game_reader_load_players(Game *game, char *filename);
 #endif

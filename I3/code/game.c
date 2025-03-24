@@ -77,21 +77,8 @@ Status game_create(Game **game) {
   (*game)->n_objects = 0;
   (*game)->n_characters = 0;
   (*game)->n_links = 0;
-  (*game)->player = player_create(10);
+  (*game)->player = NULL;
   (*game)->last_cmd = command_create();
-  /*character = character_create(7);
-  game_add_character(*game, character);
-  character_set_location(character, 11);
-  character_set_friendly(character, TRUE);
-  character_set_name(character, "Amigo");
-  character_set_message(character, "Hola soy yo");
-  character = character_create(8);
-  game_add_character(*game, character);
-  character_set_location(character, 122);
-  character_set_friendly(character, FALSE);
-  character_set_name(character, "Enemigo");
-  character_set_message(character, "Hola soy tu enemigo");*/
-
   (*game)->finished = FALSE;
   (*game)->description = "";
   (*game)->command = OK;
@@ -104,7 +91,10 @@ Status game_create_from_file(Game **game, char *filename) {
     return ERROR;
   }
 
-  /*Modificado*/
+  if (game_reader_load_players(*game, filename) == ERROR) {
+    game_destroy(game);
+    return ERROR;
+  }
   if (game_reader_load_spaces(*game, filename) == ERROR) {
     game_destroy(game);
     return ERROR;
@@ -497,19 +487,24 @@ Status game_remove_object_from_player(Game *game, Id object_id) {
 
 Id game_get_object_id_by_name(Game *game, char *name) {
   int i;
+  Object *obj = NULL;
 
   if (!game || !name) {
-    return NO_ID;
+      return NO_ID;
   }
 
   for (i = 0; i < MAX_OBJECTS; i++) {
-    if (strcmp(object_get_name(game->objects[i]), name) == 0) {
-      return object_get_id(game->objects[i]);
-    }
+      obj = game->objects[i];
+      if (obj && object_get_name(obj)) {
+          if (strcmp(object_get_name(obj), name) == 0) {
+              return object_get_id(obj);
+          }
+      }
   }
 
   return NO_ID;
 }
+
 
 char* game_get_object_description(Game *game, Id id_object) {
   if (!game || id_object != NO_ID) {

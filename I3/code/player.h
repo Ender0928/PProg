@@ -153,6 +153,44 @@ Bool player_inventory_is_full(Player *player);
  */
 Status player_has_object(Player *player, Id object);
 
+/**
+ * @brief It sets the maximum number of objects of the backpack of the player
+ * @param player a pointer to the player
+ * @param max_objects the maximum number of objects
+ * @return OK, if everything goes well or ERROR if there was some mistake
+ */
+Status player_set_max_objects(Player *player, int max_objects);
+
+/**
+ * @brief It sets the graphic description of the player
+ * @param player a pointer to the player
+ * @param gdesc the graphic description
+ * @return OK, if everything goes well or ERROR if there was some mistake
+ */
+Status player_set_graphic_desc(Player *player, char *gdesc);
+
+/**
+ * @brief It gets the graphic description of the player
+ * @param player a pointer to the player
+ * @return the graphic description of the player
+ */
+char * player_get_graphic_desc(Player *player);
+
+/**
+ * @brief It sets the turn of the player
+ * @param player a pointer to the player
+ * @param turn the turn of the player
+ * @return OK, if everything goes well or ERROR if there was some mistake
+ */
+Status player_set_turn(Player *player, Bool turn);
+
+/**
+ * @brief It gets the turn of the player
+ * @param player a pointer to the player
+ * @return the turn of the player
+ */
+Bool player_get_turn(Player *player);
+
 Status player_print(Player *player);
 
 #endif

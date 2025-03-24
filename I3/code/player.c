@@ -21,6 +21,8 @@ struct _Player{
     Id location;            /*Id number of the location, it must be unique*/
     int health;             /*Health points of the player*/
     Inventory *backpack;    /*Inventory of the player*/
+    char gdesc[7];          /*Graphic description of the player*/
+    Bool turn;              /*Turn of the player*/
 };
 
 
@@ -45,13 +47,14 @@ Player * player_create (Id id){
     new_player->location=NO_ID;
     new_player->name[0]='\0';
     new_player->health=3;
+    new_player->gdesc[0] = '\0';
     new_player->backpack = inventory_create();
+    new_player->turn = FALSE;
     if (new_player->backpack == NULL)
     {
         free(new_player);
         return NULL;
     }
-
     return new_player;
 }
 
@@ -177,6 +180,31 @@ Inventory *player_get_backpack(Player *player){
     return player->backpack;
 }
 
+Status player_set_turn(Player *player, Bool turn){
+    if (!player)
+    {
+        return ERROR;
+    }
+    player->turn = turn;
+    return OK;
+}
+
+Bool player_get_turn(Player *player){
+    if (!player)
+    {
+        return FALSE;
+    }
+    return player->turn;
+}
+
+Status player_set_max_objects(Player *player, int max_objects){
+    if (!player || max_objects < 0)
+    {
+        return ERROR;
+    }
+    return inventory_set_max_value(player->backpack, max_objects);
+}
+
 Bool player_inventory_is_empty(Player *player){
     if (!player)
     {
@@ -199,6 +227,17 @@ Status player_has_object(Player *player, Id object){
         return ERROR;
     }
     return inventory_find_object(player->backpack, object);
+}
+
+Status player_set_graphic_desc(Player *player, char *gdesc) {
+    if (!player || !gdesc)
+        return ERROR;
+
+    if (strlen(gdesc) >= 6)
+        return ERROR;
+
+    strcpy(player->gdesc, gdesc);
+    return OK;
 }
 
 Status player_print(Player* player){

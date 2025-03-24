@@ -278,15 +278,14 @@ Status game_reader_load_character(Game *game, char *filename) {
   return OK;
 }
 
-/*
 Status game_reader_load_players(Game *game, char *filename) {
   FILE* file = NULL;
   char line[WORD_SIZE] = "";
   char name[WORD_SIZE] = "";
   char* toks = NULL;
   Id id = NO_ID, position = NO_ID;
-  int health = 0, max_objects = 0;
-  char gdesc[GDESC_COLS] = "";
+  int health = 0, max_objects = 0, count = 0;
+  char gdesc[7] = "";
   Player* player = NULL;
   Status st = OK;
 
@@ -308,8 +307,7 @@ Status game_reader_load_players(Game *game, char *filename) {
           strcpy(name, toks);
 
           toks = strtok(NULL, "|");
-          strncpy(gdesc, toks, GDESC_COLS - 1);
-          gdesc[GDESC_COLS - 1] = '\0';
+          strcpy(gdesc, toks);
 
           toks = strtok(NULL, "|");
           position = atol(toks);
@@ -325,20 +323,20 @@ Status game_reader_load_players(Game *game, char *filename) {
 #endif
 
           player = player_create(id);
-          if (player != NULL) {
-              if (player_set_name(player, name) == ERROR ||
-                  player_set_graphic_desc(player, gdesc) == ERROR ||
-                  player_set_location(player, position) == ERROR ||
-                  player_set_health(player, health) == ERROR ||
-                  player_set_max_objects(player, max_objects) == ERROR ||
-                  game_add_player(game, player) == ERROR) {
-                  
-                  player_destroy(player);
-                  st = ERROR;
-              }
-          } else {
-              st = ERROR;
+          
+          player_set_name(player, name);
+          player_set_graphic_desc(player, gdesc);
+          player_set_location(player, position);
+          player_set_health(player, health);
+          player_set_max_objects(player, max_objects);
+          if(count == 0){
+              player_set_turn(player, TRUE);
+              count++;
           }
+
+          game_add_player(game, player);
+          player_print(player);
+
       }
   }
 
@@ -349,4 +347,4 @@ Status game_reader_load_players(Game *game, char *filename) {
   fclose(file);
   return st;
 }
-*/
+
