@@ -12,7 +12,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
+#include "space.h"
 
 
 struct _Player{
@@ -23,6 +23,7 @@ struct _Player{
     Inventory *backpack;    /*Inventory of the player*/
     char gdesc[7];          /*Graphic description of the player*/
     Bool turn;              /*Turn of the player*/
+    Space *Discorvered; /*Discovered spaces of the player*/
 };
 
 
@@ -158,7 +159,6 @@ Status player_set_health(Player *player, int health){
     if (!player || health<0) {
         return ERROR;
     }
-    printf("Player health: %d\n", health);
     player->health = health;
 return OK;
 }

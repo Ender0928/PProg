@@ -16,6 +16,7 @@
 #define GDESC_ROWS 5
 #define GDESC_COLS 10
 
+
 typedef struct _Space Space;
 
 /**
@@ -114,6 +115,27 @@ Id space_get_south(Space* space);
 Status space_set_east(Space* space, Id id);
 
 /**
+ * @brief It sets whether the space has been discovered or not
+ * @author leandro p
+ *
+ * @param space a pointer to the space
+ * 
+ * @return TRUE if the space has been discovered, FALSE otherwise
+ */
+Bool space_get_discovered(Space* space);
+/**
+ * @brief It gets whether the space has been discovered or not
+ *
+ * @author leandro p
+ *
+ * @param space a pointer to the space
+ * @param discovered a boolean, specifying if the space has been discovered (TRUE) or not (FALSE)
+ * 
+ * @return OK if the space has been discovered, ERROR otherwise
+ */
+Status space_set_discovered(Space* space, Bool discovered);
+
+/**
  * @brief It gets the id of the space located at the east
  * @author Profesores PPROG
  *
@@ -160,14 +182,46 @@ Status space_add_object(Space* space, Id id);
  */
 Status space_remove_object(Space* space, Id id);
 
+/**
+ * @brief Checks if a space contains a specific object.
+ *
+ * @param space Pointer to the space.
+ * @param id ID of the object to check.
+ * @return TRUE if the object is in the space, FALSE otherwise.
+ */
 Bool space_has_object(Space* space, Id id);
 
+/**
+ * @brief Retrieves the IDs of all objects in a space.
+ *
+ * @param space Pointer to the space.
+ * @return Pointer to an array of object IDs, or NULL if no objects exist.
+ */
 Id* space_get_objects(Space* space);
 
+/**
+ * @brief Retrieves the number of objects in a space.
+ *
+ * @param space Pointer to the space.
+ * @return The number of objects in the space.
+ */
 int space_get_num_objects(Space* space);
 
+/**
+ * @brief Retrieves the graphical description (gdesc) of a space.
+ *
+ * @param space Pointer to the space.
+ * @return A 2D array representing the graphical description of the space.
+ */
 char (*space_get_gdesc(Space *space))[GDESC_COLS];
 
+/**
+ * @brief Sets the graphical description (gdesc) of a space.
+ *
+ * @param space Pointer to the space.
+ * @param gdesc A 2D array representing the new graphical description.
+ * @return Status indicating success or failure.
+ */
 Status space_set_gdesc(Space* space, char gdesc[GDESC_ROWS][GDESC_COLS]);
 
 /**

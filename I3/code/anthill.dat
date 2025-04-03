@@ -7,17 +7,17 @@
 #s:126|Corridor 6|    _    | \ \___  | \ mo'\_ | \ @ _   | \__/\__ |
 #s:127|Corridor 7|    _    | \ \___  | \ mo'\_ | \ @ _   | \__/\__ |
 #s:13|Pantry|    _    | \ \___  | \ mo'\_ | \ @ _   | \__/\__ |
-#s:14|Hole|    __   |  \\__//| \ mo'\_ | \ @ _   | \__/\__ |
+#s:14|Hole|    __   |  \\__// | \ mo'\_ | \ @ _   | \__/\__ |
 
-#o:4|Grain|11|Hola|
-#o:5|Leaf|11|Hola2|
-#o:6|Egg|124|Hola4|
-#o:7|Papiro|121|Hola6|
+#o:5|Grain|11|Hola|
+#o:6|Leaf|11|Hola2|
+#o:7|Egg|124|Hola4|
+#o:8|Papiro|121|Para acceder al pasillo 124 deberas llegar al agujero|
 
 #p:1|ant|mO^|11|5|3|
-#p:2|ant|/\oo/\|123|5|0|
 
-#c:2|spider|/\oo/\|123|5|0|I won't talk to you!
+#c:3|spider|/\oo/\|123|5|0|I won't talk to you!
+#c:4|slug|^0m|124|5|1|Hi!
 
 #l:31|Entry|11|121|1|1|
 #l:48|Pasillo 1|121|11|0|1|
@@ -34,6 +34,7 @@
 #l:42|Pasillo 2|122|123|1|1|
 #l:43|Pasillo 3|123|122|0|1|
 #l:44|Pasillo 3|123|124|1|0|
-#l:45|Pasillo 4|124|123|0|0|
+#l:45|Pasillo 4|124|123|0|1|
 #l:46|Pasillo 4|124|13|1|1|
 #l:47|Despensa|13|124|0|1|
+#l:48|Agujero|14|13|1|1|

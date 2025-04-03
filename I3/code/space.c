@@ -14,16 +14,21 @@
 #include <string.h>
 #include "set.h"
 
+
 /**
  * @brief Space
  *
  * This struct stores all the information of a space.
  */
+
+
+
 struct _Space {
   Id id;                    /*!< Id number of the space, it must be unique */
   char name[WORD_SIZE + 1]; /*!< Name of the space */
   Set* objects;             /*!< Objects in the space */
   char gdesc[GDESC_ROWS][GDESC_COLS]; /*!< Grafical description>*/
+  Bool discovered; /*!< Discovered status of the space */
 };
 
 Space* space_create(Id id) {
@@ -138,6 +143,22 @@ Status space_set_gdesc(Space* space, char gdesc[GDESC_ROWS][GDESC_COLS]) {
   return OK;
 }
 
+
+Status space_set_discovered(Space* space, Bool discovered) {
+  if (!space) {
+    return ERROR;
+  }
+  space->discovered = discovered;
+  return OK;
+}
+
+Bool space_get_discovered(Space* space) {
+  if (!space) {
+    return FALSE;
+  }
+  return space->discovered;
+}
+
 Status space_print(Space* space) {
   int i;
 
@@ -155,5 +176,8 @@ Status space_print(Space* space) {
   fprintf(stdout, "---> Objects in space:\n");
   set_print(space->objects);
 
+
+  fprintf(stdout, "---> Discovered: %s\n", space->discovered ? "YES" : "NO");
+  fprintf(stdout, "\n");
   return OK;
 }

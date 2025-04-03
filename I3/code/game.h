@@ -214,6 +214,27 @@ Status game_remove_character(Game *game, Id id);
 Bool game_has_character(Game *game, Id id);
 
 /**
+ * @brief Get if the space was discovered or not.
+ * 
+ * @param game Pointer to the game structure.
+ * @param space_id ID of the space to check.
+ * 
+ * @return  TRUE if discovered, FALSE otherwise.
+ */
+Bool game_get_discovered(Game *game,Id space_id);
+
+/**
+ * @brief Set the discovered Boolean of a space.
+ * 
+ * @param game Pointer to the game structure.
+ * @param space_id ID of the space to set.
+ * @param discovered Boolean indicating if the space is discovered or not.
+ * @return Status indicating success or failure.
+ */
+Status game_set_discovered(Game *game,Id space_id, Bool discovered);
+
+
+/**
  * @brief Retrieves all objects in the game.
  * 
  * @param game Pointer to the game structure.
@@ -345,17 +366,87 @@ Status game_remove_object_from_player(Game *game, Id object_id);
 void game_print(Game *game);
 
 
-char*game_get_object_description(Game *game, Id id_object);
+/**
+ * @brief it gets the name of an object by its id
+ *
+ * @param game a pointer to the game
+ * @param id_object the id of the object
+ * @return the name of the object
+ */
+char* game_get_object_description(Game *game, Id id_object);
+
+/**
+ * @brief it sets the name of an object by its id
+ *
+ * @param game a pointer to the game
+ * @param description the name of the object
+ * @param id_object the id of the object
+ * @return OK if everything goes well, ERROR if there was some mistake
+ */
 Status game_set_object_description(Game *game, char *description, Id id_object);
-Inventory *game_get_player_backpack(Game *game);
 
-Id game_get_connection(Game *game, Id space_id, Direction dir);
+/**
+ * @brief Retrieves the player's backpack (inventory).
+ *
+ * @param game Pointer to the game structure.
+ * @return Pointer to the player's inventory.
+ */
+ Inventory *game_get_player_backpack(Game *game);
 
-Bool game_connection_is_open(Game *game, Id space_id, Direction dir);
+/**
+ * @brief Retrieves the ID of the connection in a specific direction from a space.
+ *
+ * @param game Pointer to the game structure.
+ * @param space_id ID of the space.
+ * @param dir Direction of the connection.
+ * @return ID of the connected space, or NO_ID if no connection exists.
+ */
+ Id game_get_connection(Game *game, Id space_id, Direction dir);
+ 
+/**
+ * @brief Checks if a connection in a specific direction is open.
+ *
+ * @param game Pointer to the game structure.
+ * @param space_id ID of the space.
+ * @param dir Direction of the connection.
+ * @return TRUE if the connection is open, FALSE otherwise.
+ */
+ Bool game_connection_is_open(Game *game, Id space_id, Direction dir);
+ 
+/**
+ * @brief Adds a link to the game.
+ *
+ * @param game Pointer to the game structure.
+ * @param link Pointer to the link to be added.
+ * @return Status indicating success or failure.
+ */
+ Status game_add_link(Game *game, Link *link);
+ 
+/**
+ * @brief Adds a player to the game.
+ *
+ * @param game Pointer to the game structure.
+ * @param player Pointer to the player to be added.
+ * @return Status indicating success or failure.
+ */
+ Status game_add_player(Game *game, Player *player);
+ 
+/**
+ * @brief Advances the game to the next turn.
+ *
+ * @param game Pointer to the game structure.
+ * @return Status indicating success or failure.
+ */
+ Status game_next_turn(Game *game);
 
-Status game_add_link(Game *game, Link *link);
-
-Status game_add_player(Game *game, Player *player);
-
-Status game_next_turn(Game *game);
+ char *game_get_str_command(Game *game);
+ 
+/**
+ * @brief Prints the details of a specific space in the game.
+ *
+ * @param game Pointer to the game structure.
+ * @param space Pointer to the space to be printed.
+ * @return Status indicating success or failure.
+ */
+ Status game_space_print(Game *game, Space *space);
 #endif

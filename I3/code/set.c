@@ -84,7 +84,7 @@ Status set_print(Set* set) {
     fprintf(stdout, "Number of objects in the Set: %d\n", set->n_ids);
 
     for (i = 0; i < set->n_ids; i++) {
-        fprintf(stdout, "Id: %ld\n", set->ids[i]);
+        fprintf(stdout, "Id [%d]: %ld\n", i+1, set->ids[i]);
     }
     return OK;
 }

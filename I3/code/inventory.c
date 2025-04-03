@@ -17,7 +17,7 @@
  */
 struct _Inventory{
     Set* set_obj;       /*set with all of the ids*/
-    int max_objs;        /*max num of objects a player can carry*/
+    int max_objs;       /*max num of objects a player can carry*/
 };
 
 Inventory* inventory_create(){

@@ -22,7 +22,9 @@
 
 typedef struct _PlayerNode {
   Player *player;
+  
   struct _PlayerNode *next;
+
 } PlayerNode;
 
 struct _Game {
@@ -43,8 +45,6 @@ struct _Game {
   char *description;                      /*!< Auxiliar */
   Status command;                           /*!< Status for the last command */  
 }; 
-
-/*Status game_add_space(Game *game, Space *space);*/
 
 /**
   * @brief It returns the id of a space in a game
@@ -126,7 +126,6 @@ Status game_create_from_file(Game **game, char *filename) {
     game_destroy(game);
     return ERROR;
   }
-  game_set_player_location(*game, game_get_space_id_at(*game, 0));
 
   return OK;
 }
@@ -325,6 +324,7 @@ Object *game_get_object(Game *game, Id id) {
 
   return NULL;
 }
+
 
 Bool game_has_object(Game *game, Id id) {
   int i = 0;
@@ -562,7 +562,7 @@ Id game_get_connection(Game *game, Id space_id, Direction dir) {
       if (link_get_origin(game->links[i]) == space_id && link_get_direction(game->links[i]) == dir) {
           return link_get_destination(game->links[i]);
       }
-  }
+  } 
   return NO_ID;
 }
 
@@ -588,6 +588,34 @@ Status game_add_link(Game *game, Link *link) {
     game->links[game->n_links] = link;
     game->n_links++;
     return OK;
+}
+
+Bool game_get_discovered(Game *game, Id space_id) {
+  Space *space = NULL;
+  if (!game || space_id == NO_ID) {
+      return FALSE;
+  }
+
+  space = game_get_space(game, space_id);
+  if (!space) {
+      return FALSE;
+  }
+
+  return space_get_discovered(space);
+}
+
+Status game_set_discovered(Game *game, Id space_id, Bool discovered) {
+  Space *space = NULL;
+  if (!game || space_id == NO_ID) {
+      return ERROR;
+  }
+
+  space = game_get_space(game, space_id);
+  if (!space) {
+      return ERROR;
+  }
+
+  return space_set_discovered(space, discovered);
 }
 
 Status game_add_player(Game *game, Player *player) {
@@ -621,13 +649,14 @@ Status game_add_player(Game *game, Player *player) {
 }
 
 Status set_actual_player(Game *game) {
+  int i = 0;
+  
   PlayerNode *current = NULL;
   if (!game || !game->all_players) {
       return ERROR;
   }
 
   current = game->all_players;
-  int i = 0;
   while (current) {
       if (i == game->turn) {
           game->player = current->player;
@@ -651,4 +680,25 @@ Status game_next_turn(Game *game) {
   }
 
   return set_actual_player(game);
+}
+
+char *game_get_str_command(Game *game) {
+  if (!game) {
+    return NULL;
+  }
+
+  return command_get_name(game->last_cmd);
+}
+
+Status game_space_print(Game *game, Space *space) {
+  if(!space || !game) {
+    return ERROR;
+  }
+  space_print(space);
+  fprintf(stdout, "Norte: %d\n", (int)game_get_connection(game, space_get_id(space), N));
+  fprintf(stdout, "Sur: %d\n", (int)game_get_connection(game, space_get_id(space), S));
+  fprintf(stdout, "West: %d\n", (int)game_get_connection(game, space_get_id(space), W));
+  fprintf(stdout, "East: %d\n", (int)game_get_connection(game, space_get_id(space), E));
+
+  return OK;
 }

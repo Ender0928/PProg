@@ -40,44 +40,15 @@ Status game_actions_unknown(Game *game);
 Status game_actions_exit(Game *game);
 
 /**
- * @brief Moves the player to the next space (south)
+ * @brief Moves the player to the selected space
  * @author Profesores PPROG
  *
- * If there is a valid space to the south, the player is moved to it.
+ * If there is a valid link to the specified space, the player is moved to it.
  *
  * @param game Pointer to the game instance
  */
-Status game_actions_next(Game *game);
+Status game_actions_move(Game *game);
 
-/**
- * @brief Moves the player to the previous space (north)
- * @author Profesores PPROG
- *
- * If there is a valid space to the north, the player is moved to it.
- *
- * @param game Pointer to the game instance
- */
-Status game_actions_back(Game *game);
-
-/**
- * @brief Allows the player to the left of the current location
- * @author Profesores PPROG
- *
- * If there is a valid space to the left, the player is moved to it.
- *
- * @param game Pointer to the game instance
- */
-Status game_actions_left(Game *game);
-
-/**
- * @brief Allows the player to the right of the current location
- * @author Profesores PPROG
- *
- * If there is a valid space to the right, the player is moved to it.
- *
- * @param game Pointer to the game instance
- */
-Status game_actions_right(Game *game);
 /**
  * @brief Allows the player to take an object
  * @author Profesores PPROG
@@ -146,18 +117,9 @@ Status game_actions_update(Game *game, Command *command) {
     case EXIT:
       return game_actions_exit(game);
 
-    case NEXT:
-      return game_actions_next(game);
+    case MOVE:
+      return game_actions_move(game);
 
-    case BACK:
-      return game_actions_back(game);
-
-    case LEFT:
-      return game_actions_left(game);
-
-    case RIGHT:
-      return game_actions_right(game);
-      
     case TAKE:
       return game_actions_take(game);
 
@@ -189,74 +151,6 @@ Status game_actions_unknown(Game *game) {
 }
 
 Status game_actions_exit(Game *game) {
-  return OK;
-}
-
-Status game_actions_next(Game *game) {
-  Id current_id = NO_ID;
-  Id space_id = NO_ID;
-
-  space_id = game_get_player_location(game);
-  if (space_id == NO_ID) {
-    return ERROR;
-  }
-
-  current_id = game_get_connection(game, space_id, S);
-  if (current_id != NO_ID) {
-    game_set_player_location(game, current_id);
-  }
-
-  return OK;
-}
-
-Status game_actions_back(Game *game) {
-  Id current_id = NO_ID;
-  Id space_id = NO_ID;
-
-  space_id = game_get_player_location(game);
-
-  if (NO_ID == space_id) {
-    return ERROR;
-  }
-
-  current_id = game_get_connection(game, space_id, N);
-  if (current_id != NO_ID) {
-    game_set_player_location(game, current_id);
-  }
-  return OK;
-}
-
-Status game_actions_left(Game *game){
-  Id current_id = NO_ID;
-  Id space_id = NO_ID;
-
-  space_id = game_get_player_location(game);
-  if (space_id == NO_ID) {
-    return ERROR;
-  }
-
-  current_id = game_get_connection(game, space_id, W);
-  if (current_id != NO_ID) {
-    game_set_player_location(game, current_id);
-  }
-
-  return OK;
-}
-
-Status game_actions_right(Game *game){
-  Id current_id = NO_ID;
-  Id space_id = NO_ID;
-
-  space_id = game_get_player_location(game);
-  if (space_id == NO_ID) {
-    return ERROR;
-  }
-
-  current_id = game_get_connection(game, space_id, E);
-  if (current_id != NO_ID) {
-    game_set_player_location(game, current_id);
-  }
-
   return OK;
 }
 
@@ -374,7 +268,7 @@ Status game_actions_chat(Game *game) {
   if (!game) { return ERROR; }
 
   character = game_get_character_at_location(game, game_get_player_location(game));
-  if (!character ||character_is_friendly(character) == FALSE) { return ERROR; }
+  if (!character || character_is_friendly(character) == FALSE) { return ERROR; }
 
   game_set_description(game, character_get_message(character));
 
@@ -406,7 +300,42 @@ Status game_actions_inspect(Game *game) {
   }
   if ((inventory_find_object(game_get_player_backpack(game), selected_object)==TRUE) || (player_location == game_get_object_location(game, selected_object))){
     game_set_description(game,object_get_description(game_get_object(game, selected_object)));
-    
+    return OK;
   }
+  return ERROR;
+}
+
+
+Status game_actions_move(Game *game) {
+  Id space_id = NO_ID; 
+  Id new_location = NO_ID;
+  Direction direction = U;
+  game_set_description(game, "");
+  direction = command_get_direction(game_get_last_command(game));
+
+  if (direction != N && direction != S && direction != E && direction != W && direction == U) {
+    game_set_description(game, "Selecciona una direccion valida (N, S, E, W)");
+    return ERROR;
+  }
+
+  space_id = game_get_player_location(game);
+  if (space_id == NO_ID) {
+    return ERROR;
+  }
+  
+  if (game_connection_is_open(game, space_id, direction)==FALSE) {
+    game_set_description(game, """La puerta para acceder a la sala en esta direccion esta cerrada""");
+    return ERROR;
+  }
+
+  new_location = game_get_connection(game, space_id, direction);
+  if (new_location != NO_ID) {
+    game_set_player_location(game, new_location);
+   
+    game_set_discovered(game, new_location, TRUE);
+    space_print(game_get_space(game, new_location));
+    return OK;
+  }  
+
   return ERROR;
 }

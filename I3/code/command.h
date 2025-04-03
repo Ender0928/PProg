@@ -14,7 +14,7 @@
 #include "types.h"
 
 #define N_CMDT 2
-#define N_CMD 12
+#define N_CMD 13
 
 /**
  * @brief Types of commands
@@ -29,7 +29,7 @@ typedef enum { CMDS, CMDL } CommandType;
  *
  * These codes represent different commands that can be executed.
  */
-typedef enum { NO_CMD = -1, UNKNOWN, EXIT, NEXT, BACK, LEFT, RIGHT, TAKE, DROP, ATTACK, CHAT, INSPECT} CommandCode;
+typedef enum { NO_CMD = -1, UNKNOWN, EXIT, NEXT, BACK, LEFT, RIGHT, TAKE, DROP, ATTACK, CHAT, INSPECT, MOVE} CommandCode;
 
 /**
  * @brief Definition of Command structure
@@ -88,6 +88,26 @@ CommandCode command_get_code(Command* command);
  */
 Status command_get_user_input(Command* command);
 
+/**
+ *@brief Gets the command argument
+ *
+ *Retrieves the argument of the command write by the player
+ *
+ *@param command Pointer to the command
+ *@return The text of the argument given by the player   
+ */
 char *command_get_argument(Command *command);
+
+/**
+ *@brief Gets the direction of the command
+ *
+ *Retrieves the direction of the command
+ *
+ *@param command Pointer to the command
+ *@return The direction of the command 
+ */
+Direction command_get_direction(Command *command);
+
+char *command_get_name(Command *code);
 
 #endif

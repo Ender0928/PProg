@@ -9,7 +9,7 @@ struct _Link{
     char name[WORD_SIZE];
     Id origin;
     Id destination;
-    Direction direction;
+    Direction direction; 
     Bool open;
 };
 

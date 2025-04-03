@@ -17,7 +17,7 @@
  
  #define CMD_LENGHT 30
  
- char *cmd_to_str[N_CMD][N_CMDT] = {{"", "No command"}, {"", "Unknown"}, {"e", "Exit"}, {"n", "Next"}, {"b", "Back"}, {"l", "Left"}, {"r", "Right"}, {"t", "Take"}, {"d", "Drop"}, {"a", "Attack"}, {"c", "chat"}, {"i", "inspect"}};
+ char *cmd_to_str[N_CMD][N_CMDT] = {{"", "No command"}, {"", "Unknown"}, {"e", "Exit"}, {"n", "Next"}, {"b", "Back"}, {"l", "Left"}, {"r", "Right"}, {"t", "Take"}, {"d", "Drop"}, {"a", "Attack"}, {"c", "Chat"}, {"i", "Inspect"}, {"m", "Move"}};
  
  /**
   * @brief Command
@@ -27,6 +27,7 @@
  struct _Command {
    CommandCode code; /*!< Name of the command */
    char argument[CMD_LENGHT]; /*!< Argument of the command */
+   Direction direction; /*!< direction of the command */
  };
  
  /** space_create allocates memory for a new space
@@ -101,12 +102,26 @@
  
      token = strtok(NULL, " \n");
      if (token) {
-       strncpy(command->argument, token, CMD_LENGHT - 1);
-       command->argument[CMD_LENGHT - 1] = '\0';
-     } else {
-       command->argument[0] = '\0';
+      if (strcasecmp(token, "N")==0){
+        command->direction = N;
+      }
+      else if (strcasecmp(token, "E")==0){
+        command->direction = E;
+      }
+      else if (strcasecmp(token, "W")==0){
+        command->direction = W;
+      }
+      else if (strcasecmp(token, "S")==0){
+        command->direction = S;
+      }
+      else {
+        strncpy(command->argument, token, CMD_LENGHT - 1);
+        command->argument[CMD_LENGHT - 1] = '\0';
+      }
      }
- 
+     else {
+        command->argument[0] = '\0';
+     }
      return OK;
    }
  
@@ -118,5 +133,19 @@
      return NULL;
    }
    return command->argument;
+ }
+
+ Direction command_get_direction(Command *command) {
+  if (!command) {
+    return U;
+  }
+  return command->direction;
+ }
+
+ char *command_get_name(Command *code) {
+   if (command_get_code(code) < NO_CMD || command_get_code(code) >= N_CMD) {
+     return NULL;
+   }
+   return cmd_to_str[command_get_code(code) + 1][CMDL];
  }
  

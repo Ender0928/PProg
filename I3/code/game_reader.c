@@ -63,13 +63,22 @@ Status game_reader_load_spaces(Game *game, char *filename) {
 #endif
       space = space_create(id);
       if (space != NULL) {
+        if(space_get_id(space) == 11) {
+            
+          space_set_discovered(space,TRUE);
+        }else{
+          space_set_discovered(space,FALSE);
+        }
+
         if (space_set_name(space, name) == ERROR ||
             space_set_gdesc(space, gdesc) == ERROR ||
+          
             game_add_space(game, space) == ERROR) {
             
             space_destroy(space);
             st = ERROR;
         }
+
       } else {
           st = ERROR;
       }
@@ -157,6 +166,7 @@ Status game_reader_load_links(Game *game, char *filename) {
       return ERROR;
   }
 
+  /*#l:id|name|origen|dstino|open|*/
   while (fgets(line, WORD_SIZE, file)) {
       if (strncmp("#l:", line, 3) == 0) {
           toks = strtok(line + 3, "|");
@@ -172,9 +182,9 @@ Status game_reader_load_links(Game *game, char *filename) {
           toks = strtok(NULL, "|");
           open = atoi(toks);
 
-          #ifdef DEBUG
+        #ifdef DEBUG
           printf("Leido Link: %ld|%s|%ld|%ld|%d|%d\n", id, name, origin, destination, direction, open);
-          #endif
+        #endif
 
           link = link_create(id);
           if (link) {
@@ -188,7 +198,6 @@ Status game_reader_load_links(Game *game, char *filename) {
               fclose(file);
               return ERROR;
           }
-          link_print(link);
       }
   }
 
@@ -335,8 +344,6 @@ Status game_reader_load_players(Game *game, char *filename) {
           }
 
           game_add_player(game, player);
-          player_print(player);
-
       }
   }
 
