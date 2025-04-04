@@ -14,6 +14,10 @@
 
 #define P 1
 
+/**
+ * @brief Defines the maximum health of the players
+ */
+#define PLAYER_HEALTH 3
 
 typedef struct _Player Player;
 

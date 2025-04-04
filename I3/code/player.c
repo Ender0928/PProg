@@ -21,9 +21,9 @@ struct _Player{
     Id location;            /*Id number of the location, it must be unique*/
     int health;             /*Health points of the player*/
     Inventory *backpack;    /*Inventory of the player*/
-    char gdesc[7];          /*Graphic description of the player*/
+    char gdesc[TAM_GDESC];  /*Graphic description of the player*/
     Bool turn;              /*Turn of the player*/
-    Space *Discorvered; /*Discovered spaces of the player*/
+    Space *Discorvered;     /*Discovered spaces of the player*/
 };
 
 
@@ -47,7 +47,7 @@ Player * player_create (Id id){
     new_player->id= id;
     new_player->location=NO_ID;
     new_player->name[0]='\0';
-    new_player->health=3;
+    new_player->health = PLAYER_HEALTH;
     new_player->gdesc[0] = '\0';
     new_player->backpack = inventory_create();
     new_player->turn = FALSE;

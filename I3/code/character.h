@@ -12,6 +12,11 @@
 
 #define P 1
 
+/**
+ * @brief Defines the maximum health of the characters
+ */
+#define CHARACTER_HEALTH 3
+
 typedef struct _Character Character;
 
 /**

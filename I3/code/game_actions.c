@@ -228,6 +228,9 @@ Status game_actions_attack(Game *game){
   if (!character)
     return ERROR;
 
+  if (player_location != character_get_location(character))
+    return ERROR;
+  
   player_health = game_get_player_health(game);
   character_health = game_get_character_health(game, character);
 
@@ -254,7 +257,7 @@ Id select_object_in_current_location_by_name(Game *game, char *name, Id location
   for (i=0; i<MAX_OBJECTS; i++) {
     obj = objects[i];
     if (obj != NULL && game_get_object_location(game, object_get_id(obj)) == location) {
-      if (strcasecmp(object_get_name(obj), name) == 0) {
+      if (strcmp(object_get_name(obj), name) == 0) {
         return object_get_id(obj);
       }
     }

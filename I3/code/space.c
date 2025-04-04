@@ -24,11 +24,11 @@
 
 
 struct _Space {
-  Id id;                    /*!< Id number of the space, it must be unique */
-  char name[WORD_SIZE + 1]; /*!< Name of the space */
-  Set* objects;             /*!< Objects in the space */
+  Id id;                              /*!< Id number of the space, it must be unique */
+  char name[WORD_SIZE + 1];           /*!< Name of the space */
+  Set* objects;                       /*!< Objects in the space */
   char gdesc[GDESC_ROWS][GDESC_COLS]; /*!< Grafical description>*/
-  Bool discovered; /*!< Discovered status of the space */
+  Bool discovered;                    /*!< Discovered status of the space */
 };
 
 Space* space_create(Id id) {

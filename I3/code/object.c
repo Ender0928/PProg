@@ -14,9 +14,9 @@
 #include "object.h"
 
 struct _Object{
-  Id id;            /*!< Id number of the object, it must be unique */
-  char name[TAM];   /*!< Name of the space */
-  char description[TAM];
+  Id id;                    /*!< Id number of the object, it must be unique */
+  char name[TAM];           /*!< Name of the space */
+  char description[TAM];    /*!< Description of the space */
 };
 
 /** object_create allocates memory for a new object

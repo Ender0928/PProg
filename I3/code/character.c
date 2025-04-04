@@ -14,7 +14,7 @@
 struct _Character {
     Id id;                      /*!< Identification number of the character */
     char name[TAM_C];           /*!< Name of the character */
-    char gdesc[7];              /*!< Graphic description (6 characters + '\0') */
+    char gdesc[TAM_GDESC];      /*!< Graphic description (6 characters + '\0') */
     int health;                 /*!< Health points of the character */
     Bool friendly;              /*!< Boolean indicating if the character is friendly */
     char message[TAM_C];        /*!< Message associated with the character */
@@ -35,7 +35,7 @@ Character *character_create(Id id) {
     character->id = id;
     character->name[0] = '\0';
     character->gdesc[0] = '\0';
-    character->health = 3;    
+    character->health = CHARACTER_HEALTH;    
     character->friendly = FALSE;
     character->message[0] = '\0';
     character->location = NO_ID;

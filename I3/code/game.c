@@ -30,20 +30,20 @@ typedef struct _PlayerNode {
 struct _Game {
   Player *player;                         /*!< Player of the game */
   PlayerNode *all_players;                /*!< All players of the game */        
-  int turn;
-  int n_players;
+  int turn;                               /*!< Turn of the game */
+  int n_players;                          /*!< Number of players in the game */
   Object *objects[MAX_OBJECTS];           /*!< Objects of the game */
-  int n_objects;
+  int n_objects;                          /*!< Number of objects in the game */
   Character *characters[MAX_CHARACTERS];  /*!< Characters of the game */
-  int n_characters;
+  int n_characters;                       /*!< Number of characters in the game */
   Space *spaces[MAX_SPACES];              /*!< Spaces of the game */
   int n_spaces;                           /*!< Number of spaces in the game */
-  Link *links[MAX_LINKS];
-  int n_links;
+  Link *links[MAX_LINKS];                 /*!< Links of the game */
+  int n_links;                            /*!< Number of links in the game */
   Command *last_cmd;                      /*!< Last command written */
   Bool finished;                          /*!< Finished status of the game */
   char *description;                      /*!< Auxiliar */
-  Status command;                           /*!< Status for the last command */  
+  Status command;                         /*!< Status for the last command */  
 }; 
 
 /**
@@ -92,7 +92,7 @@ Status game_create(Game **game) {
   (*game)->turn = 0;
   (*game)->last_cmd = command_create();
   (*game)->finished = FALSE;
-  (*game)->description = "";
+  (*game)->description = NULL;
   (*game)->command = OK;
 
   return OK;
@@ -349,7 +349,7 @@ Status game_add_character(Game *game, Character *character) {
     return ERROR;
   }
 
-  for (i = 0; i < MAX_OBJECTS; i++) {
+  for (i = 0; i < MAX_CHARACTERS; i++) {
     if (!game->characters[i]) {
       game->characters[i] = character;
       game->n_characters++;
@@ -361,21 +361,22 @@ Status game_add_character(Game *game, Character *character) {
 }
 
 Status game_remove_character(Game *game, Id id) {
-  int i = 0;
-
+  int i = 0, j = 0;
   if (id == NO_ID) {
     return ERROR;
   }
-
-  for (i = 0; i < MAX_CHARACTERS; i++) {
+  for (i = 0; i < game->n_characters; i++) {
     if (id == character_get_id(game->characters[i])) {
       character_destroy(game->characters[i]);
       game->characters[i] = NULL;
       game->n_characters--;
+      for (j = i; j < game->n_characters; j++) {
+        game->characters[j] = game->characters[j + 1];
+        game->characters[j + 1] = NULL;
+      }
       return OK;
     }
   }
-
   return ERROR;
 }
 
@@ -386,7 +387,7 @@ Bool game_has_character(Game *game, Id id) {
     return FALSE;
   }
 
-  for (i = 0; i < MAX_CHARACTERS; i++) {
+  for (i = 0; i < game->n_characters; i++) {
     if (id == character_get_id(game->characters[i])) {
       return TRUE;
     }
@@ -403,7 +404,7 @@ Object **game_get_objects(Game *game) {
 Character *game_get_character_at_location(Game *game, Id location) {
   int i;
 
-  for (i=0; i < game->n_characters; i++) {
+  for (i = 0; i < game->n_characters; i++) {
     if (character_get_location(game->characters[i]) == location){
       return game->characters[i];
     }
