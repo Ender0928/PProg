@@ -9,14 +9,14 @@
 #s:13|Pantry|    _    | \ \___  | \ mo'\_ | \ @ _   | \__/\__ |
 #s:14|Hole|    __   |  \\__// | \ mo'\_ | \ @ _   | \__/\__ |
 
-#o:5|Grain|11|Hola|
-#o:6|Leaf|11|Hola2|
-#o:7|Egg|124|Hola4|
+#o:5|Grain|11|No tengo mucho que decirte|
+#o:6|Leaf|11|Soy una hoja de un roble|
+#o:7|Egg|124|Quien fue antes, la gallina o el huevo?|
 #o:8|Papiro|121|Para acceder al pasillo 124 deberas llegar al agujero|
 
 #p:1|ant|mO^|11|5|3|
 
-#c:3|spider|/\oo/\|123|5|0|I won't talk to you!
+#c:3|spider|/\oo/\|125|5|0|I won't talk to you!
 #c:4|slug|^0m|124|5|1|Hi!
 
 #l:31|Entry|11|121|1|1|

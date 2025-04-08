@@ -78,6 +78,12 @@
   */
  void test1_link_is_open();
  void test2_link_is_open();
+
+ /**
+  * @brief Tests for link_print
+  */
+void test1_link_print();
+void test2_link_print();
  
  #endif /* LINK_TEST_H */
  

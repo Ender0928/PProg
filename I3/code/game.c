@@ -15,7 +15,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define MAX_PLAYERS 5
+#define MAX_PLAYERS 8
 /**
    Private functions
 */
@@ -45,15 +45,6 @@ struct _Game {
   char *description;                      /*!< Auxiliar */
   Status command;                         /*!< Status for the last command */  
 }; 
-
-/**
-  * @brief It returns the id of a space in a game
-  * @author Profesores
-  * @param game a pointer to the game
-  * @param position an integer with the position of the space
-  * @return the id of the space located at the position given
-  */
-Id game_get_space_id_at(Game *game, int position);
 
 /**
    Game interface implementation
@@ -273,14 +264,6 @@ Status game_add_space(Game *game, Space *space) {
   game->n_spaces++;
 
   return OK;
-}
-
-Id game_get_space_id_at(Game *game, int position) {
-  if (position < 0 || position >= game->n_spaces) {
-    return NO_ID;
-  }
-
-  return space_get_id(game->spaces[position]);
 }
 
 Player *game_get_player(Game *game) {
@@ -589,34 +572,6 @@ Status game_add_link(Game *game, Link *link) {
     game->links[game->n_links] = link;
     game->n_links++;
     return OK;
-}
-
-Bool game_get_discovered(Game *game, Id space_id) {
-  Space *space = NULL;
-  if (!game || space_id == NO_ID) {
-      return FALSE;
-  }
-
-  space = game_get_space(game, space_id);
-  if (!space) {
-      return FALSE;
-  }
-
-  return space_get_discovered(space);
-}
-
-Status game_set_discovered(Game *game, Id space_id, Bool discovered) {
-  Space *space = NULL;
-  if (!game || space_id == NO_ID) {
-      return ERROR;
-  }
-
-  space = game_get_space(game, space_id);
-  if (!space) {
-      return ERROR;
-  }
-
-  return space_set_discovered(space, discovered);
 }
 
 Status game_add_player(Game *game, Player *player) {

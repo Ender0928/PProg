@@ -37,11 +37,14 @@ Inventory* inventory_create(){
 }
 
 Status inventory_destroy(Inventory* inv){
-    if(!inv) 
+    if(!inv){
         return ERROR;
-
-    if(set_destroy(inv->set_obj) == ERROR) 
-        return ERROR;
+    }
+    
+        if (inv->set_obj) { 
+            if (set_destroy(inv->set_obj) == ERROR) 
+                return ERROR;
+        }
 
     free(inv);
 

@@ -99,13 +99,13 @@
  
  void test1_link_set_origin() {
   Link *s = link_create(2);
-  PRINT_TEST_RESULT(link_set_location(s, 10) == OK);
+  PRINT_TEST_RESULT(link_set_origin(s, 10) == OK);
   link_destroy(s);
  }
 
  void test2_link_set_origin() {
   Link *s = NULL;
-  PRINT_TEST_RESULT(link_set_location(s, 10) == ERROR);
+  PRINT_TEST_RESULT(link_set_origin(s, 10) == ERROR);
 }
 
 void test1_link_set_destination() {
@@ -174,7 +174,7 @@ void test1_link_get_destination() {
 
 void test2_link_get_destination() {
   Link *s = NULL;
-  PRINT_TEST_RESULT(link_get_detination(s) == NO_ID);
+  PRINT_TEST_RESULT(link_get_destination(s) == NO_ID);
 }
 
 void test1_link_get_direction() {

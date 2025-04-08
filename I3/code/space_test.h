@@ -70,11 +70,7 @@ void test2_space_get_objects();
 void test1_space_get_gdesc();
 void test2_space_get_gdesc();
 
-/** 
- * @brief Test the function for setting the graphic description of a space
- */
-void test1_space_set_gdesc();
-void test2_space_set_gdesc();
+
 
 /** 
  * @brief Test the function for printing a space

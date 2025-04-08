@@ -67,10 +67,12 @@ Status player_destroy (Player *player){
         return ERROR;
     }
 
-    if (inventory_destroy(player->backpack) == ERROR)
-    {
-        return ERROR;
+    if (player->backpack != NULL) { 
+        if (inventory_destroy(player->backpack) == ERROR) {
+            return ERROR;
+        }
     }
+
     free (player);
         return OK;
 }
@@ -148,7 +150,7 @@ Status player_remove_object(Player *player, Id object){
 /*It get the health of the player*/
 int player_get_health(Player *player){
     if (!player){
-        return ERROR;
+        return -1;
     }
 
 return player->health;
@@ -164,10 +166,14 @@ return OK;
 }
 
 Status player_set_backpack(Player *player, Inventory *backpack){
-    if (!player || !backpack)
-    {
+    if (player==NULL || !backpack){
+       
         return ERROR;
     }
+    if (player->backpack != NULL) {
+        inventory_destroy(player->backpack);
+    }
+   
     player->backpack = backpack;
     return OK;
 }
@@ -216,7 +222,7 @@ Bool player_inventory_is_empty(Player *player){
 Bool player_inventory_is_full(Player *player){
     if (!player)
     {
-        return TRUE;
+        return FALSE;
     }
     return inventory_is_full(player->backpack);
 }

@@ -63,7 +63,7 @@ Status game_reader_load_spaces(Game *game, char *filename) {
 #endif
       space = space_create(id);
       if (space != NULL) {
-        if(space_get_id(space) == 11) {
+        if(space_get_id(space) == game_get_player_location(game) || space_get_id(space) == game_get_player_location(game)) {
             
           space_set_discovered(space,TRUE);
         }else{

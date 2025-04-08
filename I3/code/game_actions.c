@@ -335,8 +335,7 @@ Status game_actions_move(Game *game) {
   if (new_location != NO_ID) {
     game_set_player_location(game, new_location);
    
-    game_set_discovered(game, new_location, TRUE);
-    space_print(game_get_space(game, new_location));
+    space_set_discovered(game_get_space(game, new_location), TRUE);
     return OK;
   }  
 

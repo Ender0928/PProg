@@ -214,27 +214,6 @@ Status game_remove_character(Game *game, Id id);
 Bool game_has_character(Game *game, Id id);
 
 /**
- * @brief Get if the space was discovered or not.
- * 
- * @param game Pointer to the game structure.
- * @param space_id ID of the space to check.
- * 
- * @return  TRUE if discovered, FALSE otherwise.
- */
-Bool game_get_discovered(Game *game,Id space_id);
-
-/**
- * @brief Set the discovered Boolean of a space.
- * 
- * @param game Pointer to the game structure.
- * @param space_id ID of the space to set.
- * @param discovered Boolean indicating if the space is discovered or not.
- * @return Status indicating success or failure.
- */
-Status game_set_discovered(Game *game,Id space_id, Bool discovered);
-
-
-/**
  * @brief Retrieves all objects in the game.
  * 
  * @param game Pointer to the game structure.

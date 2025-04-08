@@ -13,6 +13,7 @@
  #include <string.h> 
 
  #include "inventory_test.h"
+ #include "inventory.h"
 
  
  #define MAX_TESTS 30
@@ -45,21 +46,21 @@
 
   
    if (all || test == 1) test1_inventory_create();
-   if (all || test == 2) test2_inventory_create();
-   if (all || test == 3) test1_inventory_is_full();
-   if (all || test == 4) test2_inventory_is_full();
-   if (all || test == 5) test1_inventory_is_empty();
-   if (all || test == 6) test2_inventory_is_empty();
-   if (all || test == 7) test1_inventory_add_object();
-   if (all || test == 8) test2_inventory_add_object();
-   if (all || test == 9) test1_inventory_remove_object();
-   if (all || test == 10) test2_inventory_remove_object();
-   if (all || test == 11) test1_inventory_find_object();
-   if (all || test == 12) test2_inventory_find_object();
-   if (all || test == 13) test1_inventory_set_max_value();
-   if (all || test == 14) test2_inventory_set_max_value();
-   if (all || test == 15) test1_inventory_print();
-   if (all || test == 16) test2_inventory_print();
+
+   if (all || test == 2) test1_inventory_is_full();
+   if (all || test == 3) test2_inventory_is_full();
+   if (all || test == 4) test1_inventory_is_empty();
+   if (all || test == 5) test2_inventory_is_empty();
+   if (all || test == 6) test1_inventory_add_object();
+   if (all || test == 7) test2_inventory_add_object();
+   if (all || test == 8) test1_inventory_remove_object();
+   if (all || test == 9) test2_inventory_remove_object();
+   if (all || test == 10) test1_inventory_find_object();
+   if (all || test == 11) test2_inventory_find_object();
+   if (all || test == 12) test1_inventory_set_max_value();
+   if (all || test == 13) test2_inventory_set_max_value();
+   if (all || test == 14) test1_inventory_print();
+   if (all || test == 15) test2_inventory_print();
  
    PRINT_PASSED_PERCENTAGE;
  
@@ -72,11 +73,7 @@
    inventory_destroy(s);
  }
  
- void test2_inventory_create() {
-   Inventory *s = inventory_create();
-   PRINT_TEST_RESULT(s == NULL);
-   inventory_destroy(s);
- }
+
  
  void test1_inventory_is_full(){
     Inventory *s = inventory_create();
@@ -86,7 +83,7 @@
   
   void test2_inventory_is_full() {
     Inventory *s = NULL;
-    PRINT_TEST_RESULT(Inventory_is_full(s) == TRUE);
+    PRINT_TEST_RESULT(inventory_is_full(s) == TRUE);
   }
 
   void test1_inventory_is_empty(){
@@ -98,7 +95,7 @@
   void test2_inventory_is_empty() {
     Inventory *s = inventory_create();
     inventory_add_object(s, 3);
-    PRINT_TEST_RESULT(Inventory_is_empty(s) == FALSE);
+    PRINT_TEST_RESULT(inventory_is_empty(s) == FALSE);
     inventory_destroy(s);
   }
 
@@ -170,128 +167,4 @@
 
 
 
- void test1_inventory_set_name() {
-   Inventory *s = inventory_create();
-   PRINT_TEST_RESULT(inventory_set_name(s, "norte") == OK);
-   inventory_destroy(s);
- }
  
- void test2_inventory_set_name() {
-   Inventory *s = NULL;
-   PRINT_TEST_RESULT(inventory_set_name(s, "norte") == ERROR);
- }
- 
- void test1_inventory_set_origin() {
-  Inventory *s = inventory_create(2);
-  PRINT_TEST_RESULT(inventory_set_location(s, 10) == OK);
-  inventory_destroy(s);
- }
-
- void test2_inventory_set_origin() {
-  Inventory *s = NULL;
-  PRINT_TEST_RESULT(inventory_set_location(s, 10) == ERROR);
-}
-
-void test1_inventory_set_destination() {
-  Inventory *s = inventory_create(1);
-  PRINT_TEST_RESULT(inventory_set_destination(s, 5) == OK);
-  inventory_destroy(s);
-}
-
-void test2_inventory_set_destination() {
-  Inventory *s = NULL;
-  PRINT_TEST_RESULT(inventory_set_destination(s, 5) == ERROR);
-}
-
-void test1_inventory_set_direction() {
-  Inventory *s = inventory_create(1);
-  PRINT_TEST_RESULT(inventory_set_direction(s, N) == OK);
-  inventory_destroy(s);
-}
-
-void test2_inventory_set_direction() {
-  Inventory *s = NULL;
-  PRINT_TEST_RESULT(inventory_set_direction(s, N) == ERROR);
-}
-
-void test1_inventory_set_open(){
-  Inventory *s = inventory_create(3);
-  PRINT_TEST_RESULT(inventory_set_open(s, TRUE) == OK);
-  inventory_destroy(s);
-}
-
-void test2_inventory_set_open() {
-  Inventory *s = NULL;
-  PRINT_TEST_RESULT(inventory_set_open(s, TRUE) == ERROR);
-}
-
-void test1_inventory_get_name() {
-  Inventory *s = inventory_create(1);
-  inventory_set_name(s, "norte");
-  PRINT_TEST_RESULT(strcmp(inventory_get_name(s), "norte") == 0);
-  inventory_destroy(s);
-}
-
-void test2_inventory_get_name() {
-  Inventory *s = NULL;
-  PRINT_TEST_RESULT(inventory_get_name(s) == NULL);
-}
-
-void test1_inventory_get_origin() {
-  Inventory *s = inventory_create(5);
-  inventory_set_origin(s, 4);
-  PRINT_TEST_RESULT(inventory_get_origin(s) == 4);
-  inventory_destroy(s);
-}
-
-void test2_inventory_get_origin() {
-  Inventory *s = NULL;
-  PRINT_TEST_RESULT(inventory_get_origin(s) == NO_ID);
-}
-
-void test1_inventory_get_destination() {
-  Inventory *s = inventory_create(5);
-  inventory_set_destination(s, 4);
-  PRINT_TEST_RESULT(inventory_get_destination(s) == 4);
-  inventory_destroy(s);
-}
-
-void test2_inventory_get_destination() {
-  Inventory *s = NULL;
-  PRINT_TEST_RESULT(inventory_get_detination(s) == NO_ID);
-}
-
-void test1_inventory_get_direction() {
-  Inventory *s = inventory_create(5);
-  inventory_set_direction(s, N);
-  PRINT_TEST_RESULT(inventory_get_direction(s) == N);
-  inventory_destroy(s);
-}
-
-void test2_inventory_get_direction() {
-  Inventory *s = NULL;
-  PRINT_TEST_RESULT(inventory_get_direction(s) == U);
-}
-
-void test1_inventory_is_open() {
-  Inventory *s = inventory_create(5);
-  inventory_set_open(s, TRUE);
-  PRINT_TEST_RESULT(inventory_is_open(s) == TRUE);
-  inventory_destroy(s);
-}
-
-void test2_inventory_is_open() {
-  Inventory *s = NULL;
-  PRINT_TEST_RESULT(inventory_is_open(s) == FALSE);
-}
-
-void test1_inventory_print() {
-  Inventory *s = inventory_create(4);
-  PRINT_TEST_RESULT(inventory_print(s) == OK);
-  inventory_destroy(s);
-}
-
-void test2_inventory_print(){
-  Inventory *s = NULL;
-  PRINT_TEST_RESULT(inventory_print(s) == ERROR);
-}

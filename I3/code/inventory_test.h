@@ -17,7 +17,7 @@
   * @brief Tests for inventory_create
   */
 void test1_inventory_create();
-void test2_inventory_create();
+
  
  /**
   * @brief Tests for inventory_set_name

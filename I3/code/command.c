@@ -25,9 +25,9 @@
   * This struct stores all the information related to a command.
   */
  struct _Command {
-   CommandCode code; /*!< Name of the command */
+   CommandCode code;          /*!< Name of the command */
    char argument[CMD_LENGHT]; /*!< Argument of the command */
-   Direction direction; /*!< direction of the command */
+   Direction direction;       /*!< direction of the command */
  };
  
  /** space_create allocates memory for a new space

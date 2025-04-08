@@ -15,8 +15,8 @@
 
 struct _Set
 {
-    Id ids[MAX_ID]; /*array with the id of the objects in the set*/
-    int n_ids;      /*number of the objects of the set*/
+    Id ids[MAX_ID]; /*Array with the id of the objects in the set*/
+    int n_ids;      /*Number of the objects of the set*/
 };
 
 Set* set_create(){
