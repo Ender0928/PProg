@@ -1,0 +1,40 @@
+#s:11|Entry|    _    | \ \___  | \ mo'\_ | \ @ _   | \__/\__ |
+#s:121|Corridor 1|    _    | \ \___  | \ mo'\_ | \ @ _   | \__/\__ |
+#s:122|Corridor 2|    _    | \ \___  | \ mo'\_ | \ @ _   | \__/\__ |
+#s:123|Corridor 3|    _    | \ \___  | \ mo'\_ | \ @ _   | \__/\__ |
+#s:124|Corridor 4|    _    | \ \___  | \ mo'\_ | \ @ _   | \__/\__ |
+#s:125|Corridor 5|    _    | \ \___  | \ mo'\_ | \ @ _   | \__/\__ |
+#s:126|Corridor 6|    _    | \ \___  | \ mo'\_ | \ @ _   | \__/\__ |
+#s:127|Corridor 7|    _    | \ \___  | \ mo'\_ | \ @ _   | \__/\__ |
+#s:13|Pantry|    _    | \ \___  | \ mo'\_ | \ @ _   | \__/\__ |
+#s:14|Hole|    __   |  \\__// | \ mo'\_ | \ @ _   | \__/\__ |
+
+#o:5|Grain|11|No tengo mucho que decirte|
+#o:6|Leaf|11|Soy una hoja de un roble|
+#o:7|Egg|124|Quien fue antes, la gallina o el huevo?|
+#o:8|Papiro|121|Para acceder al pasillo 124 deberas llegar al agujero|
+
+#p:1|ant|mO^|11|5|3|
+
+#c:3|spider|/\oo/\|125|5|0|I won't talk to you!
+#c:4|slug|^0m|11|5|1|Hi!
+
+#l:31|Entry|11|121|1|1|
+#l:48|Pasillo 1|121|11|0|1|
+#l:32|Pasillo 1|121|122|1|1|
+#l:33|Pasillo 2|122|121|0|1|
+#l:34|Pasillo 2|122|125|2|1|
+#l:35|Pasillo 5|125|122|3|1|
+#l:36|Pasillo 5|125|126|2|1|
+#l:37|Pasillo 6|126|125|3|1|
+#l:38|Pasillo 6|126|127|2|1|
+#l:39|Pasillo 7|127|126|3|1|
+#l:40|Pasillo 7|127|14|2|1|
+#l:41|Agujero|14|127|3|1|
+#l:42|Pasillo 2|122|123|1|1|
+#l:43|Pasillo 3|123|122|0|1|
+#l:44|Pasillo 3|123|124|1|0|
+#l:45|Pasillo 4|124|123|0|1|
+#l:46|Pasillo 4|124|13|1|1|
+#l:47|Despensa|13|124|0|1|
+#l:48|Agujero|14|13|1|1|
