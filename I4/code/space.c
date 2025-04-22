@@ -20,6 +20,9 @@
  *
  * This struct stores all the information of a space.
  */
+
+
+
 struct _Space {
   Id id;                              /*!< Id number of the space, it must be unique */
   char name[WORD_SIZE + 1];           /*!< Name of the space */

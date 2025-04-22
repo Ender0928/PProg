@@ -17,7 +17,7 @@
  
  #define CMD_LENGHT 30
  
- char *cmd_to_str[N_CMD][N_CMDT] = {{"", "No command"}, {"", "Unknown"}, {"e", "Exit"}, {"n", "Next"}, {"b", "Back"}, {"l", "Left"}, {"r", "Right"}, {"t", "Take"}, {"d", "Drop"}, {"a", "Attack"}, {"c", "Chat"}, {"i", "Inspect"}, {"m", "Move"},{"k", "Recruit"},{"n", "Abandon"}};
+ char *cmd_to_str[N_CMD][N_CMDT] = {{"", "No command"}, {"", "Unknown"}, {"e", "Exit"}, {"t", "Take"}, {"d", "Drop"}, {"a", "Attack"}, {"c", "Chat"}, {"i", "Inspect"}, {"m", "Move"},{"k", "Recruit"},{"n", "Abandon"}, {"s", "Save"}, {"l", "Load"}};
  
  /**
   * @brief Command
@@ -102,19 +102,19 @@
  
      token = strtok(NULL, " \n");
      if (token) {
-      if (strcasecmp(token, "N")==0){
+      if (strcasecmp(token, "N")==0 || strcasecmp(token, "NORTH")==0){
         command->direction = N;
-      }
-      else if (strcasecmp(token, "E")==0){
+      } else if (strcasecmp(token, "E")==0 || strcasecmp(token, "EAST")==0){
         command->direction = E;
-      }
-      else if (strcasecmp(token, "W")==0){
+      } else if (strcasecmp(token, "W")==0 || strcasecmp(token, "WEST")==0){
         command->direction = W;
-      }
-      else if (strcasecmp(token, "S")==0){
+      } else if (strcasecmp(token, "S")==0 || strcasecmp(token, "SOUTH")==0){
         command->direction = S;
-      }
-      else {
+      } else if (strcasecmp(token, "D")==0 || strcasecmp(token, "DOWN")==0){
+        command->direction = D;
+      } else if (strcasecmp(token, "U")==0 || strcasecmp(token, "UP")==0){
+        command->direction = UP;
+      } else {
         strncpy(command->argument, token, CMD_LENGHT - 1);
         command->argument[CMD_LENGHT - 1] = '\0';
       }

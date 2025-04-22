@@ -246,6 +246,13 @@ Status player_set_graphic_desc(Player *player, char *gdesc) {
     return OK;
 }
 
+int player_get_max_objects(Player *player) {
+    if (!player)
+        return -1;
+
+    return inventory_get_max_value(player->backpack);
+}
+
 Status player_print(Player* player){
   if (!player)
     return ERROR;

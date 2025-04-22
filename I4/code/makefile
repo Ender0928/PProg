@@ -4,7 +4,7 @@ CLIB = -lscreen -L.
 
 .PHONY: clean all 
 
-all: anthill  test clean_o
+all: anthill test clean_o
 
 test: space_test set_test character_test inventory_test link_test player_test
 	
@@ -29,7 +29,7 @@ doc:
 
 
 
-anthill: command.o game.o game_actions.o game_loop.o graphic_engine.o space.o game_reader.o player.o object.o set.o character.o inventory.o link.o
+anthill: command.o game.o game_actions.o game_loop.o graphic_engine.o space.o game_reader.o player.o object.o set.o character.o inventory.o link.o game_management.o
 	$(CC) -o $@ $^ $(CLIB)
 
 space_test: space_test.o space.o set.o
@@ -44,10 +44,10 @@ character_test: character_test.o character.o
 command.o: command.c command.h
 	$(CC) -c command.c $(CFLAGS) 
 
-game.o: game.c game.h game_reader.h
+game.o: game.c game.h game_management.h
 	$(CC) -c game.c $(CFLAGS)
 
-game_actions.o: game_actions.c game_actions.h game.h types.h
+game_actions.o: game_actions.c game_actions.h game.h game_management.h types.h
 	$(CC) -c game_actions.c $(CFLAGS)
 
 game_loop.o: game_loop.c
@@ -99,6 +99,9 @@ player_test: player_test.o player.o inventory.o set.o
 
 player_test.o: player_test.c player_test.h test.h
 	$(CC) -c player_test.c $(CFLAGS)
+
+game_management.o: game_management.c game_management.h game_reader.h player.h link.h character.h space.h
+	$(CC) -c game_management.c $(CFLAGS)
 clean:
 	rm -f anthill *.o
 	rm -f space_test *.o

@@ -195,6 +195,9 @@ Status player_set_turn(Player *player, Bool turn);
  */
 Bool player_get_turn(Player *player);
 
+/** TODO no hecho test*/
+int player_get_max_objects(Player *player);
+
 Status player_print(Player *player);
 
 #endif

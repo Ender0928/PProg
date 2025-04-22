@@ -105,6 +105,13 @@ Status link_set_open(Link *link, Bool open);
  */
 Bool link_is_open(Link *link);
 
+/** //TODO test no hecho
+ * @brief Retrieves the ID of a link.
+ *
+ * @param link Pointer to the link.
+ * @return ID of the link, or NO_ID if not set.
+ */
+Id link_get_id(Link *link);
 /**
  * @brief Prints the details of a link.
  *

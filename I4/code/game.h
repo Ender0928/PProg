@@ -424,13 +424,33 @@ Status game_set_object_description(Game *game, char *description, Id id_object);
 
  Character * game_get_character_by_name_at_location(Game *game, char *name, Id location);
 
-Status game_set_character_location(Game *game, Character *c, Id location_id);
+ Status game_set_character_location(Game *game, Character *c, Id location_id);
 
  Status game_set_character_follow(Game *game, Id character_id, Id player_id);
 
+ int game_get_n_characters(Game *game);
+ 
  Character *game_get_character_by_index(Game *game, int i);
  
-/**
+ int game_get_n_spaces(Game *game);
+
+ Space *game_get_space_by_index(Game *game, Id index);
+
+ int game_get_n_links(Game *game);
+
+ Link *game_get_link_by_index(Game *game, Id index);
+
+ int game_get_n_players(Game *game);
+
+ Player *game_get_player_by_index(Game *game, Id index);
+
+ int game_get_n_objects(Game *game);
+ 
+ Object *game_get_object_by_index(Game *game, Id index); 
+ 
+ void game_clean(Game *game);
+ 
+ /**
  * @brief Prints the details of a specific space in the game.
  *
  * @param game Pointer to the game structure.

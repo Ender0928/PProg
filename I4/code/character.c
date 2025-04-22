@@ -92,6 +92,7 @@ Status character_set_follow(Character *character, Id follow) {
     character->follow = follow;
     return OK;
 }
+
 const char *character_get_gdesc(Character *character) {
     if (!character)
         return NULL;
@@ -177,14 +178,14 @@ Status character_print(Character *character) {
     if (!character)
         return ERROR;
 
-    fprintf(stdout, "-->character (id: %ld; name: %s; location: %ld; gdesc: %s; health: %d; friendly: %s; message: %s)\n",
+    fprintf(stdout, "-->character (id: %ld; name: %s; location: %ld; gdesc: %s; health: %d; friendly: %s; message: %s, following %d)\n",
             character->id,
             character->name,
             character->location,
             character->gdesc,
             character->health,
             character->friendly ? "TRUE" : "FALSE",
-            character->message);
+            character->message, (int)character->follow);
 
     return OK;
 }

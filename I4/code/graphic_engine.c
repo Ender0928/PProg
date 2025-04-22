@@ -4,7 +4,7 @@
  * @file graphic_engine.c
  * @author Profesores PPROG
  * @version 0
- * @date 27-01-2025
+ * @date 31-01-2025
  * @copyright GNU Public License
  */
 
@@ -19,10 +19,10 @@
 #include "space.h"
 #include "types.h"
 
-#define WIDTH_MAP 80
+#define WIDTH_MAP 135
 #define WIDTH_DES 29
 #define WIDTH_BAN 23
-#define HEIGHT_MAP 30
+#define HEIGHT_MAP 40
 #define HEIGHT_BAN 1
 #define HEIGHT_HLP 2
 #define HEIGHT_FDB 3
@@ -35,10 +35,10 @@ void print_limits_no_west_east(Graphic_engine *ge) {
   char str[WORD_SIZE] = "";
   char str_aux[WORD_SIZE] = "";
 
-  sprintf(str, "                   ");
-  sprintf(str_aux, "  +---------------+");
+  sprintf(str, "                                    ");
+  sprintf(str_aux, "  +--------------------------------+");
   strcat(str, str_aux);
-  sprintf(str_aux, "                     ");
+  sprintf(str_aux, "                                      ");
   strcat(str, str_aux);
   
   screen_area_puts(ge->map, str);
@@ -48,14 +48,14 @@ void print_id_north_no_west_east(Graphic_engine *ge, Id id) {
   char str[WORD_SIZE] = "";
   char str_aux[WORD_SIZE] = "";
 
-  sprintf(str, "                   ");
+  sprintf(str, "                                    ");
   if (id > 99) {
-      sprintf(str_aux, "  |            %2d|", (int)id);
+      sprintf(str_aux, "  |                             %2d|", (int)id);
   } else {
-      sprintf(str_aux, "  |             %2d|", (int)id);
+      sprintf(str_aux, "  |                              %2d|", (int)id);
   }
   strcat(str, str_aux);
-  sprintf(str_aux, "                     ");
+  sprintf(str_aux, "                                      ");
   strcat(str, str_aux);
 
   screen_area_puts(ge->map, str);
@@ -65,18 +65,48 @@ void print_id_no_west_east(Graphic_engine *ge, Id id) {
   char str[WORD_SIZE] = "";
   char str_aux[WORD_SIZE] = "";
 
-  sprintf(str, "                   ");
+  sprintf(str, "                                    ");
   if (id > 99) {
-      sprintf(str_aux, "  | m0^        %2d|", (int)id);
+      sprintf(str_aux, "  | m0^                         %2d|", (int)id);
   } else {
-      sprintf(str_aux, "  | m0^         %2d|", (int)id);
+      sprintf(str_aux, "  | m0^                          %2d|", (int)id);
   }
   strcat(str, str_aux);
-  sprintf(str_aux, "                     ");
+  sprintf(str_aux, "                                      ");
   strcat(str, str_aux);
 
   screen_area_puts(ge->map, str);
 }
+
+/**
+ * @brief Prints a centered ASCII label to indicate UP/DOWN connections
+ *
+ * @param ge Pointer to the graphic engine
+ * @param game Pointer to the game
+ * @param space_id ID of the current space to evaluate
+ */
+void print_vertical_connections(Graphic_engine *ge, Game *game, Id space_id) {
+  Id id_up =NO_ID, id_down = NO_ID;
+  char str[WORD_SIZE] = "";
+
+  if (!ge || !game || space_id == NO_ID) return;
+
+  id_up = game_get_connection(game, space_id, UP);
+  id_down = game_get_connection(game, space_id, D);
+
+  if (id_up != NO_ID && id_down != NO_ID) {
+      sprintf(str, "                                                  [UP/DOWN]                                            ");
+  } else if (id_up != NO_ID) {
+      sprintf(str, "                                                    [UP]                                               ");
+  } else if (id_down != NO_ID) {
+      sprintf(str, "                                                   [DOWN]                                              ");
+  }
+
+  if (str[0] != '\0') {
+      screen_area_puts(ge->map, str);
+  }
+}
+
 
 void print_spaces(Graphic_engine *ge, Game *game, Space *space, int act) {
   Id id, id_north = NO_ID, id_west = NO_ID, id_east = NO_ID, id_surth = NO_ID;
@@ -120,6 +150,7 @@ void print_spaces(Graphic_engine *ge, Game *game, Space *space, int act) {
   space_surth = game_get_space(game, id_surth);
   gdesc_surth = space_get_gdesc(space_surth);
 
+  game_space_print(game, space);
   if (id != NO_ID) {
     if (id_north != NO_ID) {
       /*Techo del espacio norte*/
@@ -131,24 +162,24 @@ void print_spaces(Graphic_engine *ge, Game *game, Space *space, int act) {
       /*Descripcion Norte*/
       if (space_get_discovered(space_north))
         for (i = 0; i < GDESC_ROWS; i++) {
-          sprintf(str, "                   ");
+          sprintf(str, "                                    ");
           sprintf(str_aux, "  |%s      |", gdesc_north[i]);
           strcat(str, str_aux);
-          sprintf(str_aux, "                     ");
+          sprintf(str_aux, "                                      ");
           strcat(str, str_aux);
           screen_area_puts(ge->map, str);
       }  else {
         for (i=0; i < GDESC_ROWS; i++) {
-          sprintf(str, "                   ");
-          sprintf(str_aux, "  |               |");
+          sprintf(str, "                                    ");
+          sprintf(str_aux, "  |                                |");
           strcat(str, str_aux);
-          sprintf(str_aux, "                     ");
+          sprintf(str_aux, "                                      ");
           strcat(str, str_aux);
           screen_area_puts(ge->map, str);
         }
       }
 
-      sprintf(str, "                   ");
+      sprintf(str, "                                    ");
       if (space_get_num_objects(space_north) > 0) {
         ids_objects = space_get_objects(space_north);
 
@@ -156,16 +187,16 @@ void print_spaces(Graphic_engine *ge, Game *game, Space *space, int act) {
           sprintf(str_aux, "%s ", object_get_name(game_get_object(game, ids_objects[i])));
           strcat(str_objects, str_aux);
         }
-        sprintf(str_aux, "  |%-15.15s|", str_objects);
+        sprintf(str_aux, "  |%-32.32s|", str_objects);
         strcat(str, str_aux);
-        sprintf(str_aux, "                     ");
+        sprintf(str_aux, "                                      ");
         strcat(str, str_aux);
         screen_area_puts(ge->map, str);
       } else {
-        sprintf(str, "                   ");
-        sprintf(str_aux, "  |               |");
+        sprintf(str, "                                    ");
+        sprintf(str_aux, "  |                                |");
         strcat(str, str_aux);
-        sprintf(str_aux, "                     ");
+        sprintf(str_aux, "                                      ");
         strcat(str, str_aux);
         screen_area_puts(ge->map, str);
       }
@@ -174,7 +205,7 @@ void print_spaces(Graphic_engine *ge, Game *game, Space *space, int act) {
       print_limits_no_west_east(ge);
 
       /*Separacion entre espacio norte y el actual*/
-      sprintf(str, "                             ^                             ");
+      sprintf(str, "                                                       ^                                                       ");
       screen_area_puts(ge->map, str);
     } else {
       for (i=0; i < 11; i++) {
@@ -185,29 +216,29 @@ void print_spaces(Graphic_engine *ge, Game *game, Space *space, int act) {
 
     if (id_west != NO_ID && id_east != NO_ID) {
       /*limite superior*/
-      sprintf(str, "  +---------------+");
-      sprintf(str_aux, "  +---------------+");
+      sprintf(str, "  +--------------------------------+");
+      sprintf(str_aux, "  +--------------------------------+");
       strcat(str, str_aux);
-      sprintf(str_aux, "  +---------------+");
+      sprintf(str_aux, "  +--------------------------------+");
       strcat(str, str_aux);
       screen_area_puts(ge->map, str);
 
       /*Id y personaje espacio*/
       if (id_west > 99) {
-        sprintf(str, "  |            %2d|", (int)id_west);
+        sprintf(str, "  |                             %2d|", (int)id_west);
       } else {
-        sprintf(str, "  |             %2d|", (int)id_west);
+        sprintf(str, "  |                              %2d|", (int)id_west);
       }
       if (id > 99) {
-        sprintf(str_aux, "  | m0^        %2d|", (int)id);
+        sprintf(str_aux, "  | m0^                         %2d|", (int)id);
       } else {
-        sprintf(str_aux, "  | m0^         %2d|", (int)id);
+        sprintf(str_aux, "  | m0^                          %2d|", (int)id);
       }
       strcat(str, str_aux);
       if (id_east > 99) {
-        sprintf(str_aux, "  |            %2d|", (int)id_east);
+        sprintf(str_aux, "  |                             %2d|", (int)id_east);
       } else {
-        sprintf(str_aux, "  |             %2d|", (int)id_east);
+        sprintf(str_aux, "  |                              %2d|", (int)id_east);
       }
 
       strcat(str, str_aux);
@@ -218,7 +249,7 @@ void print_spaces(Graphic_engine *ge, Game *game, Space *space, int act) {
         if (space_get_discovered(space_west)) {
           sprintf(str, "  |%s      |", gdesc_west[i]);
         } else {
-          sprintf(str, "  |            |");
+          sprintf(str, "  |                              |");
         }
         sprintf(str_aux, "  |%s      |", gdesc[i]);
         strcat(str, str_aux);
@@ -226,7 +257,7 @@ void print_spaces(Graphic_engine *ge, Game *game, Space *space, int act) {
         if (space_get_discovered(space_east)) {
           sprintf(str_aux, "  |%s      |", gdesc_east[i]);
         } else {
-          sprintf(str_aux, "  |               |");
+          sprintf(str_aux, "  |                                |");
         }
         strcat(str, str_aux);
         screen_area_puts(ge->map, str);
@@ -241,9 +272,9 @@ void print_spaces(Graphic_engine *ge, Game *game, Space *space, int act) {
           sprintf(str_aux, "%s ", object_get_name(game_get_object(game, ids_objects[i])));
           strcat(str_objects1, str_aux);
         }
-        sprintf(str, "  |%-15.15s|", str_objects1);
+        sprintf(str, "  |%-32.32s|", str_objects1);
       } else {
-        sprintf(str, "  |               |");
+        sprintf(str, "  |                                |");
       } 
       if (space_get_num_objects(space) > 0) {
         ids_objects = space_get_objects(space);
@@ -252,10 +283,10 @@ void print_spaces(Graphic_engine *ge, Game *game, Space *space, int act) {
           sprintf(str_aux, "%s ", object_get_name(game_get_object(game, ids_objects[i])));
           strcat(str_objects2, str_aux);
         }
-        sprintf(str_aux, " <|%-15.15s|", str_objects2);
+        sprintf(str_aux, " <|%-32.32s|", str_objects2);
         strcat(str, str_aux);
       } else {
-        sprintf(str_aux, " <|               |");
+        sprintf(str_aux, " <|                                |");
         strcat(str, str_aux);
       } 
       if (space_get_num_objects(space_east) > 0) {
@@ -265,27 +296,29 @@ void print_spaces(Graphic_engine *ge, Game *game, Space *space, int act) {
           sprintf(str_aux, "%s ", object_get_name(game_get_object(game, ids_objects[i])));
           strcat(str_objects3, str_aux);
         }
-        sprintf(str_aux, "> |%-15.15s|", str_objects3);
+        sprintf(str_aux, "> |%-32.32s|", str_objects3);
         strcat(str, str_aux);
         screen_area_puts(ge->map, str);
       } else {
-        sprintf(str_aux, "> |               |");
+        sprintf(str_aux, "> |                                |");
         strcat(str, str_aux);
         screen_area_puts(ge->map, str);
       }
 
-      sprintf(str, "  +---------------+");
-      sprintf(str_aux, "  +---------------+");
+      sprintf(str, "  +--------------------------------+");
+      sprintf(str_aux, "  +--------------------------------+");
       strcat(str, str_aux);
-      sprintf(str_aux, "  +---------------+");
+      sprintf(str_aux, "  +--------------------------------+");
       strcat(str, str_aux);
       
       screen_area_puts(ge->map, str);
 
+      print_vertical_connections(ge, game, id);
+
     } else if (id_west != NO_ID && id_east == NO_ID) {
       /*limite superior*/
-      sprintf(str, "  +---------------+");
-      sprintf(str_aux, "  +---------------+");
+      sprintf(str, "  +--------------------------------+");
+      sprintf(str_aux, "  +--------------------------------+");
       strcat(str, str_aux);
       sprintf(str_aux, "                     ");
       strcat(str, str_aux);
@@ -293,14 +326,14 @@ void print_spaces(Graphic_engine *ge, Game *game, Space *space, int act) {
 
       /*Id y personaje espacio*/
       if (id > 99) {
-          sprintf(str, "  |           %2d|", (int)id_west);
+          sprintf(str, "  |                            %2d|", (int)id_west);
       } else {
-          sprintf(str, "  |            %2d|", (int)id_west);
+          sprintf(str, "  |                             %2d|", (int)id_west);
       }
       if (id > 99) {
-        sprintf(str_aux, "  | m0^        %2d|", (int)id);
+        sprintf(str_aux, "  | m0^                         %2d|", (int)id);
       } else {
-          sprintf(str_aux, "  | m0^         %2d|", (int)id);
+          sprintf(str_aux, "  | m0^                          %2d|", (int)id);
       }
       strcat(str, str_aux);
       sprintf(str_aux, "                     ");
@@ -314,16 +347,16 @@ void print_spaces(Graphic_engine *ge, Game *game, Space *space, int act) {
           sprintf(str, "  |%s      |", gdesc_west[i]);
           sprintf(str_aux, "  |%s      |", gdesc[i]);
           strcat(str, str_aux);
-          sprintf(str_aux, "                     ");
+          sprintf(str_aux, "                                      ");
           strcat(str, str_aux);
           screen_area_puts(ge->map, str);
         } 
       } else {
         for (i=0; i < GDESC_ROWS; i++) {
-          sprintf(str, "|                 |");
+          sprintf(str, "|                                  |");
           sprintf(str_aux, "  |%s      |", gdesc[i]);
           strcat(str, str_aux);
-          sprintf(str_aux, "                     ");
+          sprintf(str_aux, "                                      ");
           strcat(str, str_aux);
           screen_area_puts(ge->map, str);
         }
@@ -337,9 +370,9 @@ void print_spaces(Graphic_engine *ge, Game *game, Space *space, int act) {
           sprintf(str_aux, "%s ", object_get_name(game_get_object(game, ids_objects[i])));
           strcat(str_objects1, str_aux);
         }
-        sprintf(str, "  |%-15.15s|", str_objects1);
+        sprintf(str, "  |%-32.32s|", str_objects1);
       } else {
-        sprintf(str, "  |               |");
+        sprintf(str, "  |                                |");
       } 
       if (space_get_num_objects(space) > 0) {
         ids_objects = space_get_objects(space);
@@ -348,45 +381,47 @@ void print_spaces(Graphic_engine *ge, Game *game, Space *space, int act) {
           sprintf(str_aux, "%s ", object_get_name(game_get_object(game, ids_objects[i])));
           strcat(str_objects2, str_aux);
         }
-        sprintf(str_aux, " <|%-15.15s|", str_objects2);
+        sprintf(str_aux, " <|%-32.32s|", str_objects2);
         strcat(str, str_aux);
       } else {
-        sprintf(str_aux, " <|               |");
+        sprintf(str_aux, " <|                                |");
         strcat(str, str_aux);
       }
-      sprintf(str_aux, "                     ");
+      sprintf(str_aux, "                                      ");
       strcat(str, str_aux);
       screen_area_puts(ge->map, str);
 
-      sprintf(str, "  +---------------+");
-      sprintf(str_aux, "  +---------------+");
+      sprintf(str, "  +--------------------------------+");
+      sprintf(str_aux, "  +--------------------------------+");
       strcat(str, str_aux);
-      sprintf(str_aux, "                     ");
+      sprintf(str_aux, "                                      ");
       strcat(str, str_aux);
       
       screen_area_puts(ge->map, str);
 
+      print_vertical_connections(ge, game, id);
+
     } else if (id_west == NO_ID && id_east != NO_ID) {
       /*limite superior*/
-      sprintf(str, "                   ");
-      sprintf(str_aux, "  +---------------+");
+      sprintf(str, "                                    ");
+      sprintf(str_aux, "  +--------------------------------+");
       strcat(str, str_aux);
-      sprintf(str_aux, "  +---------------+");
+      sprintf(str_aux, "  +--------------------------------+");
       strcat(str, str_aux);
       screen_area_puts(ge->map, str);
 
       /*Id y personaje espacio*/
-      sprintf(str, "                   ");
+      sprintf(str, "                                    ");
       if (id > 99) {
-          sprintf(str_aux, "  | m0^        %2d|", (int)id);
+          sprintf(str_aux, "  | m0^                         %2d|", (int)id);
       } else {
-          sprintf(str_aux, "  | m0^         %2d|", (int)id);
+          sprintf(str_aux, "  | m0^                          %2d|", (int)id);
       }
       strcat(str, str_aux);
       if (id > 99) {
-        sprintf(str_aux, "  |            %2d|", (int)id_east);
+        sprintf(str_aux, "  |                             %2d|", (int)id_east);
       } else {
-          sprintf(str_aux, "  |             %2d|", (int)id_east);
+          sprintf(str_aux, "  |                              %2d|", (int)id_east);
       }
       strcat(str, str_aux);
       screen_area_puts(ge->map, str);
@@ -394,7 +429,7 @@ void print_spaces(Graphic_engine *ge, Game *game, Space *space, int act) {
       /*Descripcion*/
       if (space_get_discovered(space_east)) {
         for (i = 0; i < GDESC_ROWS; i++) {
-          sprintf(str, "                   ");
+          sprintf(str, "                                    ");
           sprintf(str_aux, "  |%s      |", gdesc[i]);
           strcat(str, str_aux);
           sprintf(str_aux, "  |%s      |", gdesc_east[i]);
@@ -403,17 +438,17 @@ void print_spaces(Graphic_engine *ge, Game *game, Space *space, int act) {
         }
       } else {
         for (i=0; i < GDESC_ROWS; i++) {
-          sprintf(str, "                   ");
+          sprintf(str, "                                    ");
           sprintf(str_aux, "  |%s      |", gdesc[i]);
           strcat(str, str_aux);
-          sprintf(str_aux, "  |               |");
+          sprintf(str_aux, "  |                                |");
           strcat(str, str_aux);
           screen_area_puts(ge->map, str);
         }
       }
 
       /*objects*/
-      sprintf(str, "                   ");
+      sprintf(str, "                                    ");
       if (space_get_num_objects(space) > 0) {
         ids_objects = space_get_objects(space);
 
@@ -421,10 +456,10 @@ void print_spaces(Graphic_engine *ge, Game *game, Space *space, int act) {
           sprintf(str_aux, "%s ", object_get_name(game_get_object(game, ids_objects[i])));
           strcat(str_objects, str_aux);
         }
-        sprintf(str_aux, "  |%-15.15s|", str_objects);
+        sprintf(str_aux, "  |%-32.32s|", str_objects);
         strcat(str, str_aux);
       } else {
-        sprintf(str_aux, "  |               |");
+        sprintf(str_aux, "  |                                |");
         strcat(str, str_aux);
       } 
       if (space_get_num_objects(space_east) > 0) {
@@ -434,22 +469,24 @@ void print_spaces(Graphic_engine *ge, Game *game, Space *space, int act) {
           sprintf(str_aux, "%s ", object_get_name(game_get_object(game, ids_objects[i])));
           strcat(str_objects, str_aux);
         }
-        sprintf(str_aux, " <|%-15.15s|", str_objects);
+        sprintf(str_aux, " <|%-32.32s|", str_objects);
         strcat(str, str_aux);
         screen_area_puts(ge->map, str);
       } else {
-        sprintf(str_aux, " <|               |");
+        sprintf(str_aux, " <|                                |");
         strcat(str, str_aux);
         screen_area_puts(ge->map, str);
       }
 
-      sprintf(str, "                   ");
-      sprintf(str_aux, "  +---------------+");
+      sprintf(str, "                                    ");
+      sprintf(str_aux, "  +--------------------------------+");
       strcat(str, str_aux);
-      sprintf(str_aux, "  +---------------+");
+      sprintf(str_aux, "  +--------------------------------+");
       strcat(str, str_aux);
       
       screen_area_puts(ge->map, str);
+
+      print_vertical_connections(ge, game, id);
 
     } else {
       /*limite superior*/
@@ -460,16 +497,16 @@ void print_spaces(Graphic_engine *ge, Game *game, Space *space, int act) {
       
       /*Descripcion*/
       for (i = 0; i < GDESC_ROWS; i++) {
-        sprintf(str, "                   ");
+        sprintf(str, "                                    ");
         sprintf(str_aux, "  |%s      |", gdesc[i]);
         strcat(str, str_aux);
-        sprintf(str_aux, "                     ");
+        sprintf(str_aux, "                                      ");
         strcat(str, str_aux);
         screen_area_puts(ge->map, str);
       }
 
       /*objects*/
-      sprintf(str, "                   ");
+      sprintf(str, "                                    ");
       if (space_get_num_objects(space) > 0) {
         ids_objects = space_get_objects(space);
 
@@ -478,26 +515,29 @@ void print_spaces(Graphic_engine *ge, Game *game, Space *space, int act) {
           sprintf(str_aux, "%s ", object_get_name(game_get_object(game, ids_objects[i])));
           strcat(str_objects, str_aux);
         }
-        sprintf(str_aux, "  |%-15.15s|", str_objects);
+        sprintf(str_aux, "  |%-32.32s|", str_objects);
         strcat(str, str_aux);
-        sprintf(str_aux, "                     ");
+        sprintf(str_aux, "                                      ");
         strcat(str, str_aux);
         screen_area_puts(ge->map, str);
       } else {
-        sprintf(str, "                   ");
-        sprintf(str_aux, "  |               |");
+        sprintf(str, "                                    ");
+        sprintf(str_aux, "  |                                |");
         strcat(str, str_aux);
-        sprintf(str_aux, "                     ");
+        sprintf(str_aux, "                                      ");
         strcat(str, str_aux);
         screen_area_puts(ge->map, str);
       }
 
       /*Suelo del espacio norte*/
       print_limits_no_west_east(ge);
+
+      print_vertical_connections(ge, game, id);
+      
     }
 
     if (id_surth != NO_ID) {
-      sprintf(str, "                             ^                             ");
+      sprintf(str, "                                                       ^                                                       ");
       screen_area_puts(ge->map, str);
 
       print_limits_no_west_east(ge);
@@ -505,25 +545,25 @@ void print_spaces(Graphic_engine *ge, Game *game, Space *space, int act) {
 
       if (space_get_discovered(space_surth)) {
         for (i = 0; i < GDESC_ROWS; i++) {
-          sprintf(str, "                   ");
+          sprintf(str, "                                    ");
           sprintf(str_aux, "  |%s      |", gdesc_surth[i]);
           strcat(str, str_aux);
-          sprintf(str_aux, "                     ");
+          sprintf(str_aux, "                                      ");
           strcat(str, str_aux);
           screen_area_puts(ge->map, str);
         } 
       } else {
         for (i=0; i < GDESC_ROWS; i++) {
-          sprintf(str, "                   ");
-          sprintf(str_aux, "  |               |");
+          sprintf(str, "                                    ");
+          sprintf(str_aux, "  |                                |");
           strcat(str, str_aux);
-          sprintf(str_aux, "                     ");
+          sprintf(str_aux, "                                      ");
           strcat(str, str_aux);
           screen_area_puts(ge->map, str);
         }
       }
 
-      sprintf(str, "                   ");
+      sprintf(str, "                                    ");
       if (space_get_num_objects(space_surth) > 0) {
         ids_objects = space_get_objects(space_surth);
 
@@ -532,16 +572,16 @@ void print_spaces(Graphic_engine *ge, Game *game, Space *space, int act) {
           sprintf(str_aux, "%s ", object_get_name(game_get_object(game, ids_objects[i])));
           strcat(str_objects, str_aux);
         }
-        sprintf(str_aux, "  |%-15.15s|", str_objects);
-        strcat(str, str_aux);
+        sprintf(str_aux, "  |%-32.32s|", str_objects);
+        strcat(str, str_aux);                 
         sprintf(str_aux, "                     ");
         strcat(str, str_aux);
         screen_area_puts(ge->map, str);
       } else {
-        sprintf(str, "                   ");
-        sprintf(str_aux, "  |               |");
+        sprintf(str, "                                    ");
+        sprintf(str_aux, "  |                                |");
         strcat(str, str_aux);
-        sprintf(str_aux, "                     ");
+        sprintf(str_aux, "                                      ");
         strcat(str, str_aux);
         screen_area_puts(ge->map, str);
       }

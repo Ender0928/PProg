@@ -108,6 +108,13 @@ Status inventory_set_max_value(Inventory* inv, int maxValue){
     return OK;
 }
 
+int inventory_get_max_value(Inventory* inv){
+    if(!inv) 
+        return -1;
+
+    return inv->max_objs;
+}
+
 Status inventory_print(Inventory* inv){
     if(!inv) return ERROR;
 

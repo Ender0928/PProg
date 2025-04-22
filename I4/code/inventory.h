@@ -88,6 +88,13 @@ Bool inventory_is_empty(Inventory *inv);
  */
 Status inventory_set_max_value(Inventory* inv, int maxValue);
 
+/** //TODO no hecho test
+  * @brief It gets the maximum number of objects of the inventory
+  * @author Javier Pérez
+  * @param inv pointer to the set
+  * @return the maximum number of objects of the inventory
+  */
+int inventory_get_max_value(Inventory* inv);
 /**
   * @brief It prints all the ids of the inventory and the number of ids
   * @author Javier Pérez

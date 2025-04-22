@@ -10,12 +10,12 @@
 
 #include "game.h"
 #include "game_reader.h"
+#include "game_management.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#define MAX_PLAYERS 8
 /**
    Private functions
 */
@@ -93,27 +93,7 @@ Status game_create_from_file(Game **game, char *filename) {
   if (game_create(game) == ERROR || !filename) {
     return ERROR;
   }
-
-  if (game_reader_load_players(*game, filename) == ERROR) {
-    game_destroy(game);
-    return ERROR;
-  }
-  if (game_reader_load_spaces(*game, filename) == ERROR) {
-    game_destroy(game);
-    return ERROR;
-  }
-
-  if (game_reader_load_objects(*game, filename) == ERROR) {
-    game_destroy(game);
-    return ERROR;
-  }
-
-  if (game_reader_load_links(*game, filename) == ERROR) {
-    game_destroy(game);
-    return ERROR;
-  }
-
-  if(game_reader_load_character(*game, filename) == ERROR) {
+  if (game_management_load(*game, filename) == ERROR) {
     game_destroy(game);
     return ERROR;
   }
@@ -546,7 +526,7 @@ Status game_add_object_to_player(Game *game, Id object_id) {
   return OK;
 }
 
-Character *game_get_character_by_index(Game *g,int i){
+Character *game_get_character_by_index(Game *g, int i){
   if (!g || i < 0 || i >= g->n_characters) {
     return NULL;
   }
@@ -715,6 +695,130 @@ char *game_get_str_command(Game *game) {
   return command_get_name(game->last_cmd);
 }
 
+int game_get_n_spaces(Game *game) {
+  if (!game) {
+    return -1;
+  }
+
+  return game->n_spaces;
+}
+
+Space *game_get_space_by_index(Game *game, Id index) {
+  if (!game || index < 0) {
+    return NULL;
+  }
+
+  return game->spaces[index];
+}
+
+int game_get_n_links(Game *game) {
+  if (!game) {
+    return -1;
+  }
+
+  return game->n_links;
+}
+
+Link *game_get_link_by_index(Game *game, Id index) {
+  if (!game || index < 0) {
+    return NULL;
+  }
+
+  return game->links[index];
+}
+
+int game_get_n_players(Game *game) {
+  if (!game) {
+    return -1;
+  }
+
+  return game->n_players;
+}
+
+Player *game_get_player_by_index(Game *game, Id id) {
+  int i = 0;
+  PlayerNode *current = NULL;
+
+  if (!game || id == NO_ID) {
+    return NULL;
+  }
+
+  current = game->all_players;
+  while (current && i < game->n_players) {
+    if (i == id) {
+      return current->player;
+    }
+    current = current->next;
+    i++;
+  }
+  return NULL;
+}
+
+int game_get_n_objects(Game *game) {
+  if (!game) {
+    return -1;
+  }
+
+  return game->n_objects;
+}
+
+Object *game_get_object_by_index(Game *game, Id index) {
+  if (!game || index < 0) {
+    return NULL;
+  }
+
+  return game->objects[index];
+}
+
+void game_clean(Game *game) {
+  PlayerNode *current = NULL;
+  PlayerNode *temp = NULL;
+  int i = 0;
+
+  for (i = 0; i < game->n_spaces; i++) {
+    if(game->spaces[i]) {
+      space_destroy(game->spaces[i]);
+      game->spaces[i] = NULL;
+    }
+  }
+
+  for (i = 0; i < game->n_objects; i++) {
+    if(game->objects[i]) {
+      object_destroy(game->objects[i]);
+      game->objects[i] = NULL;
+    }
+  }
+  for (i = 0; i < game->n_characters; i++) {
+    if(game->characters[i]) {
+      character_destroy(game->characters[i]);
+      game->characters[i] = NULL;
+    }
+  }
+  for (i = 0; i < game->n_links; i++) {
+    if(game->links[i]) {
+      link_destroy(game->links[i]);
+      game->links[i] = NULL;
+    }
+  }
+
+  current = game->all_players;
+  temp = NULL;
+  while (current) {
+    temp = current;
+    current = current->next;
+    player_destroy(temp->player);
+    free(temp);
+  }
+  game->all_players = NULL;
+  game->player = NULL;
+  game->n_spaces = 0;
+  game->n_objects = 0;
+  game->n_characters = 0;
+  game->n_links = 0;
+  game->n_players = 0;
+  game->turn = 0;
+}
+
 Status game_space_print(Game *game, Space *space) {
   if(!space || !game) {
     return ERROR;
@@ -724,6 +828,8 @@ Status game_space_print(Game *game, Space *space) {
   fprintf(stdout, "Sur: %d\n", (int)game_get_connection(game, space_get_id(space), S));
   fprintf(stdout, "West: %d\n", (int)game_get_connection(game, space_get_id(space), W));
   fprintf(stdout, "East: %d\n", (int)game_get_connection(game, space_get_id(space), E));
+  fprintf(stdout, "Down: %d\n", (int)game_get_connection(game, space_get_id(space), D));
+  fprintf(stdout, "Up: %d\n", (int)game_get_connection(game, space_get_id(space), UP));
 
   return OK;
 }

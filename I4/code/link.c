@@ -120,6 +120,13 @@ Bool link_is_open(Link *link) {
     return link->open;
 }
 
+Id link_get_id(Link *link) {
+    if (!link) {
+        return NO_ID;
+    }
+    return link->id;
+}
+
 Status link_print(Link *link) {
     if (!link) {
         return ERROR;

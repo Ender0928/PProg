@@ -21,80 +21,89 @@ Status game_reader_load_spaces(Game *game, char *filename) {
   Id id = NO_ID;
   Space* space = NULL;
   Status st = OK;
-  int i;
+  int i, j;
   char (*gdesc)[GDESC_COLS];
 
   if (!filename || !game) {
-    return ERROR;
+      return ERROR;
   }
-  
+
   gdesc = malloc(GDESC_ROWS * sizeof(char[GDESC_COLS]));
   if (!gdesc) {
       return ERROR;
   }
 
-
-
   file = fopen(filename, "r");
   if (file == NULL) {
-    free(gdesc);
-    return ERROR;
+      free(gdesc);
+      return ERROR;
   }
 
   while (fgets(line, WORD_SIZE, file)) {
-    if (strncmp("#s:", line, 3) == 0) {
-      toks = strtok(line + 3, "|");
-      id = atol(toks);
-      toks = strtok(NULL, "|");
-      strcpy(name, toks);
+      if (strncmp("#s:", line, 3) == 0) {
+          toks = strtok(line + 3, "|");
+          id = atol(toks);
+          toks = strtok(NULL, "|");
+          strcpy(name, toks);
 
-      for (i = 0; i < GDESC_ROWS; i++) {
-        toks = strtok(NULL, "|");
-        if (toks) {
-            strncpy(gdesc[i], toks, GDESC_COLS - 1);
-            gdesc[i][GDESC_COLS - 1] = '\0';
-        } else {
-            strcpy(gdesc[i], "         ");
-            gdesc[i][GDESC_COLS - 1] = '\0';
+          for (i = 0; i < GDESC_ROWS; i++) {
+            toks = strtok(NULL, "|");
+        
+            if (toks) {
+                toks[strcspn(toks, "\r\n")] = '\0';
+        
+                j = 0;
+                for (; j < GDESC_COLS - 1 && toks[j] != '\0'; j++) {
+                    gdesc[i][j] = toks[j];
+                }
+                for (; j < GDESC_COLS - 1; j++) {
+                    gdesc[i][j] = ' ';
+                }
+                gdesc[i][GDESC_COLS - 1] = '\0';
+            } else {
+                memset(gdesc[i], ' ', GDESC_COLS - 1);
+                gdesc[i][GDESC_COLS - 1] = '\0';
+            }
         }
-      }
+        
+
 #ifdef DEBUG
-      printf("Leido: %ld|%s|\n", id, name);
+          printf("Leido: %ld|%s|\n", id, name);
 #endif
-      space = space_create(id);
-      if (space != NULL) {
-        if(space_get_id(space) == game_get_player_location(game) || space_get_id(space) == game_get_player_location(game)) {
-            
-          space_set_discovered(space,TRUE);
-        }else{
-          space_set_discovered(space,FALSE);
-        }
+          space = space_create(id);
+          if (space != NULL) {
+              if (space_get_id(space) == game_get_player_location(game)) {
+                  space_set_discovered(space, TRUE);
+              } else {
+                  space_set_discovered(space, FALSE);
+              }
 
-        if (space_set_name(space, name) == ERROR ||
-            space_set_gdesc(space, gdesc) == ERROR ||
-          
-            game_add_space(game, space) == ERROR) {
-            
-            space_destroy(space);
-            st = ERROR;
-        }
+              if (space_set_name(space, name) == ERROR ||
+                  space_set_gdesc(space, gdesc) == ERROR ||
+                  game_add_space(game, space) == ERROR) {
+                  
+                  space_destroy(space);
+                  st = ERROR;
+              }
+          } else {
+              st = ERROR;
+          }
 
-      } else {
-          st = ERROR;
+          for (i = 0; i < GDESC_ROWS; i++) {
+              gdesc[i][0] = '\0';
+          }
       }
-      for (i=0; i < GDESC_ROWS; i++) {
-        gdesc[i][0] = '\0';
-      }
-    }
   }
 
-  if (ferror(file))
-    st = ERROR;
+  if (ferror(file)) {
+      st = ERROR;
+  }
 
   free(gdesc);
   fclose(file);
   return st;
 }
+
 
 Status game_reader_load_objects(Game *game, char *filename) {
   FILE* file = NULL;
@@ -110,7 +119,7 @@ Status game_reader_load_objects(Game *game, char *filename) {
   if (!filename) {
     return ERROR;
   }
-
+  
   file = fopen(filename, "r");
   if (file == NULL) {
     return ERROR;

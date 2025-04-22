@@ -52,9 +52,15 @@
 #define MAX_INVENTORY 10
 
 /**
+ * @brief Defines the maximum number of players allowed in the project
+ */
+#define MAX_PLAYERS 8
+
+/**
  * @brief Defines the size of the graphical description (gdesc) array
  */
 #define TAM_GDESC 7
+
 
 /**
  * @brief Type definition for object IDs
@@ -80,6 +86,6 @@ typedef enum { ERROR, OK } Status;
  *
  * This enumeration defines the four possible movement directions.
  */
-typedef enum { N, S, E, W, U } Direction;
+typedef enum { N, S, E, W, D, UP, U} Direction;
 
 #endif /* TYPES_H */

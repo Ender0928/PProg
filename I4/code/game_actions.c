@@ -104,6 +104,10 @@ Status game_actions_recruit(Game *game);
 
 Status game_actions_abandon(Game *game);
 
+Status game_actions_load(Game *game);
+
+Status game_actions_save(Game *game);
+
 /**
    Game actions implementation
 */
@@ -145,6 +149,13 @@ Status game_actions_update(Game *game, Command *command) {
 
     case ABANDON:
       return game_actions_abandon(game);
+    
+    case SAVE:
+      return game_actions_save(game);
+    
+    case LOAD:
+      return game_actions_load(game);
+
     default:
       return ERROR;
   }
@@ -484,5 +495,56 @@ Status game_actions_move(Game *game) {
   }  
 
   return ERROR;
+}
+
+Status game_actions_load(Game *game) {
+  char *filename;
+  FILE *file = NULL;
+
+  if (!game) {
+    return ERROR;
+  }
+
+  filename = command_get_argument(game_get_last_command(game));
+  if (!filename || strlen(filename) == 0) {
+    return ERROR;
+  }
+
+  file = fopen(filename, "r");
+  if (!file) {
+    return ERROR;
+  }
+  fclose(file);
+
+  game_clean(game);
+  
+  game_management_load(game, filename);
+  return OK;
+}
+
+Status game_actions_save(Game *game) {
+  FILE *file = NULL;
+  char filename[100];
+  char *extension = ".dat";
+
+  if (!game) {
+    return ERROR;
+  }
+
+  printf("Introduce el nombre del archivo (sin extension): ");
+  scanf("%s", filename);
+
+  strcat(filename, extension);
+
+  file = fopen(filename, "w");
+  if (!file) {
+    return ERROR;
+  }
+
+  fclose(file);
+  
+  game_management_save(game, filename);
+
+  return OK;
 }
 

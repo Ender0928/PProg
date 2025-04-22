@@ -13,8 +13,8 @@
 
 #include "types.h"
 
-#define GDESC_ROWS 5
-#define GDESC_COLS 10
+#define GDESC_ROWS 8
+#define GDESC_COLS 27
 
 
 typedef struct _Space Space;

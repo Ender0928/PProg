@@ -19,6 +19,7 @@
 #include "object.h"
 #include "character.h"
 #include "inventory.h"
+#include "game_management.h"
 
 /**
  * @brief Updates the game state based on user input

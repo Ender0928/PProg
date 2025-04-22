@@ -11,7 +11,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-
 #include "command.h"
 #include "game.h"
 #include "game_actions.h"
@@ -74,7 +73,6 @@ int main(int argc, char *argv[]) {
       if (!game_loop_init(&game, &gengine, argv[1])) {
         game_loop_run_with_file(game, gengine, argv[3]);
         game_loop_cleanup(game, gengine);
-
       }
     } else {
       fprintf(stderr, "Use: %s <game_data_file> -l <log_file>\n", argv[0]);
@@ -100,7 +98,6 @@ int game_loop_init(Game **game, Graphic_engine **gengine, char *file_name) {
 }
 
 void game_loop_run(Game *game, Graphic_engine *gengine) {
-
   Command *last_cmd;
   Status status;
 
@@ -108,8 +105,7 @@ void game_loop_run(Game *game, Graphic_engine *gengine) {
     return;
   }
 
-
-  last_cmd=game_get_last_command(game);
+  last_cmd = game_get_last_command(game);
 
   while ((command_get_code(last_cmd) != EXIT) && (game_get_finished(game) == FALSE)) {
     graphic_engine_paint_game(gengine, game);
@@ -119,7 +115,6 @@ void game_loop_run(Game *game, Graphic_engine *gengine) {
     game_set_command_status(game, status);
     game_next_turn(game);
   }
-
 }
 
 void game_loop_run_with_file(Game *game, Graphic_engine *gengine, char *file_name) {
@@ -130,8 +125,7 @@ void game_loop_run_with_file(Game *game, Graphic_engine *gengine, char *file_nam
     return;
   }
 
-
-  last_cmd=game_get_last_command(game);
+  last_cmd = game_get_last_command(game);
 
   while ((command_get_code(last_cmd) != EXIT) && (game_get_finished(game) == FALSE)) {
     graphic_engine_paint_game(gengine, game);
@@ -142,28 +136,27 @@ void game_loop_run_with_file(Game *game, Graphic_engine *gengine, char *file_nam
     game_loop_store_input(game, file_name, last_cmd, status);
     game_next_turn(game);
   }
-
 }
 
 void game_loop_cleanup(Game *game, Graphic_engine *gengine) {
   game_destroy(&game);
+  game = NULL;
   graphic_engine_destroy(gengine);
+  gengine = NULL;
 }
-
 
 void game_loop_store_input(Game *game, char* file_name, Command *last_cmd, Status status) {
   FILE *file = NULL;
-  if (!game) {  
+  if (!game) {
     return;
   }
- 
+
   file = fopen(file_name, "a+");
   if (file == NULL) {
     fprintf(stderr, "Error opening log file.\n");
     return;
   }
-  
+
   fprintf(file, "\n%s %s", game_get_str_command(game), status == OK ? "OK" : "ERROR");
   fclose(file);
-  
 }
