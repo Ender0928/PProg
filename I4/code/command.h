@@ -14,7 +14,7 @@
 #include "types.h"
 
 #define N_CMDT 2
-#define N_CMD 13
+#define N_CMD 19
 
 /**
  * @brief Types of commands
@@ -29,7 +29,7 @@ typedef enum { CMDS, CMDL } CommandType;
  *
  * These codes represent different commands that can be executed.
  */
-typedef enum { NO_CMD = -1, UNKNOWN, EXIT, TAKE, DROP, ATTACK, CHAT, INSPECT, MOVE, RECRUIT, ABANDON, SAVE, LOAD} CommandCode;
+typedef enum { NO_CMD = -1, UNKNOWN, EXIT, TAKE, DROP, ATTACK, CHAT, INSPECT, MOVE, RECRUIT, ABANDON, SAVE, LOAD, FABRICAR, BATTLE, QUICK, USE, OPEN,GROUP} CommandCode;
 
 /**
  * @brief Definition of Command structure

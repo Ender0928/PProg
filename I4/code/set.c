@@ -41,15 +41,15 @@ Status set_destroy(Set* set){
     return OK;
 }
 
-Status set_add_object(Set* set,Id id){
-
-    if(!set||id==NO_ID) return ERROR;
+Status set_add_object(Set* set, Id id) {
+    if (!set || id == NO_ID || set_find_object(set, id)) return ERROR;
 
     set->ids[set->n_ids] = id;
     set->n_ids++;
-    
+
     return OK;
 }
+
 
 int set_size(Set *set) {
     if (!set) {

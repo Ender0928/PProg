@@ -17,7 +17,12 @@
  
  #define CMD_LENGHT 30
  
- char *cmd_to_str[N_CMD][N_CMDT] = {{"", "No command"}, {"", "Unknown"}, {"e", "Exit"}, {"t", "Take"}, {"d", "Drop"}, {"a", "Attack"}, {"c", "Chat"}, {"i", "Inspect"}, {"m", "Move"},{"k", "Recruit"},{"n", "Abandon"}, {"s", "Save"}, {"l", "Load"}};
+ char *cmd_to_str[N_CMD][N_CMDT] = {{"", "No command"}, {"", "Unknown"}, {"e", "Exit"}, {"t", "Take"}, {"d", "Drop"}, 
+                                    {"a", "Attack"}, {"c", "Chat"}, {"i", "Inspect"}, {"m", "Move"},{"k", "Recruit"},
+                                    {"n", "Abandon"}, {"s", "Save"}, {"l", "Load"}, {"f", "Fabricar"}, { "b", "battle" },
+                                    {"q", "Quit battle"}, {"u", "Use"}, {"o", "open"},{"g","group"}
+
+                                  };
  
  /**
   * @brief Command
@@ -83,7 +88,7 @@
    if (!command) {
      return ERROR;
    }
- 
+   
    if (fgets(input, CMD_LENGHT, stdin)) {
      token = strtok(input, " \n");
      if (!token) {
@@ -100,7 +105,7 @@
      }
      command_set_code(command, cmd);
  
-     token = strtok(NULL, " \n");
+     token = strtok(NULL, "\n");
      if (token) {
       if (strcasecmp(token, "N")==0 || strcasecmp(token, "NORTH")==0){
         command->direction = N;

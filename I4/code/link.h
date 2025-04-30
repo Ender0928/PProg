@@ -112,6 +112,16 @@ Bool link_is_open(Link *link);
  * @return ID of the link, or NO_ID if not set.
  */
 Id link_get_id(Link *link);
+
+ /**
+  * @brief Sets the id of a link.
+  *
+  * @param link Pointer to the link.
+  * @param link_id Id to set on the link
+  * @return Status indicating success or failure.
+  */
+ Status link_set_id(Link *link, Id link_id);
+ 
 /**
  * @brief Prints the details of a link.
  *

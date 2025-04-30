@@ -103,5 +103,7 @@ int inventory_get_max_value(Inventory* inv);
   */
 Status inventory_print(Inventory* inv);
 
+int inventory_size(Inventory *inv);
 
+Id *inventory_get_object_ids(Inventory *inv);
 #endif

@@ -17,6 +17,10 @@ struct _Object{
   Id id;                    /*!< Id number of the object, it must be unique */
   char name[TAM];           /*!< Name of the space */
   char description[TAM];    /*!< Description of the space */
+  int health;               /*!< Health of the object */ 
+  Bool movable;             /*!< movable variable of the object */ 
+  Id dependency;            /*!< dependency of the object */     
+  Id open;                  /*!< id of the possible link to be opened of the object */ 
 };
 
 /** object_create allocates memory for a new object
@@ -85,7 +89,7 @@ Status object_set_name(Object* object, char* name) {
 
 /** It gets the name of an object
   */
-const char * object_get_name(Object* object) {
+char * object_get_name(Object* object) {
     if (!object) 
         return NULL;
     
@@ -111,6 +115,74 @@ char *object_get_description(Object* object) {
         return NULL;
     
     return object->description;
+}
+
+/** It gets the health of an object
+  */
+  int object_get_health(Object *object) {
+    if (!object)
+        return -1;
+    return object->health;
+}
+
+/** It sets the health of an object
+  */
+Status object_set_health(Object *object, int health) {
+    if (!object)
+        return ERROR;
+    object->health = health;
+    return OK;
+}
+
+/** It sets the movable variable of an object
+  */
+Status object_set_movable(Object *object, Bool movable) {
+    if (!object)
+        return ERROR;
+    object->movable = movable;
+    return OK;
+}
+
+/** It gets the movable variable of an object
+  */
+Bool object_get_movable(Object *object) {
+    if (!object) 
+        return FALSE;
+    return object->movable;
+}
+
+/** It sets the dependency object's id of an object
+  */
+Status object_set_dependency(Object *object, Id dependency) {
+    if (!object)
+        return ERROR;
+    object->dependency = dependency;
+    return OK;
+}
+
+/** It gets the dependency id of an object
+  */
+Id object_get_dependency(Object *object) {
+    if (!object) 
+        return NO_ID;
+    return object->dependency;
+}
+
+/** It sets the open id of an object
+  */
+ Status object_set_open(Object *object, Id open) {
+    if (!object)
+        return ERROR;
+    object->open = open;
+    return OK;
+}
+
+/** It gets the open id of an object
+  */
+Id object_get_open(Object *object) {
+    if (!object) 
+        return NO_ID;
+    return object->open;
 }
 
 /** It prints the object information

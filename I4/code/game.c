@@ -9,8 +9,8 @@
  */
 
 #include "game.h"
-#include "game_reader.h"
 #include "game_management.h"
+#include "game_rules.h" 
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -28,6 +28,7 @@ typedef struct _PlayerNode {
 } PlayerNode;
 
 struct _Game {
+  GameRules *rules;                       /*!< Rules of the game*/
   Player *player;                         /*!< Player of the game */
   PlayerNode *all_players;                /*!< All players of the game */        
   int turn;                               /*!< Turn of the game */
@@ -43,8 +44,14 @@ struct _Game {
   Command *last_cmd;                      /*!< Last command written */
   Bool finished;                          /*!< Finished status of the game */
   char *description;                      /*!< Auxiliar */
-  Status command;                         /*!< Status for the last command */  
+  Status command;                         /*!< Status for the last command */ 
+  GameState state;                        /*!< State of the game */ 
+  Battle *battle;                         /*!< Battle of the game */
+  Id revival_space;                       /*!< Space where the player revives */
+  Bool group;                             /*!< Group of the game */
 }; 
+
+void game_rules_init(Game *game);
 
 /**
    Game interface implementation
@@ -71,8 +78,7 @@ Status game_create(Game **game) {
   for (i = 0; i < MAX_LINKS; i++) {
     (*game)->links[i] = NULL;
   }
-
-  
+    
   (*game)->all_players = NULL;
   (*game)->player = NULL;
   (*game)->n_spaces = 0;
@@ -81,11 +87,24 @@ Status game_create(Game **game) {
   (*game)->n_links = 0;
   (*game)->n_players = 0;
   (*game)->turn = 0;
-  (*game)->last_cmd = command_create();
   (*game)->finished = FALSE;
   (*game)->description = NULL;
   (*game)->command = OK;
-
+  (*game)->group = FALSE;
+  (*game)->last_cmd = command_create();
+  (*game)->rules = gamerules_create();
+  if (!(*game)->rules) {
+      game_destroy(game);
+      return ERROR;
+  }
+  game_rules_init(*game);
+  (*game)->state = GAME_STATE_NORMAL  ;
+  (*game)->battle = battle_create();
+  if (!(*game)->battle) {
+      game_destroy(game);
+      return ERROR;
+  }
+  (*game)->revival_space = DEFAULT_REVIVAL_SPACE_ID;
   return OK;
 }
 
@@ -132,6 +151,11 @@ Status game_destroy(Game **game) {
     }
   
   command_destroy((*game)->last_cmd);
+
+  gamerules_destroy((*game)->rules);
+  
+  battle_destroy((*game)->battle);
+
   free(*game);
   return OK;
 }
@@ -243,6 +267,84 @@ Status game_set_object_location(Game *game, Id object_id, Id space_id) {
   }
 
   return OK;
+}
+
+Bool  game_get_object_movable(Game *game, Id object_id) { 
+  int i=0;
+  if (!game || object_id == NO_ID){
+    return NO_ID;
+  }
+    for (i = 0; i < game->n_objects ; i++) {
+      if (object_get_id(game->objects[i]) == object_id) {
+        return object_get_movable(game->objects[i]);
+      }
+    }
+  return FALSE; 
+}
+
+Id game_get_object_dependency(Game *game, Id object_id) { 
+  int i=0;
+  if (!game || object_id == NO_ID){
+    return NO_ID;
+  }
+    for (i = 0; i < game->n_objects ; i++) {
+      if (object_get_id(game->objects[i]) == object_id) {
+        return object_get_dependency(game->objects[i]);
+      }
+    }
+  return FALSE; 
+}
+
+Id game_get_object_that_depent_from_a_given(Game *game, Id object_id) {
+  int i;
+  if (!game || object_id==NO_ID) {
+    return NO_ID;
+  }
+  for (i=0; i<game->n_objects; i++) {
+    if (object_get_dependency(game->objects[i]) == object_id){
+      return object_get_id(game->objects[i]);
+    }
+  }
+  return NO_ID;
+}
+
+Link *game_get_link_by_id(Game *game, Id link_id) {
+  int i;
+  if (!game || link_id == NO_ID) {
+    return NULL;
+  }
+  for (i = 0; i<game->n_links; i++) {
+    if (link_get_id(game->links[i]) == link_id) {
+      return game->links[i];
+    }
+  }
+  return NULL;
+}
+
+Id game_get_link_id_by_name(Game *game, char *link_name) {
+  int i;
+  if (!game || !link_name) {
+    return NO_ID;
+  }
+  for (i = 0; i <game->n_links; i++) {
+    if ((strcmp(link_name, link_get_name(game->links[i]))) == 0){
+      return link_get_id(game->links[i]);
+    }
+  }
+  return NO_ID;
+}
+
+Id game_get_character_id_by_name(Game *game, char *character_name) {
+  int i;
+  if (!game || !character_name) {
+    return NO_ID;
+  }
+  for (i = 0; i <game->n_characters; i++) {
+    if ((strcmp(character_name, character_get_name(game->characters[i]))) == 0){
+      return character_get_id(game->characters[i]);
+    }
+  }
+  return NO_ID;
 }
 
 
@@ -436,9 +538,6 @@ Character *game_get_character_at_location(Game *game, Id location) {
 
   return NULL;
 }
-int game_get_character_health(Game *game, Character *character) {
-  return character_get_health(character);
-}
 
 int game_get_player_health(Game *game) {
   return player_get_health(game->player);
@@ -453,14 +552,23 @@ Status game_set_player_health(Game *game, int health) {
     return ERROR;
   }
 
-  if (health == 0) {
-    game_set_finished(game, TRUE);
+  if (health == 0) {  
+    if (gamerules_check_revival_object(game, game_get_rules(game))) {
+      game_set_state(game, GAME_STATE_REVIVAL);
+      return OK;
+    } 
+
+    game_set_state(game, GAME_STATE_RESPAUWN);
+    game_drop_all_objects(game);
+    game_set_player_location(game, game_get_revival_space(game));
     return OK;
+    
   }
 
   player_set_health(game->player, health);
   return OK;
 }
+
 Status game_set_character_health(Game *game, Character *character, int health) {
   if (!game || character == NULL) {
     return ERROR;
@@ -471,7 +579,8 @@ Status game_set_character_health(Game *game, Character *character, int health) {
   }
 
   if (health == 0) {
-    game_remove_character(game, character_get_id(character));
+    character_mark_dead(character);
+    character_set_health(character, 0);
     return OK;
   }
 
@@ -678,7 +787,9 @@ Status game_next_turn(Game *game) {
   if (!game || !game->all_players) {
       return ERROR;
   }
-
+  if (command_get_code(game->last_cmd) == BATTLE || command_get_code(game->last_cmd) == ATTACK) {
+      return OK;
+  }
   game->turn++;
   if (game->turn >= game->n_players) {
       game->turn = 0;
@@ -819,6 +930,23 @@ void game_clean(Game *game) {
   game->turn = 0;
 }
 
+Status game_set_group(Game *game, Bool group) {
+  if (!game) {
+    return ERROR;
+  }
+
+  game->group = group;
+  return OK;
+}
+
+Bool game_get_group(Game *game) {
+  if (!game) {
+    return FALSE;
+  }
+
+  return game->group;
+}
+
 Status game_space_print(Game *game, Space *space) {
   if(!space || !game) {
     return ERROR;
@@ -833,3 +961,140 @@ Status game_space_print(Game *game, Space *space) {
 
   return OK;
 }
+
+int game_get_characters_at_location(Game *game, Id location, Character **result) {
+  int count = 0;
+  int i = 0;
+  if (!game || location == NO_ID || !result) {
+      return 0;
+  }
+
+  for (i = 0; i < game->n_characters && count < MAX_CHARACTERS; i++) {
+      Character *c = game->characters[i];
+      if (c && character_get_location(c) == location) {
+          result[count++] = c;
+      }
+  }
+
+  return count;
+}
+
+Character *game_get_character(Game *game, Id id) {
+  int i;
+
+  if (!game || id == NO_ID) return NULL;
+
+  for (i = 0; i < game->n_characters; i++) {
+      if (character_get_id(game->characters[i]) == id) {
+          return game->characters[i];
+      }
+  }
+
+  return NULL;
+}
+
+GameRules *game_get_rules(Game *game) {
+  if (!game) return NULL;
+  return game->rules;
+}
+
+void game_rules_init(Game *game) {
+  GameRules *rules = game_get_rules(game);
+  if (!rules) return;
+
+  /*Rules of drop objects on dead*/
+  gamerules_add_drop_rule(rules, 3, 12);
+  gamerules_add_drop_rule(rules, 5, 14);
+  gamerules_add_drop_rule(rules, 6, 15);
+
+  /*Rules of open links */
+  gamerules_add_open_link_on_death_rule(rules, 3, 12);
+
+  /*Rules of heath objects*/
+  gamerules_add_heal_on_pickup(rules, 15, 3);
+  gamerules_add_heal_on_pickup(rules, 16, 2);
+
+  /*Rules of crafts*/
+  gamerules_add_craft_rule(rules, 12, 14, 17);
+
+  /*Rules of extra damege objects*/
+  gamerules_add_object_damage_rule(rules, 17, 1);
+
+  /*Rules of extra damage characters*/
+  gamerules_add_enemy_damage_rule(game_get_rules(game), 3, 1);
+
+  /*Objetos inmortales*/
+  gamerules_add_revival_object(rules, 18);
+}
+
+Link *game_get_link(Game *game, Id link_id) {
+  int i;
+  if (!game || link_id == NO_ID) return NULL;
+
+  for (i = 0; i < MAX_LINKS; i++) {
+      if (game->links[i] && link_get_id(game->links[i]) == link_id) {
+          return game->links[i];
+      }
+  }
+
+  return NULL;
+}
+
+void game_set_state(Game *game, GameState state) {
+  if (game) game->state = state;
+}
+
+GameState game_get_state(Game *game) {
+  return game ? game->state : GAME_STATE_NORMAL;
+}
+
+Battle *game_get_battle(Game *game) {
+  if (!game) return NULL;
+
+  return game->battle;
+}
+
+void game_set_revival_space(Game *game, Id space_id) {
+  if (game) game->revival_space = space_id;
+}
+
+Id game_get_revival_space(Game *game) {
+  return game ? game->revival_space : NO_ID;
+}
+
+Status game_drop_all_objects(Game *game) {
+  Player *player = NULL;
+  Space *space = NULL;
+  Id location = NO_ID;
+  Id *objects = NULL;
+  int total = 0;
+  Id obj_id;
+
+  if (!game) return ERROR;
+
+  player = game_get_player(game);
+  if (!player) return ERROR;
+
+  location = player_get_location(player);
+  if (location == NO_ID) return ERROR;
+
+  space = game_get_space(game, location);
+  if (!space) return ERROR;
+
+  total = player_get_num_objects(player);
+  while (total > 0) {
+      objects = player_get_objects(player);
+      obj_id = objects[0]; // siempre coger el primero
+
+      if (player_remove_object(player, obj_id) == OK) {
+          space_add_object(space, obj_id);
+      }
+
+      total--; // ya hemos eliminado uno, siguiente vuelta
+  }
+
+  return OK;
+}
+
+
+

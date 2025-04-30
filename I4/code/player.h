@@ -14,10 +14,7 @@
 
 #define P 1
 
-/**
- * @brief Defines the maximum health of the players
- */
-#define PLAYER_HEALTH 3
+
 
 typedef struct _Player Player;
 
@@ -155,7 +152,7 @@ Bool player_inventory_is_full(Player *player);
  * @param object the id of the object
  * @return TRUE if the player has the object, FALSE otherwise
  */
-Status player_has_object(Player *player, Id object);
+Bool player_has_object(Player *player, Id object);
 
 /**
  * @brief It sets the maximum number of objects of the backpack of the player
@@ -200,6 +197,17 @@ int player_get_max_objects(Player *player);
 
 Status player_print(Player *player);
 
+Status player_set_gdesc_battle(Player *player, char gdesc[GDESC_BATTLE_ROWS][GDESC_BATTLE_COLS]);
+
+char (*player_get_gdesc_battle(Player *player))[GDESC_BATTLE_COLS];
+
+int player_get_num_objects(Player *player);
+
+Id *player_get_objects(Player *player);
+
+char *player_get_all_gdesc_battle(Player *player);
+
+char *player_get_graphic_desc(Player *player);
 #endif
 
 

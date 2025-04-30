@@ -1,3 +1,14 @@
+/**
+ * @brief Link module implementation.
+ * 
+ * This module provides functions to create, destroy, and manipulate links in a game.
+ * It includes functions to set and get link properties such as ID, name, origin, destination, direction, and open status.
+ * It also includes a function to print link information.
+ * 
+ * @file link.c
+ * @version 3.0
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -37,6 +48,14 @@ void link_destroy(Link *link) {
     if (link) {
         free(link);
     }
+}
+
+Status link_set_id(Link *link, Id link_id) {
+    if (!link || link_id == NO_ID) {
+        return ERROR;
+    }
+    link->id = link_id;
+    return OK;
 }
 
 Status link_set_name(Link *link, const char *name) {

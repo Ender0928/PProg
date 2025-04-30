@@ -34,12 +34,12 @@
 /**
  * @brief Defines the maximum number of characters allowed in the project
  */
-#define MAX_CHARACTERS 3
+#define MAX_CHARACTERS 10
 
 /**
  * @brief Defines the maximum number of objects allowed in the project
  */
-#define MAX_OBJECTS 5
+#define MAX_OBJECTS 20
 
 /**
  * @brief Defines the maximum number of links allowed in the project
@@ -57,10 +57,42 @@
 #define MAX_PLAYERS 8
 
 /**
+ * @brief Defines the maximum number of drop rules in the project
+ */
+#define MAX_DROP_RULES 5
+
+/**
+ * @brief Defines ID of the space objects
+ */
+#define ID_SPACE_OBJECTS 10
+
+/**
+ * @brief Defines the maximum number of open links
+ */
+#define MAX_OPEN_LINKS 5
+
+/**
+ * @brief Defines the maximum number of health bojects
+ */
+#define MAX_HEALTH_OBJECTS 5
+
+/**
+ * @brief Defines the maximum health of the players
+ */
+#define PLAYER_HEALTH 5
+
+/**
+ * @brief Defines the maximum number of crafts rules
+ */
+#define MAX_CRAFTS_RULES 7
+/**
  * @brief Defines the size of the graphical description (gdesc) array
  */
 #define TAM_GDESC 7
 
+#define GDESC_ROWS 8
+
+#define GDESC_COLS 27
 
 /**
  * @brief Type definition for object IDs
@@ -87,5 +119,24 @@ typedef enum { ERROR, OK } Status;
  * This enumeration defines the four possible movement directions.
  */
 typedef enum { N, S, E, W, D, UP, U} Direction;
+
+typedef enum {
+    GAME_STATE_NORMAL,
+    GAME_STATE_COMBAT,
+    GAME_STATE_REVIVAL,
+    GAME_STATE_RESPAUWN
+} GameState;
+
+#define GDESC_BATTLE_ROWS 22
+
+#define GDESC_BATTLE_COLS 60
+
+#define MAX_DAMAGE_OBJECT_RULES 10
+
+#define MAX_ENEMY_DAMAGE_RULES 20
+
+#define MAX_REVIVAL_OBJECTS 1
+
+#define DEFAULT_REVIVAL_SPACE_ID 111
 
 #endif /* TYPES_H */

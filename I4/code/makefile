@@ -1,10 +1,10 @@
-CC = gcc
-CFLAGS = -Wall -pedantic -ansi -g
+CC = gcc 
+CFLAGS = -Wall -pedantic -g
 CLIB = -lscreen -L.
 
-.PHONY: clean all 
+.PHONY: all 
 
-all: anthill test clean_o
+all: anthill test
 
 test: space_test set_test character_test inventory_test link_test player_test
 	
@@ -18,7 +18,6 @@ test_all:
 	./player_test;
 
 
-
 doc:
 	@if [ ! -d doc ]; then mkdir doc; fi
 	doxygen -g Doxyfile
@@ -28,8 +27,7 @@ doc:
 	doxygen Doxyfile
 
 
-
-anthill: command.o game.o game_actions.o game_loop.o graphic_engine.o space.o game_reader.o player.o object.o set.o character.o inventory.o link.o game_management.o
+anthill: command.o game.o game_actions.o game_loop.o graphic_engine.o space.o game_reader.o player.o object.o set.o character.o inventory.o link.o game_management.o game_rules.o battle.o
 	$(CC) -o $@ $^ $(CLIB)
 
 space_test: space_test.o space.o set.o
@@ -102,6 +100,13 @@ player_test.o: player_test.c player_test.h test.h
 
 game_management.o: game_management.c game_management.h game_reader.h player.h link.h character.h space.h
 	$(CC) -c game_management.c $(CFLAGS)
+
+game_rules.o: game_rules.c game_rules.h
+	$(CC) -c game_rules.c $(CFLAGS)
+
+battle.o: battle.c battle.h
+	$(CC) $(CFLAGS) -c battle.c
+
 clean:
 	rm -f anthill *.o
 	rm -f space_test *.o
@@ -110,7 +115,3 @@ clean:
 	rm -f inventory_test *.o
 	rm -f link_test *.o
 	rm -f player_test *.o
-	
-
-clean_o:
-	rm -f *.o

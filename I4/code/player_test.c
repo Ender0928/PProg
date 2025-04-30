@@ -274,19 +274,16 @@
     PRINT_TEST_RESULT(player_get_id(p) == NO_ID);
   }
 
-  
-
-
   void test1_player_has_object() {
     Player *p = player_create(2);
     player_add_object(p, 2);
-    PRINT_TEST_RESULT(player_has_object(p, 2) == OK);
+    PRINT_TEST_RESULT(player_has_object(p, 2));
     player_destroy(p);
   }
 
   void test2_player_has_object() {
     Player *p = NULL;
-    PRINT_TEST_RESULT(player_has_object(p, 3) == ERROR);
+    PRINT_TEST_RESULT(!player_has_object(p, 3));
   }
 
   void test1_player_inventory_is_full() {

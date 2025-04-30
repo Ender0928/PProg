@@ -28,6 +28,7 @@ Inventory* inventory_create(){
 
     inv->max_objs = MAX_INVENTORY;
     inv->set_obj = set_create();
+    set_print(inv->set_obj);
     if(!(inv->set_obj)){
         free(inv);
         return NULL;
@@ -115,6 +116,11 @@ int inventory_get_max_value(Inventory* inv){
     return inv->max_objs;
 }
 
+int inventory_size(Inventory *inv) {
+    if (!inv) return -1;
+
+    return set_size(inv->set_obj);
+}
 Status inventory_print(Inventory* inv){
     if(!inv) return ERROR;
 
@@ -123,3 +129,9 @@ Status inventory_print(Inventory* inv){
 
     return OK;
 }
+
+Id *inventory_get_object_ids(Inventory *inv) {
+  if (!inv || !inv->set_obj) return NULL;
+  return set_get_ids(inv->set_obj);
+}
+

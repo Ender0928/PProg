@@ -113,9 +113,12 @@ Status game_reader_load_objects(Game *game, char *filename) {
   char* toks = NULL;
   Id id = NO_ID;
   Id location = NO_ID;
+  Id dependency = NO_ID;
+  Id open = NO_ID;
+  int health;
+  int movable;
   Object* object = NULL;
   Status Status = OK;
-
   if (!filename) {
     return ERROR;
   }
@@ -136,17 +139,29 @@ Status game_reader_load_objects(Game *game, char *filename) {
       toks = strtok(NULL, "|");
       strcpy(description, toks);
       toks = strtok(NULL, "|");
+      health = atoi(toks);
+      toks = strtok(NULL, "|");
+      movable = atoi(toks); 
+      toks = strtok(NULL, "|");
+      dependency = atol(toks);
+      toks = strtok(NULL, "|");
+      open = atol(toks);
+
       
 #ifdef DEBUG
       printf("Leido: %ld|%s|%ld|%s\n", id, name, location, description);
 #endif
-      object = object_create(id);
-      if (object != NULL) {
-	       object_set_name(object, name);
-	       space_add_object(game_get_space(game, location), id);
-         game_add_object(game, object);
-         object_set_description(object, description);
-      }
+        object = object_create(id);
+        if (object != NULL) {
+            object_set_name(object, name);
+            space_add_object(game_get_space(game, location), id);
+            game_add_object(game, object);
+            object_set_description(object, description);
+            object_set_health(object, health);
+            object_set_movable(object, movable);
+            object_set_dependency(object, dependency);
+            object_set_open(object, open);
+        }
     }
   }
 
@@ -175,7 +190,6 @@ Status game_reader_load_links(Game *game, char *filename) {
       return ERROR;
   }
 
-  /*#l:id|name|origen|dstino|open|*/
   while (fgets(line, WORD_SIZE, file)) {
       if (strncmp("#l:", line, 3) == 0) {
           toks = strtok(line + 3, "|");
@@ -220,147 +234,203 @@ Status game_reader_load_links(Game *game, char *filename) {
 }
 
 Status game_reader_load_character(Game *game, char *filename) {
-  FILE *file = NULL;
-  char line[WORD_SIZE] = "";
-  char *toks = NULL;
-  Id id = NO_ID, location = NO_ID;
-  char name[WORD_SIZE] = "";
-  char gdesc[7] = "";
-  int health = 0;
-  int friendly = 0;
-  char message[WORD_SIZE] = "";
-  Character *character = NULL;
+    FILE *file = NULL;
+    char line[WORD_SIZE] = "";
+    char *toks = NULL;
+    Id id = NO_ID, location = NO_ID;
+    char name[WORD_SIZE] = "";
+    char gdesc[7] = "";
+    int health = 0;
+    int friendly = 0;
+    char message[WORD_SIZE] = "";
+    Character *character = NULL;
 
-  if (!filename || !game) {
-      return ERROR;
-  }
+    char gdesc_battle[GDESC_BATTLE_ROWS][GDESC_BATTLE_COLS];
+    int i, j;
 
-  file = fopen(filename, "r");
-  if (!file) {
-      return ERROR;
-  }
+    if (!filename || !game) return ERROR;
 
-  while (fgets(line, WORD_SIZE, file)) {
-      if (strncmp("#c:", line, 3) == 0) {
-          toks = strtok(line + 3, "|");
-          id = atol(toks);
+    file = fopen(filename, "r");
+    if (!file) return ERROR;
 
-          toks = strtok(NULL, "|");
-          strcpy(name, toks);
+    while (fgets(line, WORD_SIZE, file)) {
+        if (strncmp("#c:", line, 3) == 0) {
+            toks = strtok(line + 3, "|");
+            id = atol(toks);
 
-          toks = strtok(NULL, "|");
-          strcpy(gdesc, toks);
+            toks = strtok(NULL, "|");
+            strcpy(name, toks);
 
-          toks = strtok(NULL, "|");
-          location = atol(toks);
+            toks = strtok(NULL, "|");
+            strcpy(gdesc, toks);
 
-          toks = strtok(NULL, "|");
-          health = atoi(toks);
+            toks = strtok(NULL, "|");
+            location = atol(toks);
 
-          toks = strtok(NULL, "|");
-          friendly = atoi(toks);
+            toks = strtok(NULL, "|");
+            health = atoi(toks);
 
-          toks = strtok(NULL, "|");
-          if (toks) {
-              strcpy(message, toks);
-              message[strcspn(message, "\n")] = '\0';
-          }
+            toks = strtok(NULL, "|");
+            friendly = atoi(toks);
+
+            toks = strtok(NULL, "|");
+            if (toks) {
+                strcpy(message, toks);
+                message[strcspn(message, "\n")] = '\0';
+            }
+
+            for (i = 0; i < GDESC_BATTLE_ROWS; i++) {
+                toks = strtok(NULL, "|");
+                if (toks) {
+                    toks[strcspn(toks, "\r\n")] = '\0';
+
+                    j = 0;
+                    for (; j < GDESC_BATTLE_COLS - 1 && toks[j] != '\0'; j++) {
+                        gdesc_battle[i][j] = toks[j];
+                    }
+                    for (; j < GDESC_BATTLE_COLS - 1; j++) {
+                        gdesc_battle[i][j] = ' ';
+                    }
+                    gdesc_battle[i][GDESC_BATTLE_COLS - 1] = '\0';
+                } else {
+                    memset(gdesc_battle[i], ' ', GDESC_BATTLE_COLS - 1);
+                    gdesc_battle[i][GDESC_BATTLE_COLS - 1] = '\0';
+                }
+            }
 
 #ifdef DEBUG
-          printf("Leído Personaje: %ld|%s|%s|%ld|%d|%d|%s\n", id, name, gdesc, location, health, friendly, message);
+            printf("Leído Personaje: %ld|%s|%s|%ld|%d|%d|%s\n", id, name, gdesc, location, health, friendly, message);
 #endif
 
-          character = character_create(id);
-          if (!character) {
-              fclose(file);
-              return ERROR;
-          }
+            character = character_create(id);
+            if (!character) {
+                fclose(file);
+                return ERROR;
+            }
 
-          character_set_name(character, name);
-          character_set_gdesc(character, gdesc);
-          character_set_location(character, location);
-          character_set_health(character, health);
-          character_set_friendly(character, friendly ? TRUE : FALSE);
-          character_set_message(character, message);
+            character_set_name(character, name);
+            character_set_gdesc(character, gdesc);
+            character_set_location(character, location);
+            character_set_health(character, health);
+            character_set_friendly(character, friendly ? TRUE : FALSE);
+            character_set_message(character, message);
 
-          game_add_character(game, character);
-      }
-  }
+            character_set_gdesc_battle(character, gdesc_battle);
 
-  if (ferror(file)) {
-      fclose(file);
-      return ERROR;
-  }
+            game_add_character(game, character);
+        }
+    }
 
-  fclose(file);
-  return OK;
+    if (ferror(file)) {
+        fclose(file);
+        return ERROR;
+    }
+
+    fclose(file);
+    return OK;
 }
 
 Status game_reader_load_players(Game *game, char *filename) {
-  FILE* file = NULL;
-  char line[WORD_SIZE] = "";
-  char name[WORD_SIZE] = "";
-  char* toks = NULL;
-  Id id = NO_ID, position = NO_ID;
-  int health = 0, max_objects = 0, count = 0;
-  char gdesc[7] = "";
-  Player* player = NULL;
-  Status st = OK;
+    FILE *file = NULL;
+    char line[WORD_SIZE] = "";
+    char *toks = NULL;
+    Id id = NO_ID, position = NO_ID;
+    char name[WORD_SIZE] = "";
+    char gdesc[7] = "";
+    int health = 0, max_objects = 0, count = 0;
+    Player *player = NULL;
 
-  if (!filename || !game) {
-      return ERROR;
-  }
+    char gdesc_battle[GDESC_BATTLE_ROWS][GDESC_BATTLE_COLS];
+    char (*gdesc_battle_ptr)[GDESC_BATTLE_COLS];
 
-  file = fopen(filename, "r");
-  if (file == NULL) {
-      return ERROR;
-  }
+    int i, j;
 
-  while (fgets(line, WORD_SIZE, file)) {
-      if (strncmp("#p:", line, 3) == 0) {
-          toks = strtok(line + 3, "|");
-          id = atol(toks);
+    if (!filename || !game) return ERROR;
 
-          toks = strtok(NULL, "|");
-          strcpy(name, toks);
+    file = fopen(filename, "r");
+    if (!file) return ERROR;
 
-          toks = strtok(NULL, "|");
-          strcpy(gdesc, toks);
+    while (fgets(line, WORD_SIZE, file)) {
+        if (strncmp("#p:", line, 3) == 0) {
+            toks = strtok(line + 3, "|");
+            id = atol(toks);
 
-          toks = strtok(NULL, "|");
-          position = atol(toks);
+            toks = strtok(NULL, "|");
+            strcpy(name, toks);
 
-          toks = strtok(NULL, "|");
-          health = atoi(toks);
+            toks = strtok(NULL, "|");
+            strcpy(gdesc, toks);
 
-          toks = strtok(NULL, "|");
-          max_objects = atoi(toks);
+            toks = strtok(NULL, "|");
+            position = atol(toks);
+
+            toks = strtok(NULL, "|");
+            health = atoi(toks);
+
+            toks = strtok(NULL, "|");
+            max_objects = atoi(toks);
+
+            for (i = 0; i < GDESC_BATTLE_ROWS; i++) {
+                toks = strtok(NULL, "|");
+                if (toks) {
+                    toks[strcspn(toks, "\r\n")] = '\0';
+
+                    j = 0;
+                    for (; j < GDESC_BATTLE_COLS - 1 && toks[j] != '\0'; j++) {
+                        gdesc_battle[i][j] = toks[j];
+                    }
+                    for (; j < GDESC_BATTLE_COLS - 1; j++) {
+                        gdesc_battle[i][j] = ' ';
+                    }
+                    gdesc_battle[i][GDESC_BATTLE_COLS - 1] = '\0';
+                } else {
+                    memset(gdesc_battle[i], ' ', GDESC_BATTLE_COLS - 1);
+                    gdesc_battle[i][GDESC_BATTLE_COLS - 1] = '\0';
+                }
+            }
 
 #ifdef DEBUG
-          printf("Leído Jugador: %ld|%s|%s|%ld|%d|%d\n", id, name, gdesc, position, health, max_objects);
+            printf("Leído Jugador: %ld|%s|%s|%ld|%d|%d\n", id, name, gdesc, position, health, max_objects);
 #endif
 
-          player = player_create(id);
-          
-          player_set_name(player, name);
-          player_set_graphic_desc(player, gdesc);
-          player_set_location(player, position);
-          player_set_health(player, health);
-          player_set_max_objects(player, max_objects);
-          if(count == 0){
-              player_set_turn(player, TRUE);
-              count++;
-          }
+            player = player_create(id);
+            if (!player) {
+                fclose(file);
+                return ERROR;
+            }
 
-          game_add_player(game, player);
-      }
-  }
+            player_set_name(player, name);
+            player_set_graphic_desc(player, gdesc);
+            player_set_location(player, position);
+            player_set_health(player, health);
+            player_set_max_objects(player, max_objects);
+            if (count == 0) {
+                player_set_turn(player, TRUE);
+                count++;
+            }
 
-  if (ferror(file)) {
-      st = ERROR;
-  }
+            player_set_gdesc_battle(player, gdesc_battle);
 
-  fclose(file);
-  return st;
+            game_add_player(game, player);
+
+            gdesc_battle_ptr = player_get_gdesc_battle(player);
+            if (gdesc_battle_ptr) {
+                printf("Descripción de combate del jugador %s:\n", player_get_name(player));
+                for (i = 0; i < GDESC_BATTLE_ROWS; i++) {
+                    printf("%s\n", gdesc_battle_ptr[i]);
+                }
+            }
+        }
+    }
+
+    if (ferror(file)) {
+        fclose(file);
+        return ERROR;
+    }
+
+    fclose(file);
+    return OK;
 }
+
+  
 

@@ -18,10 +18,13 @@
 #include "player.h"
 #include "character.h"
 #include "link.h"
+#include "battle.h"
 
 #define MAX_SPACES 100
 
 typedef struct _Game Game; 
+typedef struct _GameRules GameRules;
+
 
 /**  
    * @brief It creates a new game
@@ -111,6 +114,76 @@ Id game_get_object_location(Game *game, Id object_id);
    */
 Status game_set_object_location(Game *game, Id id, Id space_id);
 
+/**  
+   * @brief It returns the id of a space in a game
+   * @author Profesores PPROG
+   * 
+   * @param game a pointer to the game
+   * @param position an integer with the position of the space
+   * @return the id of the space located at the position given
+   */
+Status game_set_object_location(Game *game, Id id, Id space_id);
+
+   /**  
+      * @brief It returns the movable variable of a selected object 
+      * @author Profesores PPROG
+      * 
+      * @param game a pointer to the game
+      * @param object_id an id with the object's id
+      * @return the value of the movable variable
+      */
+Bool  game_get_object_movable(Game *game, Id object_id);
+   
+   /**  
+      * @brief It returns the dependency variable of a selected object 
+      * @author Profesores PPROG
+      * 
+      * @param game a pointer to the game
+      * @param object_id an id with the object's id
+      * @return the value of the dependency variable
+      */
+Id game_get_object_dependency(Game *game, Id object_id);
+   
+   /**  
+      * @brief It returns the Id of the object that depends from a given one
+      * @author Profesores PPROG
+      * 
+      * @param game a pointer to the game
+      * @param object_id an id with the id of the object we want to know which other object depends from it
+      * @return the id of the dependent object
+      */
+Id game_get_object_that_depent_from_a_given(Game *game, Id object_id);
+   
+   /**  
+      * @brief It returns a pointer to a link by a given id 
+      * @author Profesores PPROG
+      * 
+      * @param game a pointer to the game
+      * @param link_id the id form the link wanted
+      * @return a pointer to the searched link
+      */
+Link *game_get_link_by_id(Game *game, Id link_id);
+   
+   /**  
+      * @brief It returns the id of a link by a given name
+      * @author Profesores PPROG
+      * 
+      * @param game a pointer to the game
+      * @param link_name the name of the link's id we want
+      * @return the id of the link
+      */
+Id game_get_link_id_by_name(Game *game,char *link_name);
+
+   /**  
+      * @brief It returns the id of a character by a given name
+      * @author Profesores PPROG
+      * 
+      * @param game a pointer to the game
+      * @param character_name the name of the character's id we want
+      * @return the id of the Character
+      */
+
+Id game_get_character_id_by_name(Game *game, char *character_name);
 /**  
    * @brief It returns the id of a space in a game
    * @author Profesores PPROG
@@ -450,7 +523,7 @@ Status game_set_object_description(Game *game, char *description, Id id_object);
  
  void game_clean(Game *game);
  
- /**
+/**
  * @brief Prints the details of a specific space in the game.
  *
  * @param game Pointer to the game structure.
@@ -458,4 +531,56 @@ Status game_set_object_description(Game *game, char *description, Id id_object);
  * @return Status indicating success or failure.
  */
  Status game_space_print(Game *game, Space *space);
+
+/**
+ * @brief Obtiene un personaje por su ID
+ * 
+ * @param game El juego
+ * @param id El ID del personaje a buscar
+ * @return Character* puntero al personaje o NULL si no se encuentra
+ */
+ 
+
+ Character *game_get_character(Game *game, Id id);
+
+
+/**
+ * @brief Obtiene si se ha formado un grupo
+ * 
+ * @param game El juego
+ * 
+ * @return true si se ha formado un grupo, false en caso contrario
+ */
+
+ Bool game_get_group(Game *game);
+
+ /**
+ * @brief Settea si se ha formado un grupo
+ * 
+ * @param game El juego
+ * @param group true si se ha formado un grupo, false en caso contrario
+ * 
+ * @return Ok si se ha seteado correctamente, error en caso contrario
+ */
+
+ Status game_set_group(Game *game, Bool group);
+
+ int game_get_characters_at_location(Game *game, Id location, Character **result);
+
+ GameRules *game_get_rules(Game *game);
+
+ Link *game_get_link(Game *game, Id link_id);
+
+ void game_set_state(Game *game, GameState state);
+
+ GameState game_get_state(Game *game);
+
+ Battle *game_get_battle(Game *game);
+
+void game_set_revival_space(Game *game, Id space_id); 
+
+Id game_get_revival_space(Game *game);
+
+Status game_drop_all_objects(Game *game);
+
 #endif

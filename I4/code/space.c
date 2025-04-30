@@ -45,6 +45,7 @@ Space* space_create(Id id) {
   newSpace->id = id;
   newSpace->name[0] = '\0';
   newSpace->objects = set_create();
+  newSpace->discovered = FALSE;
   
   for (i=0; i < GDESC_ROWS; i++) {
     newSpace->gdesc[i][0] = '\0';
@@ -91,6 +92,7 @@ Status space_add_object(Space* space, Id id) {
   if (!space || id == NO_ID) {
     return ERROR;
   }
+  
   return set_add_object(space->objects, id);
 }
 
@@ -98,6 +100,7 @@ Status space_remove_object(Space* space, Id id) {
   if (!space || id == NO_ID) {
     return ERROR;
   }
+  
   return set_remove_object(space->objects, id);
 }
 
@@ -174,8 +177,6 @@ Status space_print(Space* space) {
   }
 
   fprintf(stdout, "---> Objects in space:\n");
-  set_print(space->objects);
-
 
   fprintf(stdout, "---> Discovered: %s\n", space->discovered ? "YES" : "NO");
   fprintf(stdout, "\n");

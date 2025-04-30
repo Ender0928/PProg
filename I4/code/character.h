@@ -144,4 +144,16 @@ Status character_set_location(Character *character, Id location);
  */
 Status character_print(Character *character);
 
+Status character_print(Character *character);
+
+Bool character_is_dead(Character *c);
+
+Status character_mark_dead(Character *c);
+
+Status character_set_gdesc_battle(Character *character, char gdesc[GDESC_BATTLE_ROWS][GDESC_BATTLE_COLS]);
+
+char (*character_get_gdesc_battle(Character *character))[GDESC_BATTLE_COLS];
+
+char *character_get_all_gdesc_battle(Character *character);
+
 #endif

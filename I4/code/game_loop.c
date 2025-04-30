@@ -15,6 +15,7 @@
 #include "game.h"
 #include "game_actions.h"
 #include "graphic_engine.h"
+#include "game_rules.h"
 
 /**
  * @brief It initializes the game loop
@@ -54,7 +55,7 @@ void game_loop_run_with_file(Game *game, Graphic_engine *gengine, char *file_nam
 
 int main(int argc, char *argv[]) {
   Game *game = NULL;
-  Graphic_engine *gengine;
+  Graphic_engine *gengine = NULL;
 
   if (argc < 2) {
     fprintf(stderr, "Use: %s <game_data_file>\n", argv[0]);
@@ -113,6 +114,7 @@ void game_loop_run(Game *game, Graphic_engine *gengine) {
 
     status = game_actions_update(game, last_cmd);
     game_set_command_status(game, status);
+    gamerules_run(game);
     game_next_turn(game);
   }
 }

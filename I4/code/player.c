@@ -22,27 +22,24 @@ struct _Player{
     int health;             /*Health points of the player*/
     Inventory *backpack;    /*Inventory of the player*/
     char gdesc[TAM_GDESC];  /*Graphic description of the player*/
+    char gdesc_battle[GDESC_BATTLE_ROWS][GDESC_BATTLE_COLS];  /* Representación en combate */
     Bool turn;              /*Turn of the player*/
     Space *Discorvered;     /*Discovered spaces of the player*/
 };
 
-
 /*player_create allocates memory for a new player and initializes its members*/
 Player * player_create (Id id){ 
     Player *new_player = NULL;
+    int i;
 
     /*Error control*/
-    if (id == NO_ID)
-    {
-        return NULL;
-    }
+    if (id == NO_ID) return NULL;
     
     /* Initialization of an empty player*/
     new_player = (Player*)malloc(sizeof(Player));
-        if (new_player==NULL)
-        {
-            return NULL;
-        }
+
+    if (new_player==NULL) return NULL;
+
 
     new_player->id= id;
     new_player->location=NO_ID;
@@ -55,6 +52,10 @@ Player * player_create (Id id){
     {
         free(new_player);
         return NULL;
+    }
+
+    for (i=0; i < GDESC_BATTLE_ROWS; i++) {
+        new_player->gdesc_battle[i][0] = '\0';
     }
     return new_player;
 }
@@ -227,11 +228,9 @@ Bool player_inventory_is_full(Player *player){
     return inventory_is_full(player->backpack);
 }
 
-Status player_has_object(Player *player, Id object){
-    if (!player || object == NO_ID)
-    {
-        return ERROR;
-    }
+Bool player_has_object(Player *player, Id object){
+    if (!player || object == NO_ID) return FALSE;
+    
     return inventory_find_object(player->backpack, object);
 }
 
@@ -253,13 +252,63 @@ int player_get_max_objects(Player *player) {
     return inventory_get_max_value(player->backpack);
 }
 
+Status player_set_gdesc_battle(Player *player, char gdesc[GDESC_BATTLE_ROWS][GDESC_BATTLE_COLS]) {
+    int i;
+
+    if (!player || !gdesc) return ERROR;
+    for (i = 0; i < GDESC_BATTLE_ROWS; i++) {
+        strncpy(player->gdesc_battle[i], gdesc[i], GDESC_BATTLE_COLS);
+        player->gdesc_battle[i][GDESC_BATTLE_COLS - 1] = '\0';
+    }
+    return OK;
+}
+
+char (*player_get_gdesc_battle(Player *player))[GDESC_BATTLE_COLS] {
+    if (!player) return NULL;
+    return player->gdesc_battle;
+}
+
+int player_get_num_objects(Player *player) {
+    if (!player) return -1;
+
+    return inventory_size(player->backpack);
+}
+
+Id *player_get_objects(Player *player) {
+  if (!player) return NULL;
+  return inventory_get_object_ids(player->backpack);
+}
+
+char *player_get_all_gdesc_battle(Player *player) {
+    static char buffer[GDESC_BATTLE_ROWS * GDESC_BATTLE_COLS]; // Buffer estático para almacenar el resultado
+    int i;
+    buffer[0] = '\0';
+
+    if (!player) return NULL;
+
+
+    for (i = 0; i < GDESC_BATTLE_ROWS; i++) {
+        strncat(buffer, player->gdesc_battle[i], GDESC_BATTLE_COLS - 1);
+        if (i < GDESC_BATTLE_ROWS - 1) {
+            strncat(buffer, "|", sizeof(buffer) - strlen(buffer) - 1);
+        }
+    }
+
+    return buffer;
+}
+
+char* player_get_graphic_desc(Player *player) {
+    if (!player) return NULL;
+    return player->gdesc;
+}
+
 Status player_print(Player* player){
   if (!player)
     return ERROR;
 
   fprintf(stdout, "-->player (id: %ld; name: %s; location: %ld; health:%d;)\n", player->id, player->name,player->location, player->health);
+  inventory_print(player->backpack);
   return OK;
 }
-
 
 
